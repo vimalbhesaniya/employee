@@ -9,6 +9,7 @@ import FormContainer from "./FormContainer";
 import "react-toastify/dist/ReactToastify.css";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import LoadingBar from "react-top-loading-bar";
 import InputText from "./signup/validateInputs";
 import me from "../assets/me.json";
 import Check from "../Auth/check";
@@ -21,11 +22,10 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [close, setClose] = useState("");
-
-  console.log(close);
+  const [progress, setProgress] = useState(0);
 
   const handleSubmit = async () => {
-    if (email.length >= 1 && password.length >= 1) {
+    if (email.length >= 2 && password.length >= 2) {
       const response = await fetch("http://localhost:5500/login", {
         body: JSON.stringify({ email, password }),
         method: "POST",
@@ -51,16 +51,18 @@ const Login = () => {
             expires: 7,
             path: "/",
           });
+          setProgress(50)
           setTimeout(() => {
-            toast.success("Success! You're in.", {
-              hideProgressBar: true,
-            });
+            setProgress(100)
           }, 2000);
           setTimeout(() => {
             navigate("/home");
           }, 4000);
         } else {
-          toast.error("Invalid credentials");
+          setErrorMessage("invalid credentials...")
+          setTimeout(() => {
+            setErrorMessage("");
+          }, 3000);
         }
       }
     } else {
@@ -73,6 +75,11 @@ const Login = () => {
 
   return (
     <>
+      <LoadingBar
+        color="#23A6F0"
+        progress={progress}
+        onLoaderFinished={() => setProgress(0)}
+      />
       {close ? <ResetPassword close={setClose} /> : ""}
       <NavbarBeforeLogin></NavbarBeforeLogin>
       <FormContainer

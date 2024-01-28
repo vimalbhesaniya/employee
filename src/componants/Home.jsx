@@ -1,37 +1,38 @@
-import Cookies from "js-cookie"
-import { useEffect, useState } from "react"
+import Cookies from "js-cookie";
+import { useEffect, useState } from "react";
 
 import Check from "../Auth/check";
 
 const Home = ({ setModell }) => {
-  Check()
+  Check();
   const [data, setData] = useState("");
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const users = await fetch("http://localhost:5500/users", {
-        headers: {
-          authorization: Cookies.get("token")
-        }
-      } , [])
+      const users = await fetch(
+        "http://localhost:5500/users",
+        {
+          headers: {
+            authorization: Cookies.get("token"),
+          },
+        },
+        []
+      );
       const data = await users.json();
       setData(data);
       if (data.unauthorized && !Cookies.get("logedwithgoogle")) {
-        setModell(true)
+        setModell(true);
       }
-    }
-    fetchUsers()
-  }, [null])
-
-console.log(data);
-
+    };
+    fetchUsers();
+  }, [null]);
 
   return (
     <>
-      <div className="home--">
-            
-      </div>
+    <div className="home--">
+          
+    </div>
     </>
-  )
-}
-export default Home
+  );
+};
+export default Home;
