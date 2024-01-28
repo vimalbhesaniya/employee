@@ -9,6 +9,7 @@
     --secondary-color-1: #23856D;
     --dark-background-color: #252B42
 }
+
 .heading{
     width: 100%;
     max-width: 507px;
@@ -229,3 +230,4 @@
     font-size: 13px;
     color: rgb(0, 38, 127);
 }
+
