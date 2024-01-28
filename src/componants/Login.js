@@ -1,10 +1,9 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import "../Style/login.css";
 import { ToastContainer, toast } from "react-toastify";
-import Footer from "./Footer";
-import { Link, useMatch } from "react-router-dom";
+import { Link } from "react-router-dom";
+import ResetPassword from "./login/ResetPassword";
 import NavbarBeforeLogin from "./login/NavbarBeforeLogin";
-import { City } from "country-state-city";
 import Lottie from "lottie-react";
 import FormContainer from "./FormContainer";
 import "react-toastify/dist/ReactToastify.css";
@@ -21,14 +20,9 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [close, setClose] = useState("");
 
-  const setErrors = useMemo(() => {
-    if (email.length <= 1 && password.length <= 1) {
-      return true;
-    } else {
-      return false;
-    }
-  }, [email, password]);
+  console.log(close);
 
   const handleSubmit = async () => {
     if (email.length >= 1 && password.length >= 1) {
@@ -79,6 +73,7 @@ const Login = () => {
 
   return (
     <>
+      {close ? <ResetPassword close={setClose} /> : ""}
       <NavbarBeforeLogin></NavbarBeforeLogin>
       <FormContainer
         warning={errorMessage}
@@ -92,9 +87,11 @@ const Login = () => {
         heading={"Sign In"}
         slogan={"Unlock Your Opportunities.Explore with Login !"}
         navigat={
-          <p className="--navLink">
-            No account yet? Time to <Link to={"/signup"}>Sign Up !</Link>
-          </p>
+          <>
+            <p className="--navLink">
+              No account yet? Time to <Link to={"/signup"}>Sign Up !</Link>
+            </p>
+          </>
         }
         textbox1={
           <InputText
@@ -111,11 +108,18 @@ const Login = () => {
             onChange={(e) => setPassword(e)}
           />
         }
-        button1={
+        button2={
           <FormButton
             className={"--btn"}
             text={"Login"}
             onClick={() => handleSubmit()}
+          />
+        }
+        button1={
+          <FormButton
+            className={"--btn"}
+            text={"Forgot Password"}
+            onClick={() => setClose(true)}
           />
         }
       />
