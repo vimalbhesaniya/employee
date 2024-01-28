@@ -2,6 +2,7 @@ import React, { useMemo, useState } from "react";
 import "../../../Style/singup.css";
 import Lottie from "lottie-react";
 import "react-toastify/dist/ReactToastify.css";
+import { Link } from "react-router-dom";
 import Stepper from "react-stepper-horizontal";
 import FormButton from "../../FormButton";
 import me from "../../../assets/Je3eTqQJrt.json";
@@ -38,6 +39,11 @@ const Step4 = ({setScreen}) => {
         title={
           "Unlock your potential by sharing your educational journey because every degree is a stepping stone to success!"
         }
+        navigat={
+        <p className="--navLink">
+          Already have an account : <Link to={"/login"}>Login !</Link>
+        </p>
+      }
         slogan={
           <Stepper
             style={{ color: "#001f3f" }}

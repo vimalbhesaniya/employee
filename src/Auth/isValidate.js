@@ -1,5 +1,4 @@
-const joi = require('@hapi/joi');
-
+import Joi from "joi";
 export const isValidStep1 = (email, password, confirmPassword) => {
   if (
     email.match(
@@ -17,14 +16,19 @@ export const isValidStep1 = (email, password, confirmPassword) => {
   }
 };
 
-export const isValidStep2 = (firstName, lastName) => {
+export const isValidStep2 = (firstName, lastName ,profilePicture) => {
   if (firstName.length <= 2) {
     return true;
   } else if (lastName.length <= 2) {
     return true;
   } else if (firstName.length === 1 && lastName.length === 1) {
     return true;
-  } else {
+  }
+  else if (profilePicture.length <= 2)
+  {
+    return true
+  }
+ else {
     return false;
   }
 };
@@ -43,16 +47,67 @@ export const isValidStep4 = (institutionName, endDateSchool, startDateSchool) =>
     return false;
   }
 };
-export const isValidStep5 = () => {
-  // const schema = joi.string().required()
-  // let result = schema.validate(jobTitle);
-  // console.log(result);
-  //  if (result) {
-  //   return false;
-  //  } 
-  //  return true;
+export const isValidStep5 = (jobTitle  , companyName , startDateWork , endDateWork , responsibilities , achievements) => {
+
+  const schema = Joi.string().required().min(2)
+  const schema1 = Joi.string().required().min(2)
+  const schema4 = Joi.string().required().min(2)
+  const schema5 = Joi.string().required().min(2)
+  const date1 = Joi.date().required()
+  const date2 = Joi.date().required()
+
+  let result = schema.validate(jobTitle);
+  let result1 = schema1.validate(companyName);
+  let result2= date1.validate(startDateWork);
+  let result3 = date2.validate(endDateWork);
+  let result4 = schema4.validate(responsibilities);
+  let result5 = schema5.validate(achievements);
+  
+   if (result.error ) {
+    return false;
+   }
+   else if(result1.error)
+   {
+    return false;
+   }
+   else if(result2.error)
+   {
+    return false;
+   }
+   else if(result3.error)
+   {
+    return false;
+   }
+   else if(result4.error)
+   {
+    return false;
+   }
+   else if(result5.error)
+   {
+    return false;
+   }
+   else 
+   return true;
 };
-export const isValidStep6 = () => {
+export const isValidStep6 = (skills , profession , langauges ) => {
+  const schema1 = Joi.string().required().min(2)
+  const schema2 = Joi.string().required().min(2)
+  const schema3 = Joi.string().required().min(2)
+  const result1 = schema1.validate(skills)
+  const result2 = schema2.validate(langauges)
+  const result3 = schema3.validate(profession)
+  if (result1.error) {
+    return false
+  }
+  else if(result2.error){
+    return false 
+  }
+  else if(result3.error)
+  {
+    return false
+  }
+  else 
+  return true
 
 };
 
