@@ -6,6 +6,8 @@ import Stepper from "react-stepper-horizontal";
 import FormButton from "../../FormButton";
 import FormSelectBox from "../../FormSelectBox";
 import me from "../../../assets/Je3eTqQJrt.json";
+import { Link } from "react-router-dom";
+
 import FormContainer from "../../FormContainer";
 import "../../../Style/login.css";
 import InputText from "../validateInputs";
@@ -40,6 +42,11 @@ const Step3 = ({setScreen}) => {
     title={
       "Rooted in City, thriving in State, and always ready to embrace the next exciting chapter wherever life takes me."
     }
+    navigat={
+        <p className="--navLink">
+          Already have an account : <Link to={"/login"}>Login !</Link>
+        </p>
+      }
     slogan={
       <Stepper
         style={{ color: "#001f3f" }}

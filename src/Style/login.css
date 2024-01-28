@@ -35,13 +35,13 @@
 
 .--sloganText {
     font-size: 1rem;
+    
 
 }
 
 .Forms {
-    margin-top: 30px;
     width: 100%;
-    max-height: 350px;
+    height: 300px;
     display: flex;
     overflow: scroll;
     justify-content: left;

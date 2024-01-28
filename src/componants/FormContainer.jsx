@@ -60,13 +60,15 @@ const FormContainer = ({
             {textbox10}
             <div className="--form">
               {button1}
-              {button2}	
+              {button2}
             </div>
+          </div>
+          <div className="signUpFooter">
             <span>{navigat}</span>
-            <div className="signUpFooter">
-              <Link to={"/gethelp"}>Get Help</Link>
-              <Link to={"/termsAndCondition"}>Terms And Conditions </Link>
-            </div>
+			<div className="--flexCenter">
+            <Link to={"/gethelp"}>Get Help</Link>
+            <Link to={"/termsAndCondition"}>Terms And Conditions </Link>
+			</div>
           </div>
         </div>
       </div>
