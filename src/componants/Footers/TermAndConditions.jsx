@@ -20,44 +20,12 @@ const TermAndConditions = () => {
           />
         }
       />
-      {/* <div className="h1TermPage"> */}
-      {/* <div className="heading">
-      </div> */}
-      {/* </div> */}
       <div class="bodyTermPage">
         <div class="containerTermPage">
           <div className="Heading">
-            <h1 class="mainHeading"><i class="fa fa-book"></i> Terms &amp; Conditions</h1>
+            <h3><strong><i class="fa fa-book"></i> Terms &amp; Conditions</strong></h3>
           </div>
           <div className="mainTermPage">
-
-            {/* <p class="pTermPage">
-            1. <strong>Acceptance of Terms:</strong> By creating an account on
-            this job portal, you agree to comply with these terms and
-            conditions. If you do not agree, please do not use the platform.
-          </p>
-
-          <p class="pTermPage">
-            2. <strong>User Account:</strong> You are responsible for
-            maintaining the confidentiality of your account and password. You
-            agree to provide accurate and up-to-date information during the
-            registration process. Notify us immediately of any unauthorized use
-            of your account.
-          </p>
-
-          <p class="pTermPage">
-            3. <strong>Job Postings:</strong> Employers are solely responsible
-            for the accuracy and legitimacy of job postings. The platform
-            reserves the right to remove any job posting that violates ethical
-            standards, laws, or our policies.
-          </p>
-
-          <p class="pTermPage">
-            By using this job portal, you acknowledge that you have read,
-            understood, and agree to these terms and conditions.
-          </p> */}
-
-            <p class="pTermPage"><strong>Last Updated: {modifiedDate}</strong></p>
             <p class="pTermPage">The User of the Job Portal / website (hereinafter referred to as <strong>“User”</strong>) agrees to the following terms and conditions, including any future amendments (hereinafter collectively referred to as the <strong>“Terms &amp; Conditions”</strong>) before using the Job Portal / website www.freshtechjobs.com (hereinafter referred to as <strong>“Job Portal”</strong>). By using the Job Portal, the Users are giving their consent to be bound by the stipulations as contained under the caption <strong>“Terms &amp; Conditions”</strong> below.</p>
             <h2 class="pTermPage"><strong>Purpose of the Job portal:</strong></h2>
             <p class="pTermPage">The purpose of the job portal is to reduce the job search gap between technical freshers viz. students of passed out Diploma, Bachelor, Master with Technical Degrees and Companies who recruit technical freshers.</p>

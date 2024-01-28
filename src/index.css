@@ -12,66 +12,38 @@
 }
 
 .containerTermPage {
-    overflow: scroll;
-    /* max-width: 00px; */
     width: 80%;
+    height: 534px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
     background-color: #fff;
-    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
-    padding: 20px;
-    /* border-radius: 10px; */
-    max-height: 76vh;
+    box-shadow: 0 0 20px rgba(77, 76, 76, 0.234);
+    border-radius: 10px;
 }
 
 .Heading{
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    width: 70%; 
-    position: fixed;
-}
-
-.mainHeading {
-    width: 100%;
-    padding: 10px;
-    font-size: x-large;
-    font-weight: 300;
-    /* background-color: #4285f4; */
-    /* margin-bottom: 10px; */
+    padding-bottom: 10px;
     color: #4285f4;
-    /* padding-left: 150px; */
-    text-align: center;
-    margin-top: 10px;
 }
 
 .mainTermPage {
+    width: 100%;
+    height: 415px;
     display: flex;
-    justify-content: center;
+    overflow: scroll;
+    justify-content: left;
     align-items: center;
     flex-direction: column;
-    width: 50%;
-    background-color: #acc2e4;
+    padding: 20px;
 }
 
-/* .mainHeading{margin-top:0.5em;margin-bottom:0.5em;font-size:1.5em;} */
-
-/* .bodyTermPage{
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.containerTermPage{
-    width: 80%;
-    display: grid;
-    justify-content: center;
-    align-items: center;
-    background-color: #fff;
-} */
 .pTermPage {
     line-height: 1.6;
     margin-bottom: 15px;
-    /* background-color: aqua; */
 }
 
 .footerTermPage {
@@ -91,7 +63,8 @@
 
 @media (max-width: 600px) {
     .containerTermPage {
-        padding: 10px;
+        padding: 30px;
+        /* height: 300px; */
     }
 }
 
