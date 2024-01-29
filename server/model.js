@@ -1,63 +1,97 @@
 const mongoose = require("mongoose");
 
 const educationSchema = new mongoose.Schema({
-  institutionName: { type: String, required: false },
-  degreeLevel: { type: String, required: false },
-  startDateSchool: { type: Date, required: false },
-  endDateSchool: { type: Date, required: false },
-  gpa: { type: Number, required: false },
-  certifications: [{ type: String, required: false }],
-  onlineCourses: [{ type: String, required: false }],
+  institutionName: {
+    type: String,
+    required: false
+  },
+  degreeLevel: {
+    type: String,
+    required: false
+  },
+  startDateSchool: {
+    type: Date,
+    required: false
+  },
+  endDateSchool: {
+    type: Date,
+    required: false
+  },
+  gpa: {
+    type: Number,
+    required: false
+  },
+  certifications: [{
+    type: String,
+    required: false
+  }],
+  onlineCourses: [{
+    type: String,
+    required: false
+  }],
 });
+
 const workExperienceSchema = new mongoose.Schema({
-  fresher: { type: Boolean, required: false },
-  jobTitle: {
+  userType: {
     type: String,
-    required: function () {
-      return !this.fresher;
-    },
+    required: false
   },
-  companyName: {
-    type: String,
-    required: function () {
-      return !this.fresher;
+    jobTitle: {
+      type: String,
     },
-  },
-  startDateWork: {
-    type: Date,
-    required: function () {
-      return !this.fresher;
+    companyName: {
+      type: String,
     },
-  },
-  endDateWork: {
-    type: Date,
-    required: function () {
-      return !this.fresher;
+    startDateWork: {
+      type: Date
     },
-  },
-  responsibilities: {
-    type: String,
-    required: function () {
-      return !this.fresher;
+    endDateWork: {
+      type: Date
     },
-  },
+    responsibilities: {
+      type: String
+    },
   achievements: [{ type: String, required: false }],
 });
 
-const addressSchema = mongoose.Schema({
-  personalAddress: { type: String, required: true },
-  pinCode: { type: String, required: true },
-  state: { type: String, required: true },
-  city: { type: String, required: true },
+const addressSchema = new mongoose.Schema({
+  personalAddress: {
+    type: String,
+    required: false
+  },
+  pinCode: {
+    type: String,
+    required: false
+  },
+  state: {
+    type: String,
+    required: false
+  },
+  city: {
+    type: String,
+    required: false
+  }
 });
 
 
 const newSchema = new mongoose.Schema({
-  email: { type: String, required: true },
-  password: { type: String, required: true },
-  firstName: { type: String, required: true },
-  lastName: { type: String, required: true },
-  location : {addressSchema},
+  email: {
+    type: String,
+    required: true
+  },
+  password: {
+    type: String,
+    required: true
+  },
+  firstName: {
+    type: String,
+    required: false
+  },
+  lastName: {
+    type: String,
+    required: false
+  },
+  location: { addressSchema },
   profileImage: {
     type: String,
   },
@@ -71,8 +105,8 @@ const newSchema = new mongoose.Schema({
   profession: {
     type: String,
   },
-  education: {educationSchema},
-  workExperience : {workExperienceSchema},
+  education: { educationSchema },
+  workExperience: { workExperienceSchema },
 });
 const data = mongoose.model("users", newSchema);
 module.exports = data;
