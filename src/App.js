@@ -5,7 +5,6 @@ import MyModel from "./componants/MyModel";
 import Home from "./componants/Home";
 import Cookies from "js-cookie";
 import { useState } from "react";
-import ResetPassword from "./componants/login/ResetPassword";
 import Login from "./componants/Login";
 import Signup from "./componants/signup/Signup";
 import NotFound from "./componants/Notfound";

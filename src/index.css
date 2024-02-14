@@ -1,3 +1,4 @@
+
 .bodyTermPage {
     font-family: 'Arial', sans-serif;
     padding: 25px;
@@ -179,4 +180,14 @@ align-items: center;
     height: auto; /* Maintain the aspect ratio */
     display: block; /* Remove extra space below the image */
     margin: 0 auto; /* Center the image */
+}
+
+.spinner{
+    min-height: 100vh;
+    position:fixed;
+    width: 100%;
+    background-color: rgba(235, 241, 255, 0.521);
+    display: grid;
+    backdrop-filter: blur(5px);
+    place-items: center;
 }

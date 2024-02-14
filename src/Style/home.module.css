@@ -1,0 +1,115 @@
+.section1 {
+    padding: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.header {
+    display: flex;
+    align-items: stretch;
+    padding: 20px;
+    flex-wrap: wrap;
+
+}
+
+.contentRight {
+    max-width: 50em;
+    display: flex;
+    justify-content: center;
+    /* background-color: aquamarine; */
+    padding: 20px;
+}
+
+.contentLeft {
+    max-width: 30rem;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    flex-direction: column;
+    /* background-color: red; */
+}
+
+.h1 {
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 1.2;
+    text-align: justify;
+}
+
+.badge {
+    display: flex;
+    gap: 10px;
+    width: fit-content;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+    background-color: rgba(162, 166, 229, 0.276);
+}
+
+.badgeChild1 {
+    background-color: whitesmoke;
+    padding: 4px;
+    font-size: small;
+    height: fit-content;
+    color: rgb(17, 86, 233);
+    font-weight: 600;
+}
+
+.rightImage {
+    width: 500px
+}
+
+@media only screen and (max-width : 768px) {
+    .rightImage {
+        width: 300px;
+    }
+}
+
+.searchSection {
+    z-index: -1;
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    position: relative;
+    display: grid;
+    place-items: center;
+
+}
+
+.sliderBox {
+    width: 50%;
+    display: flex;
+    padding: 10px;
+    animation: slide-animation 10s infinite; /* Adjust timing here */
+}
+
+.slideImage {
+    width: 100%;
+    flex-shrink: 0;
+}
+
+@keyframes slide-animation {
+
+    0%,
+    100% {
+        transform: translateX(-100%);
+    }
+
+    25% {
+        transform: translateX(0%);
+    }
+
+    30%,
+    55% {
+        transform: translateX(-100%);
+    }
+
+    60%,
+    85% {
+        transform: translateX(-200%);
+    }
+}

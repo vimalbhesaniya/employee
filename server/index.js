@@ -32,7 +32,6 @@ app.post("/login", async (req, res) => {
 // get all users 
 const verifyToken = (req, res, next) => {
     let token = req.headers['authorization']
-    console.warn("called ", token);
     if (token) {
         jwt.verify(token, key, (err, valid) => {
             err ? res.send({ unauthorized: "invalid token" }) : next()

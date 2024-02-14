@@ -14,9 +14,6 @@ const  Layout = () => {
 			<div className="body--">
 				<Outlet></Outlet>
 			</div>
-			<div>
-				<Footer></Footer>
-			</div>
 		</>
 	);
 }

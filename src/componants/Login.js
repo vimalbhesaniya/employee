@@ -38,33 +38,25 @@ const Login = () => {
           setErrorMessage(
             "Unable to connect to the server. Please make sure the server is running and try again."
           );
-          setTimeout(() => {
-            setErrorMessage("");
-            setEmail("");
-            setPassword("");
-          }, 3000);
         });
-
-      if (response !== undefined) {
-        if (!response?.result) {
-          Cookies.set("token", response.token, {
+      if (response?.result == "User  not found") {
+		setProgress(70)
+		setTimeout(()=>{
+			setProgress(100)
+			setErrorMessage("Invalid credentials");
+		} , 1000)
+	  }
+	  else{
+		setErrorMessage("")
+		setProgress(100);
+		Cookies.set("token", response?.token, {
             expires: 7,
             path: "/",
           });
-          setProgress(50)
-          setTimeout(() => {
-            setProgress(100)
-          }, 2000);
-          setTimeout(() => {
-            navigate("/home");
-          }, 4000);
-        } else {
-          setErrorMessage("invalid credentials...")
-          setTimeout(() => {
-            setErrorMessage("");
-          }, 3000);
-        }
-      }
+		  setTimeout(()=>{
+			  navigate("/home");
+		  } , 1000)
+	  }
     } else {
       setErrorMessage("Provide Email and Password");
       setTimeout(() => {
