@@ -65,10 +65,10 @@ const FormContainer = ({
           </div>
           <div className="signUpFooter">
             <span>{navigat}</span>
-			<div className="--flexCenter">
-            <Link to={"/gethelp"}>Get Help</Link>
-            <Link to={"/termsAndCondition"}>Terms And Conditions </Link>
-			</div>
+            <div className="--flexCenter">
+              <Link to={"/gethelp"}>Get Help</Link>
+              <Link to={"/termsAndCondition"}>Terms And Conditions </Link>
+            </div>
           </div>
         </div>
       </div>
