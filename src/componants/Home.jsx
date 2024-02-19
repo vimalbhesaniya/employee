@@ -1,8 +1,14 @@
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import img from "../Images/home.jpg";
+import style from "react-awesome-slider/dist/styles.css";
+import AwesomeSlider from "react-awesome-slider";
 import home from "../Style/home.module.css";
+import Lottie from "lottie-react";
 import Spinner from "../assets/Spinner";
+import searchjson from "../assets/search.json";
+import applications from "../assets/applications.json";
+import send from "../assets/send.json";
 import Check from "../Auth/check";
 
 const Home = ({ setModell }) => {
@@ -36,7 +42,7 @@ const Home = ({ setModell }) => {
 
   return (
     <>
-      {spinner && <Spinner />}
+      {/* {spinner && <Spinner />} */}
       <div className="home--">
         <section className={home.section1}>
           <header className={home.header}>
@@ -59,36 +65,86 @@ const Home = ({ setModell }) => {
               />
             </div>
           </header>
-          <div className={home.searchSection}>
-            <div className={home.sliderBox}>
+          <div className={home.cardsSection}>
+            <div className={home.cardMain}>
+              <div className={home.cards}>
+                <p className={home.cardHeader}>
+                  Unlock Your Potential: Find Your Dream Job Today!
+                </p>
+                <p className={home.cardPara}>
+                  - Empower job seekers to discover fulfilling career
+                  opportunities tailored to their skills and aspirations.
+                </p>
+                <div className={home.cardFooter}>
+                  <Lottie
+                    animationData={searchjson}
+                    loop={true}
+                    style={{ height: "100%", width: "100%" }}
+                  />
+                </div>
+              </div>
+              <div className={home.cards}>
+                <p className={home.cardHeader}>
+                  Your Gateway to Success: Explore Endless Career Possibilities!
+                </p>
+                <p className={home.cardPara}>
+                  - Invite users to explore a diverse range of job listings and
+                  take the first step towards achieving their professional
+                  goals.
+                </p>
+                <div className={home.cardFooter}>
+                  <Lottie
+                    animationData={send}
+                    loop={true}
+                    style={{ height: "100%", width: "100%" }}
+                  />
+                </div>
+              </div>
+              <div className={home.cards}>
+                <p className={home.cardHeader}>
+                  Start Your Journey Here: Connect with Top Employers within
+                  India!
+                </p>
+                <p className={home.cardPara}>
+                  - Highlight the platform's capability to connect talented
+                  individuals with leading companies, fostering mutually
+                  beneficial career partnerships.
+                </p>
+                <div className={home.cardFooter}>
+                  <Lottie
+                    animationData={applications}
+                    loop={true}
+                    style={{ height: "100%", width: "100%" }}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className={home.Image}>
               <img
-                src={
-                  "https://firebasestorage.googleapis.com/v0/b/jobduniya-ec494.appspot.com/o/silde1.jpg?alt=media&token=7565cf9b-16e5-4129-abf1-9a7cf5bf3be5"
-                }
-                alt=""
-                className={home.slideImage}
+                src="https://firebasestorage.googleapis.com/v0/b/jobduniya-ec494.appspot.com/o/slide3.jpg?alt=media&token=2624942b-ec71-4691-bac4-63fe483b5df7"
+                className={home.img}
               />
-              <img
-                src={
-                  "https://firebasestorage.googleapis.com/v0/b/jobduniya-ec494.appspot.com/o/slide2.jpg?alt=media&token=82b841c2-8dd2-422f-a3f5-4cb7bbe8a1ea"
-                }
-                alt=""
-                className={home.slideImage}
-              />
-              <img
-                src={
-                  "https://firebasestorage.googleapis.com/v0/b/jobduniya-ec494.appspot.com/o/slide3.jpg?alt=media&token=2624942b-ec71-4691-bac4-63fe483b5df7"
-                }
-                alt=""
-                className={home.slideImage}
-              />
-              <img
-                src={
-                  "https://assets.materialup.com/uploads/966e7e30-0faf-4a6c-8c3d-205bb27fb485/preview.jpg"
-                }
-                alt=""
-                className={home.slideImage}
-              />
+            </div>
+          </div>
+        </section>
+        <section className={home.section2}>
+          <div className={home.header2}>
+            <div className={home.contentLeft2}>
+              <span className={home.h1}>Explore the letest jobs openings</span>
+              <p className={home.openings}>
+                Welcome to our job portal, where endless possibilities await
+                you! We are thrilled to announce a plethora of new job openings
+                across diverse industries and roles, all curated to match your
+                unique skills and aspirations.
+              </p>
+            </div>
+            <div className={home.contentRight2}>
+              <button class={home.button}>
+                See all jobs
+                <div class={home.hoverEffect}>
+                  <div></div>
+                </div>
+              </button>
             </div>
           </div>
         </section>
