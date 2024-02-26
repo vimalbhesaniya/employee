@@ -1,6 +1,9 @@
 .body--{
 overflow: scroll;
 }
+.body--stop{
+overflow: hidden;
+}
 ::-webkit-scrollbar {
     display: none;
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 import "../login/login.css"
-import logo from "../../logo/Logo Files/For Web/png/Color logo - no background.png"
+import logo from "../../logo/2.png"
 const NavbarBeforeLogin = ({leftSection}) => {
     return (
         <>
