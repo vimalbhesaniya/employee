@@ -26,7 +26,7 @@
     color: rgb(114, 0, 0);
     text-align: center;
     /* width: 100%; */
-    font-size:1.3rem;
+    font-size: 1.3rem;
 }
 
 
@@ -37,7 +37,8 @@
     }
 
 }
-.modelbody{
+
+.modelbody {
     width: 50vh;
     background-color: azure;
     height: 50vh;
@@ -50,6 +51,7 @@
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.295);
     padding: 30px;
 }
+
 @media only screen and (max-width: 468px) {
     .modelbody {
         width: 40vh;
@@ -57,10 +59,11 @@
     }
 
 }
-.home--{
+
+.home-- {
     width: 100%;
     height: calc(100vh - 100px);
-    
+
 }
 
 .small-box {

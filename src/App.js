@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from "react";
+import React, { createContext, useCallback, useEffect } from "react";
 import { Route, BrowserRouter, Routes } from "react-router-dom";
 import Layout from "./Layout";
 import MyModel from "./componants/MyModel";
@@ -16,57 +16,30 @@ import Postajob from "./componants/postajob";
 import { Country, State, City } from "country-state-city";
 import TermAndConditions from "./componants/Footers/TermAndConditions";
 import GetHelp from "./componants/Footers/GetHelp";
+import SearchSection from "./componants/SearchSection";
 
 const App = () => {
-  const [modell, setModell] = useState(false);
-
-  useEffect(() => {
-    if (!Cookies.get("token")) {
-      setModell(false);
-    }
-    const isauth = async () => {
-      const data = await fetch("http://localhost:5500/checkisvalid", {
-        headers: {
-          Authorization: Cookies.get("token"),
-        },
-      }).catch((e) => console.log(e));
-      const me = await data?.json();
-      if (me?.unauthorized) {
-        Cookies.remove("token");
-      }
-    };
-    isauth();
-  }, []);
-
-  return (
-    <>
-      {modell ? <MyModel setModell={setModell}></MyModel> : ""}
-      <BrowserRouter>
-        <Routes>
-          <Route path="/login" index element={<Login />}></Route>
-          <Route index element={<Login />}></Route>
-          <Route path="/signup" element={<Signup />}></Route>
-          <Route path="/gethelp" element={<GetHelp />}></Route>
-          <Route
-            path="/termsAndCondition" element={<TermAndConditions />}></Route>
-          {/* Layout after login  */}
-          <Route element={<Layout />}>
-            <Route
-              path="/home"
-              element={<Home setModell={setModell} />}
-            ></Route>
-            <Route path="/nearbyusers" element={<Nearbyusers />}></Route>
-            <Route path="/profile" element={<Profile />}></Route>
-            <Route path="/search" element={<Search />}></Route>
-            <Route path="/postanewjob" element={<Postajob />}></Route>
-            <Route path="*" element={<NotFound />}></Route>
-            <Route path={Cookies.get("token")} element={<Check />}>
-              {" "}
-            </Route>
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </>
-  );
+    const [modell, setModell] = useState(false);
+    return (
+        <>
+            {modell ? <MyModel setModell={setModell}></MyModel> : ""}
+                <BrowserRouter>
+                    <Routes>
+                        <Route  element={<Layout />}>
+                            <Route path="/home" element={<Home  setModell={setModell}/>} />
+                            <Route path="/nearbyusers" element={<Nearbyusers />} />
+                            <Route path="/profile" element={<Profile />} />
+                            <Route path="/postajob" element={<Postajob />} />
+                            <Route path="/search" element={<SearchSection />} />
+                        </Route>
+                        <Route path={"/login" } element={<Login />} />
+                        <Route path={"/signup" } element={<Signup />} />
+                        <Route path={"/gethelp" } element={<GetHelp />} />
+                        <Route path={"/termandconditions" } element={<TermAndConditions />} />
+                        <Route path="*" element={<NotFound />} />
+                    </Routes>
+                </BrowserRouter>
+        </>
+    );
 };
 export default App;

@@ -1,20 +1,29 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import "./App.css"
-import "remixicon/fonts/remixicon.css"
-
+import React, { createContext, useState } from 'react';
+import ReactDOM from 'react-dom';
 import App from './App';
+import Spinner from './Spinner';
 import reportWebVitals from './reportWebVitals';
+import SearchSection from './componants/SearchSection';
+import "./index.css"
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+const EnableSpinner = createContext();
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
+const Root = () => {
+  const [spinner, setSpinnerState] = useState(false);
+
+  return (
+    <React.StrictMode>
+      <EnableSpinner.Provider value={setSpinnerState}>
+      <div className='spinner'>
+        {spinner ? <Spinner /> : <App />}
+      </div>  
+      </EnableSpinner.Provider>
+    </React.StrictMode>
+  );
+};
+
+const rootElement = document.getElementById('root');
+ReactDOM.createRoot(rootElement).render(<Root />);
+
 reportWebVitals();
+export { EnableSpinner };

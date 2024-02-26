@@ -1,6 +1,17 @@
-import Check from "../Auth/check";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import { useEffect } from "react";
 const NotFound = () => {
-  Check()
-    return <h2>404 - Page Not Found</h2>;
+    const navigate = useNavigate();
+    useEffect(() => {
+        const token = Cookies.get("token");
+        if (token) {
+            navigate("/home");
+        }
+        else{
+            navigate("/login")
+        }
+    }, [navigate]);
+    return <h6>redirecting....</h6>;
   }
 export default NotFound

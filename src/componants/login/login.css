@@ -12,14 +12,19 @@
     transition: 200ms;
 }
 
-.img--logo:hover {
-
-    filter: drop-shadow(0 0 20px rgb(0, 0, 255));
-}
 .login--slogan {
     padding-right: 50px;
+    font-size: 3cqmin;
 }
 
+.leftSectionHeader{
+    font-size: 3cqmin;
+}
+
+.screentitle{
+    color: rgb(13, 109, 218);
+    cursor: pointer;
+}
 @media only screen and (max-width : 768px) {
     .img--logo{
         width: 20vh;

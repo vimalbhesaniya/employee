@@ -1,20 +1,16 @@
-import React, { useMemo, useState } from "react";
+import React, { useCallback, useMemo, useEffect, useState } from "react";
 import "../Style/login.css";
-import { ToastContainer, toast } from "react-toastify";
-import { Link } from "react-router-dom";
-import ResetPassword from "./login/ResetPassword";
-import NavbarBeforeLogin from "./login/NavbarBeforeLogin";
-import Lottie from "lottie-react";
-import FormContainer from "./FormContainer";
+import { Link, useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
-import Cookies from "js-cookie";
-import { useNavigate } from "react-router-dom";
 import LoadingBar from "react-top-loading-bar";
-import InputText from "./signup/validateInputs";
-import me from "../assets/me.json";
+import LoginAsCompany from "../CompanySide/components/LoginAsCompany";
 import Check from "../Auth/check";
-import FormButton from "./FormButton";
+import LoginAsUser from "../UserSide/LoginAsUser";
+import Cookies from "js-cookie";
+import NotFound from "./Notfound";
+
 const Login = () => {
+<<<<<<< HEAD
   Check();
   const x = new Date();
   const navigate = useNavigate();
@@ -126,6 +122,41 @@ const Login = () => {
       />
     </>
   );
+=======
+    
+    const [progress, setProgress] = useState(0);
+    const [loginScreen, setLoginScreen] = useState("user");
+    const naviget = useNavigate();
+    const token = Cookies.get("token");
+    const yes = token ? true : false;
+    useEffect(() => {
+        if (token){
+            naviget("/home");
+        } 
+    })
+    return (
+        <>
+            {token?<NotFound></NotFound>:""}
+            {loginScreen == "user" ? (
+                <LoginAsUser
+                    setProgress={setProgress}
+                    setLoginScreen={setLoginScreen}
+                    loginScreen={loginScreen}
+                />
+            ) : (
+                ""
+            )}
+            {loginScreen == "company" ? (
+                <LoginAsCompany
+                    setLoginScreen={setLoginScreen}
+                    loginScreen={loginScreen}
+                />
+            ) : (
+                ""
+            )}
+        </>
+    );
+>>>>>>> 1a9b1ee7db0e607012318451be98ee9abd93385b
 };
 
 export default Login;

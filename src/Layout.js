@@ -1,17 +1,25 @@
-import React from "react"
-import { Link, Outlet } from "react-router-dom"
+import React, { useCallback, useContext, useEffect, useState } from "react"
+import { Link, Outlet, useNavigate } from "react-router-dom"
 import Footer from "./componants/Footer"
 import Header from "./componants/Header";
 import "./Style/body.css"
-import Check from "./Auth/check";
+import Cookies from "js-cookie";
+
 const  Layout = () => {
-	Check()
-	return (
+    // const naviget = useNavigate();
+    // useEffect(() => {
+    //     const token = Cookies.get("token");
+    //     if (!token) {
+    //         naviget("/login");
+    //     }
+    // })
+    
+    return (
 		<>
 			<div className="  " >
-				<Header />
+				<Header  />
 			</div>
-			<div className="body--">
+			<div className={"body--"}>
 				<Outlet></Outlet>
 			</div>
 		</>

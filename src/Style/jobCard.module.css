@@ -1,0 +1,23 @@
+:root {
+    --pbg: #edf1f5;
+    --pfont: #2b2b2b;
+    --text-color: #252B42;
+    --second-text-color: #737373;
+    --second-border-color: #adadad;
+    --light-gray-1: #FAFAFA;
+    --primary-color: #23A6F0;
+    --success-text-color: #2DC071;
+    --muted-color: #BDBDBD;
+    --secondary-color-1: #23856D;
+    --dark-background-color: #252B42
+}
+
+.bgbtn{
+    background-color: #23a5f0a1;
+}
+
+.bgbtn:hover{
+    background-color: #23A6F0;
+    color: #FAFAFA;
+}
+
