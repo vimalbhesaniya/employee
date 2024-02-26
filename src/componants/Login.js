@@ -8,9 +8,14 @@ import Check from "../Auth/check";
 import LoginAsUser from "../UserSide/LoginAsUser";
 import Cookies from "js-cookie";
 import NotFound from "./Notfound";
+import InputText from "./signup/validateInputs";
+import FormButton from "./FormButton";
+import ResetPassword from "./login/ResetPassword";
+import NavbarBeforeLogin from "./login/NavbarBeforeLogin";
+import FormContainer from "./FormContainer";
+import Lottie from "lottie-react";
 
 const Login = () => {
-<<<<<<< HEAD
   Check();
   const x = new Date();
   const navigate = useNavigate();
@@ -19,6 +24,15 @@ const Login = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [close, setClose] = useState("");
   const [progress, setProgress] = useState(0);
+  const [loginScreen, setLoginScreen] = useState("user");
+  const naviget = useNavigate();
+  const token = Cookies.get("token");
+  const yes = token ? true : false;
+  useEffect(() => {
+    if (token) {
+      naviget("/home");
+    }
+  })
 
   const handleSubmit = async () => {
     if (email.length >= 2 && password.length >= 2) {
@@ -35,7 +49,7 @@ const Login = () => {
             "Unable to connect to the server. Please make sure the server is running and try again."
           );
         });
-      
+
       console.log(response);
       if (response?.result == "User  not found") {
         setProgress(70)
@@ -61,7 +75,7 @@ const Login = () => {
         setErrorMessage("");
       }, 3000);
     }
-  };
+  
 
   return (
     <>
@@ -70,7 +84,7 @@ const Login = () => {
         progress={progress}
         onLoaderFinished={() => setProgress(0)}
       />
-      {close ? <ResetPassword  close={setClose} /> : ""}
+      {close ? <ResetPassword close={setClose} /> : ""}
       <NavbarBeforeLogin></NavbarBeforeLogin>
       <FormContainer
         warning={errorMessage}
@@ -120,43 +134,26 @@ const Login = () => {
           />
         }
       />
+      {token ? <NotFound></NotFound> : ""}
+      {loginScreen === "user" ? (
+        <LoginAsUser
+          setProgress={setProgress}
+          setLoginScreen={setLoginScreen}
+          loginScreen={loginScreen}
+        />
+      ) : (
+        ""
+      )}
+      {loginScreen === "company" ? (
+        <LoginAsCompany
+          setLoginScreen={setLoginScreen}
+          loginScreen={loginScreen}
+        />
+      ) : (
+        ""
+      )}
     </>
-  );
-=======
-    
-    const [progress, setProgress] = useState(0);
-    const [loginScreen, setLoginScreen] = useState("user");
-    const naviget = useNavigate();
-    const token = Cookies.get("token");
-    const yes = token ? true : false;
-    useEffect(() => {
-        if (token){
-            naviget("/home");
-        } 
-    })
-    return (
-        <>
-            {token?<NotFound></NotFound>:""}
-            {loginScreen == "user" ? (
-                <LoginAsUser
-                    setProgress={setProgress}
-                    setLoginScreen={setLoginScreen}
-                    loginScreen={loginScreen}
-                />
-            ) : (
-                ""
-            )}
-            {loginScreen == "company" ? (
-                <LoginAsCompany
-                    setLoginScreen={setLoginScreen}
-                    loginScreen={loginScreen}
-                />
-            ) : (
-                ""
-            )}
-        </>
-    );
->>>>>>> 1a9b1ee7db0e607012318451be98ee9abd93385b
+  )};
 };
 
 export default Login;

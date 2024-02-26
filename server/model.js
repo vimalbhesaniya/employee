@@ -1,40 +1,5 @@
 const mongoose = require("mongoose");
 
-const UserSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true
-  },
-  password: {
-    type: String,
-    required: true
-  },
-  firstName: {
-    type: String,
-    required: false
-  },
-  lastName: {
-    type: String,
-    required: false
-  },
-  profileImage: {
-    type: String,
-  },
-  registrationDate: {
-    type: Date,
-    default: Date.now,
-  },
-  langauges: {
-    type: [String],
-  },
-  skills: {
-    type: [String],
-  },
-  profession: {
-    type: String,
-  }
-});
-
 const AddressSchema = new mongoose.Schema({
     personalAddress: {
         type: String,
@@ -201,23 +166,39 @@ const JobSchema = new mongoose.Schema({
     company: { type: mongoose.Schema.Types.ObjectId, ref: "companies", autopopulate: true }
 });
 
-const SavedJobSchema=new mongoose.Schema({
-  // User_ID:{ type: String, required:true},
-  // Job_ID:{ type: String, required:true},
-  Status:{ type: String, enum:["Expired","Active"],default:"Active"},
-  jobpostId: { type: mongoose.Schema.Types.ObjectId, ref: "JobPost" },
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" }
+const SavedJobSchema = new mongoose.Schema({
+    // User_ID:{ type: String, required:true},
+    // Job_ID:{ type: String, required:true},
+    Status: { type: String, enum: [true, false], default: false },
+    jobId: { type: mongoose.Schema.Types.ObjectId, ref: "Jobs", autopopulate: true },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "users", autopopulate: true }
 })
 
-const ConnectionSchema=new mongoose.Schema({
-  companyId: { type: mongoose.Schema.Types.ObjectId, ref: "Company" },
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" }
+const ConnectionSchema = new mongoose.Schema({
+    companyId: { type: mongoose.Schema.Types.ObjectId, ref: "companies", autopopulate: true },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "users", autopopulate: true }
 })
+
+const JobApplicationsSchema = new mongoose.Schema({
+    companyId: { type: mongoose.Schema.Types.ObjectId, ref: "companies", autopopulate: true },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "users", autopopulate: true },
+    jobid: { type: mongoose.Schema.Types.ObjectId, ref: "jobs", autopopulate: true }
+})
+
+UserSchema.plugin(require("mongoose-autopopulate"))
+CompanySchema.plugin(require("mongoose-autopopulate"))
+EducationSchema.plugin(require("mongoose-autopopulate"))
+WorkExperienceSchema.plugin(require("mongoose-autopopulate"))
+JobSchema.plugin(require("mongoose-autopopulate"))
+SavedJobSchema.plugin(require("mongoose-autopopulate"))
+ConnectionSchema.plugin(require("mongoose-autopopulate"))
+JobApplicationsSchema.plugin(require("mongoose-autopopulate"))
 
 const User = mongoose.model("users", UserSchema);
 const Company = mongoose.model("companies", CompanySchema);
 const JobPost = mongoose.model("jobs", JobSchema);
 const SavedJob = mongoose.model("savedjobs", SavedJobSchema);
 const Connection = mongoose.model("connections", ConnectionSchema);
+const JobApplications = mongoose.model("jobapplications", JobApplicationsSchema)
 
-module.exports = { User, Address, Education, WorkExperience, Company, JobPost, SavedJob, Connection };
+module.exports = { User, Company, JobPost, SavedJob, Connection, JobApplications };
