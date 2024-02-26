@@ -63,21 +63,51 @@ function generateOTP(length = 6) {
 
 
 // Login Authentication api 
+// app.post("/login", async (req, res) => {
+//     console.log(req.body);
+//     if (req.body.password && req.body.email) {
+//         let auth = await User.findOne(req.body).select("-password")
+//         if (auth) {
+//             jwt.sign({ auth }, key, { expiresIn: "1d" }, (err, token) => {
+//                 err ? res.send("something went wrong") : res.send({ auth, token: token })
+//             })
+//         }
+//         else {
+//             res.send({ result: "User  not found" })
+//         }
+//     }
+//     else {
+//         res.send({ result: "Something Missing" });
+//     }
+// })
+
 app.post("/login", async (req, res) => {
-    console.log(req.body);
     if (req.body.password && req.body.email) {
-        let auth = await User.findOne(req.body).select("-password")
+        const tablename = req.body.tablename;
+        if (!tablename) {
+            return res.status(400).send("Table name not provided");
+        }
+        const Model = mongoose.model(tablename);
+        if (!Model) {
+            return res.status(404).send("Model not found");
+        }
+        const email = req.body.email;
+        const auth = await Model.findOne({ "Email_ID": email });
         if (auth) {
-            jwt.sign({ auth }, key, { expiresIn: "1d" }, (err, token) => {
-                err ? res.send("something went wrong") : res.send({ auth, token: token })
-            })
+            const pwdMatch = await encrypt.compare(req.body.password, auth.Password);
+            if (pwdMatch) {
+                jwt.sign({ auth }, key, { expiresIn: "1d" }, (err, token) => {
+                    err ? res.send("something went wrong") : res.send({ auth, token: token, id: auth._id })
+                })
+            }
+            else {
+                res.send({ result: "Password incorrect" })
+            }
+        } else {
+            res.send({ result: "Data not found" })
         }
-        else {
-            res.send({ result: "User  not found" })
-        }
-    }
-    else {
-        res.send({ result: "Something Missing" });
+    } else {
+        res.send({ result: "Somthing wrong" })
     }
 })
 
@@ -104,16 +134,24 @@ app.get("/checkisvalid", verifyToken, async (req, res) => {
     res.send({ authorized: "You are Authorized" });
 })
 
-// user registration api 
-app.post("/addUser", async (req, res) => {
-    req.body.password = await encrypt.hash(req.body.password, 10);
-    const email = req.body.email;
-    const user = await User.find({ "email": email });
-    if (user.length) {
+// registration api 
+app.post("/add", async (req, res) => {
+    const tablename = req.body.tablename;
+    if (!tablename) {
+        return res.status(400).send("Table name not provided");
+    }
+    const Model = mongoose.model(tablename);
+    if (!Model) {
+        return res.status(404).send("Model not found");
+    }
+    req.body.columns.Password = await encrypt.hash(req.body.columns.Password, 10);
+    const email = req.body.columns.Email_ID;
+    const data = await Model.find({ "Email_ID": email });
+    if (data.length) {
         res.send({ success: false, messge: "Email ID is alerady exits, PLease Enter Unique Id" });
     } else {
-        const finaldata = new User(req.body);
-        User.insertMany(finaldata).then((e) => {
+        const finaldata = new Model(req.body.columns);
+        Model.insertMany(finaldata).then((e) => {
             res.status(201).send(e);
         }).catch((e) => {
             res.status(400).send(e)
@@ -284,7 +322,6 @@ app.post('/Insert', async (req, res) => {
     })
 })
 
-
 // app.post('/jobPost', async (req, res) => {
 //     const tablename = req.body.tablename;
 //     if (!tablename) {
@@ -443,7 +480,55 @@ app.post("/Clogin", async (req, res) => {
         const result = await sendMail(to, subject, html);
         res.send(result);
     } else {
-        res.send({ message: "OTP is not available" });
+        res.send({ message: "Company is not available" });
+    }
+})
+
+app.post("/forgot", async (req, res) => {
+    const oneTimeOTP = generateOTP();
+    const to = req.body.email;
+    const user = await User.findOne({ "email": req.body.email })
+    if (user) {
+        await User.updateOne(
+            { email: req.body.email },
+            { $set: { "secretKey": oneTimeOTP } }
+        );
+        const subject = "Sending Email";
+        const html = "<p>One Time OTP : <b>" + oneTimeOTP + "</b></p><br><p>To reset your password, visit the following address:</p><br><a href='http://localhost:3000/ChangePwd?email=" + req.body.to + "'>http://localhost:3000/ChangePwd</a>";
+        const result = await sendMail(to, subject, html);
+        res.send(result)
+    } else {
+        res.send({ message: "OTP is not inserted" })
+    }
+});
+
+app.put("/changePwd", async (req, res) => {
+    const ConOTP = req.body.otp;
+    const user = await User.findOne({ "email": req.body.email })
+    // res.send(user)
+    if (ConOTP === user.secretKey) {
+        try {
+            if (req.body.password && req.body.email) {
+                req.body.password = await encrypt.hash(req.body.password, 10);
+                const user = await User.findOne({ "email": req.body.email })
+                if (user) {
+                    await User.updateOne(
+                        { email: req.body.email },
+                        { $set: { "password": req.body.password, "secretKey": "" } }
+                    );
+                    res.send({ success: true });
+                }
+                else {
+                    res.send({ success: false, message: "User Not Found" })
+                }
+            } else {
+                res.send({ success: false, message: "Not get data in body" })
+            }
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    } else {
+        res.send({ success: false, message: "OTP are not Valid" });
     }
 })
 
@@ -472,5 +557,15 @@ app.post("/FileUpload", async (req, res) => {
     res.send(file);
     // handleFileUpload(file);
 })
+
+app.post("/feedback", async (req, res) => {
+    const from = req.body.email;
+    const subject = "Sending Email";
+    const html = "FeedBack";
+    const result = await sendMail(from, subject, html);
+    res.send(result)
+})
+
+
 
 app.listen(5500, () => console.log("server started..."))

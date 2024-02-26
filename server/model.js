@@ -32,6 +32,9 @@ const UserSchema = new mongoose.Schema({
   },
   profession: {
     type: String,
+  },
+  secretKey:{
+  type:String
   }
 });
 
@@ -151,8 +154,6 @@ const JobPostSchema = new mongoose.Schema({
 });
 
 const SavedJobSchema=new mongoose.Schema({
-  // User_ID:{ type: String, required:true},
-  // Job_ID:{ type: String, required:true},
   Status:{ type: String, enum:["Expired","Active"],default:"Active"},
   jobpostId: { type: mongoose.Schema.Types.ObjectId, ref: "JobPost" },
   userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" }
@@ -160,7 +161,14 @@ const SavedJobSchema=new mongoose.Schema({
 
 const ConnectionSchema=new mongoose.Schema({
   companyId: { type: mongoose.Schema.Types.ObjectId, ref: "Company" },
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" }
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: "users" }
+})
+
+const AdminSchema=new mongoose.Schema({
+  Email_ID:{type:String},
+  Password:{type:String},
+  firstName:{type:String},
+  lastName:{type:String}
 })
 
 const User = mongoose.model("users", UserSchema);
@@ -171,5 +179,6 @@ const Company = mongoose.model("companies", CompanySchema);
 const JobPost = mongoose.model("jobposts", JobPostSchema);
 const SavedJob = mongoose.model("savedjobs", SavedJobSchema);
 const Connection = mongoose.model("connections", ConnectionSchema);
+const Admin = mongoose.model("admins", AdminSchema);
 
-module.exports = { User, Address, Education, WorkExperience, Company, JobPost, SavedJob, Connection };
+module.exports = { User, Address, Education, WorkExperience, Company, JobPost, SavedJob, Connection, Admin };

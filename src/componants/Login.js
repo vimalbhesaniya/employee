@@ -39,24 +39,26 @@ const Login = () => {
             "Unable to connect to the server. Please make sure the server is running and try again."
           );
         });
+      
+      console.log(response);
       if (response?.result == "User  not found") {
-		setProgress(70)
-		setTimeout(()=>{
-			setProgress(100)
-			setErrorMessage("Invalid credentials");
-		} , 1000)
-	  }
-	  else{
-		setErrorMessage("")
-		setProgress(100);
-		Cookies.set("token", response?.token, {
-            expires: 7,
-            path: "/",
-          });
-		  setTimeout(()=>{
-			  navigate("/home");
-		  } , 1000)
-	  }
+        setProgress(70)
+        setTimeout(() => {
+          setProgress(100)
+          setErrorMessage("Invalid credentials");
+        }, 1000)
+      }
+      else {
+        setErrorMessage("")
+        setProgress(100);
+        Cookies.set("token", response?.token, {
+          expires: 7,
+          path: "/",
+        });
+        setTimeout(() => {
+          navigate("/home");
+        }, 1000)
+      }
     } else {
       setErrorMessage("Provide Email and Password");
       setTimeout(() => {
@@ -72,7 +74,7 @@ const Login = () => {
         progress={progress}
         onLoaderFinished={() => setProgress(0)}
       />
-      {close ? <ResetPassword close={setClose} /> : ""}
+      {close ? <ResetPassword  close={setClose} /> : ""}
       <NavbarBeforeLogin></NavbarBeforeLogin>
       <FormContainer
         warning={errorMessage}

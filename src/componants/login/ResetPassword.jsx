@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import './ResetPassword.css';
 import css from "../../Style/inputBoxs.module.css"
 
-const ResetPassword = ({close}) => {
+const ResetPassword = ({close , mail, otpassword  , newpassword}) => {
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -17,8 +17,7 @@ const ResetPassword = ({close}) => {
 
   const handleEmailSubmit = (e) => {
     e.preventDefault();
-    // Implement email verification logic here (server-side verification in a real app).
-    // For this example, let's assume the email is valid, and move to the next step.
+    
     setStep(2);
     setMessage('');
   };

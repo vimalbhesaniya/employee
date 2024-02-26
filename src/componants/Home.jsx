@@ -122,7 +122,7 @@ const Home = ({ setModell }) => {
             <div className={home.Image}>
               <img
                 src="https://firebasestorage.googleapis.com/v0/b/jobduniya-ec494.appspot.com/o/slide3.jpg?alt=media&token=2624942b-ec71-4691-bac4-63fe483b5df7"
-                className={home.img}
+                className={home.img} alt="Img"
               />
             </div>
           </div>
