@@ -2,9 +2,9 @@ require("./db");
 const express = require("express");
 const {
   User,
-  Address,
-  Education,
-  WorkExperience,
+  // Address,
+  // Education,
+  // WorkExperience,
   Company,
   JobPost,
   SavedJob,
@@ -18,14 +18,11 @@ const key = "jobduniya";
 const encrypt = require("bcrypt");
 const crypto = require("crypto");
 const { sendMail } = require("./mailServices");
-const multer = require("multer");
+// const multer = require("multer");
 
 //
 app.use(cors());
 app.use(express.json());
-
-
-
 
 function generateOTP(length = 6) {
   const buffer = crypto.randomBytes(Math.ceil(length / 2));
@@ -75,21 +72,25 @@ function generateOTP(length = 6) {
 
 // Login Authentication api 
 app.post("/login", async (req, res) => {
-    console.log(req.body);
-    if (req.body.password && req.body.email) {
-        let auth = await User.findOne(req.body).select("-password")
-        if (auth) {
-            jwt.sign({ auth }, key, { expiresIn: "1d" }, (err, token) => {
-                err ? res.send("something went wrong") : res.send({ auth, token: token })
-            })
-        }
-        else {
-            res.send({ result: "User  not found" })
-        }
-    }
-    else {
-        res.send({ result: "Something Missing" });
-    }
+  if (req.body.password && req.body.email) {
+      const email = req.body.email;
+      const auth = await User.findOne({ "email": email })
+      if (auth) {
+          const pwdMatch = await encrypt.compare(req.body.password, auth.password);
+          if (pwdMatch) {
+              jwt.sign({ auth }, key, { expiresIn: "1d" }, (err, token) => {
+                  err ? res.send("something went wrong") : res.send({ auth, token: token, id: auth._id })
+              })
+          }
+          else {
+              res.send({ result: "Password incorrect" })
+          }
+      } else {
+          res.send({ result: "User not found" })
+      }
+  } else {
+      res.send({ result: "Somthing wrong" })
+  }
 })
 
 // get all users
@@ -116,19 +117,20 @@ app.get("/checkisvalid", verifyToken, async (req, res) => {
 
 // user registration api 
 app.post("/addUser", async (req, res) => {
-    req.body.password = await encrypt.hash(req.body.password, 10);
-    const email = req.body.email;
-    const user = await User.find({ "email": email });
-    if (user.length) {
-        res.send({ success: false, messge: "Email ID is alerady exits, PLease Enter Unique Id" });
-    } else {
-        const finaldata = new User(req.body);
-        User.insertMany(finaldata).then((e) => {
-            res.status(201).send(e);
-        }).catch((e) => {
-            res.status(400).send(e)
-        })
-    }
+  req.body.password = await encrypt.hash(req.body.password, 10);
+  const email = req.body.email;
+  const user = await User.find({ "email": email });
+  // console.log("undefined");
+  if (user.length) {
+    res.send({ success: false, messge: "Email ID is alerady exits, PLease Enter Unique Id" });
+  } else {
+    const finaldata = new User(req.body);
+    User.insertMany(finaldata).then((e) => {
+      res.status(201).send(e);
+    }).catch((e) => {
+      res.status(400).send(e)
+    })
+  }
 })
 
 // app.put("/personaldetail", async (req, res) => {
@@ -195,8 +197,8 @@ app.post("/addUser", async (req, res) => {
 // })
 
 // Update api
-app.put("/UpdateDetails", async (req, res) => {
-  const tablename = req.body.tablename;
+app.put("/UpdateDetails/:tbl", async (req, res) => {
+  const tablename = req.params.tbl;
   if (!tablename) {
     return res.status(400).send("Table name not provided");
   }
@@ -219,42 +221,51 @@ app.put("/UpdateDetails", async (req, res) => {
 });
 
 // Search Api
-app.get("/search/:tbl/:q", async (req, res) => {
-  const srch = req.params.q;
+app.get("/search/:tbl/:keyword/:location", async (req, res) => {
+  const keyword = req.params.keyword;
+  const location = req.params.location;
   const tablename = req.params.tbl;
-  console.log(srch);
-
-  // Check if tablename exists
   if (!tablename) {
     return res.status(400).send("Table name not provided");
   }
-
-  // Retrieve the model dynamically
   const Model = mongoose.model(tablename);
-
   if (!Model) {
     return res.status(404).send("Model not found");
   }
 
-  // Retrieve schema to get available fields
-  const schema = Model.schema.paths;
-
-  // Create a dynamic query based on available fields
-  const orQuery = Object.keys(schema)
-    .filter((key) => schema[key].instance === "String") // Filter string type fields
-    .reduce((acc, key) => {
-      acc.push({ [key]: { $regex: new RegExp(srch, "i") } });
-      return acc;
-    }, []);
-
-  if (orQuery.length === 0) {
-    return res.status(400).send("No searchable string fields in the schema");
-  }
-
   try {
-    // Execute the dynamic query
-    const list = await Model.find({ $or: orQuery });
-    res.send(list);
+    if (tablename === "jobs") {
+      const list = await Model.aggregate([
+        {
+          $lookup: {
+            from: 'companies',
+            localField: 'company',
+            foreignField: '_id',
+            as: 'company'
+          }
+        },
+        {
+          $match: {
+            $or: [
+              { "Title": { $regex: new RegExp(keyword, "i") } },
+              { "company.Address.city": { $regex: new RegExp(location, "i") } }
+            ]
+          }
+        }
+      ]);
+      res.send(list);
+    } else {
+      const schema = Model.schema.paths;
+      const orQuery = Object.keys(schema)
+        .filter((key) => schema[key].instance === "String")
+        .map((key) => ({ [key]: { $regex: new RegExp(keyword, "i") } }));
+
+      if (orQuery.length === 0) {
+        return res.status(400).send("No searchable string fields in the schema");
+      }
+      const list = await Model.find({ $or: orQuery });
+      res.send(list);
+    }
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");
@@ -276,41 +287,54 @@ app.get("/fetchall/:tbl", async (req, res) => {
   }
 });
 
+app.get("/fetchConnectedComany", async (req, res) => {
+  const status=req.body.status;
+  const id2=req.body.id2;
+  if(!status || !id2){
+    res.send({success:false,message:"Please Enter Both Id1 and Id2"});
+  }else{
+    const list=await Connection.find({"userId":id2,"status":status});
+    if(list){
+      res.send(list);
+    }else{
+      res.send({success:false,message:"Couldn't find any data."})
+    }
+  }
+})
 // company registration api
-app.post('/Insert', async (req, res) => {
-    const tablename = req.body.tablename;
-    if (!tablename) {
-        return res.status(400).send("Table name not provided");
-    }
-    const Model = mongoose.model(tablename);
-    if (!Model) {
-        return res.status(404).send("Model not found");
-    }
-    const finaldata = new Model(req.body.columns);
-    Model.insertMany(finaldata).then((e) => {
-        res.status(201).send(e);
-    }).catch((e) => {
-        res.status(400).send(e);
-    })
+app.post('/Insert/:tbl', async (req, res) => {
+  const tablename = req.params.tbl;
+  if (!tablename) {
+    return res.status(400).send("Table name not provided");
+  }
+  const Model = mongoose.model(tablename);
+  if (!Model) {
+    return res.status(404).send("Model not found");
+  }
+  const finaldata = new Model(req.body.columns);
+  Model.insertMany(finaldata).then((e) => {
+    res.status(201).send(e);
+  }).catch((e) => {
+    res.status(400).send(e);
+  })
 })
 
-
-// app.post('/jobPost', async (req, res) => {
-//     const tablename = req.body.tablename;
-//     if (!tablename) {
-//         return res.status(400).send("Table name not provided");
-//     }
-//     const Model = mongoose.model(tablename);
-//     if (!Model) {
-//         return res.status(404).send("Model not found");
-//     }
-//     const finaldata = new Model(req.body);
-//     Model.insertMany(finaldata).then((e) => {
-//         res.status(201).send(e);
-//     }).catch((e) => {
-//         res.status(400).send(e);
-//     })
-// })
+app.post('/jobPost', async (req, res) => {
+  // const tablename = req.body.tablename;
+  // if (!tablename) {
+  //     return res.status(400).send("Table name not provided");
+  // }
+  // const Model = mongoose.model(tablename);
+  // if (!Model) {
+  //     return res.status(404).send("Model not found");
+  // }
+  const finaldata = new JobPost(req.body);
+  JobPost.insertMany(finaldata).then((e) => {
+    res.send({ success: true, messge: "Insert data successfully" });
+  }).catch((e) => {
+    res.send({ success: false, messge: "data are note inserted..." });
+  })
+})
 
 app.post("/savedJob", async (req, res) => {
   const UserID = req.body.User_ID;
@@ -341,7 +365,7 @@ app.post("/deleteSaveJob", async (req, res) => {
   // }
 });
 
-app.get("/ListJob", async (req, res) => {
+app.get("/ListSavedJob", async (req, res) => {
   const status = req.body.status;
   const userid = req.body.User_ID;
   const list = await SavedJob.find({ User_ID: userid });
@@ -357,20 +381,50 @@ app.get("/ListJob", async (req, res) => {
   }
 });
 
+// app.post("/Follow", async (req, res) => {
+//   const userid = req.body.userId;
+//   const companyid = req.body.companyId;
+//   if (!userid || !companyid) {
+//     return res.status(400).send("User Id and Comapny Id are not provided");
+//   } else {
+//     const finaldata = new Connection(req.body);
+//     Connection.insertMany(finaldata)
+//       .then((e) => {
+//         res.status(201).send(e);
+//       })
+//       .catch((e) => {
+//         res.status(400).send(e);
+//       });
+//   }
+// });
+
 app.post("/Follow", async (req, res) => {
-  const userid = req.body.userId;
-  const companyid = req.body.companyId;
-  if (!userid || !companyid) {
-    return res.status(400).send("User Id and Comapny Id are not provided");
+  const userId = req.body.userId;
+  const data = await Connection.findOne({ userId: userId, status: "Pending" });
+  if (data) {
+    res.send(data);
   } else {
-    const finaldata = new Connection(req.body);
-    Connection.insertMany(finaldata)
-      .then((e) => {
-        res.status(201).send(e);
-      })
-      .catch((e) => {
-        res.status(400).send(e);
-      });
+    res.send("Data are not found");
+  }
+});
+
+app.post("/Following", async (req, res) => {
+  const userId = req.body.userId;
+  const data = await Connection.findOne({ userId: userId, status: "Accept" });
+  if (data) {
+    res.send(data);
+  } else {
+    res.send("Data are not found");
+  }
+});
+
+app.post("/Coonnection", async (req, res) => {
+  const userId = req.body.userId;
+  const data = await Connection.findOne({ userId: userId, status: "Done" });
+  if (data) {
+    res.send(data);
+  } else {
+    res.send("Data are not found");
   }
 });
 
@@ -444,21 +498,21 @@ app.get("/CompanyListing", async (req, res) => {
 });
 
 app.post("/Clogin", async (req, res) => {
-    const to = req.body.email;
-    const oneTimeOTP = generateOTP();
-    const comapny = await Company.findOne({ "Email_ID": to });
-    if (comapny) {
-        await Company.updateOne(
-            { "Email_ID": to },
-            { $set: { "secretKey": oneTimeOTP } }
-        );
-        const subject = "Sending Email";
-        const html = "<p>One Time OTP : <b>" + oneTimeOTP + "</b></p>";
-        const result = await sendMail(to, subject, html);
-        res.send(result);
-    } else {
-        res.send({ message: "OTP is not available" });
-    }
+  const to = req.body.email;
+  const oneTimeOTP = generateOTP();
+  const comapny = await Company.findOne({ "Email_ID": to });
+  if (comapny) {
+    await Company.updateOne(
+      { "Email_ID": to },
+      { $set: { "secretKey": oneTimeOTP } }
+    );
+    const subject = "Sending Email";
+    const html = "<p>One Time OTP : <b>" + oneTimeOTP + "</b></p>";
+    const result = await sendMail(to, subject, html);
+    res.send(result);
+  } else {
+    res.send({ message: "OTP is not available" });
+  }
 })
 
 app.post("/verify", async (req, res) => {
@@ -474,9 +528,9 @@ app.post("/verify", async (req, res) => {
       err
         ? res.send("something went wrong")
         : await Company.updateOne(
-            { Email_ID: req.body.email },
-            { $set: { secretKey: "" } }
-          );
+          { Email_ID: req.body.email },
+          { $set: { secretKey: "" } }
+        );
       res.send({ company, token: token, id: company._id });
     });
   } else {
@@ -485,7 +539,10 @@ app.post("/verify", async (req, res) => {
 });
 
 app.post("/FileUpload", async (req, res) => {
-    const file = req.body.file;
-    res.send(file);
-    // handleFileUpload(file);
+  const file = req.body.file;
+  res.send(file);
+  // handleFileUpload(file);
 })
+
+
+app.listen(5500, () => console.log("server started..."))   

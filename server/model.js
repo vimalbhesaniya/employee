@@ -79,43 +79,15 @@ const WorkExperienceSchema = new mongoose.Schema({
     achievements: [{ type: String, required: false }],
 });
 
-const CompanySchema = new mongoose.Schema({
-    Name: { type: String, required: false },
-    Address: [AddressSchema],
-    Industry: { type: String },
-    Email_ID: { type: String, required: false },
-    Logo: { type: String, required: false },
-    TagLine: { type: String, required: false },
-    Websites: { type: [String] },
-    Contact: { type: String, required: false },
-    Years: { type: String, required: false },
-    Project: { type: [String], require: false },
-    Description: { type: String, required: false },
-    secretKey: { type: String, required: false },
-    OwnerDetail: {
-        Name: { type: String, required: false },
-        EmailID: { type: String, required: false },
-        Contact: { type: String, required: false }
-    },
-    HRDetail: {
-        Name: { type: String, required: false },
-        EmailID: { type: String, required: false },
-        Contact: { type: String, required: false }
-    }
-});
-
-
 const UserSchema = new mongoose.Schema({
     privat : {
         type :Boolean
     },
     email: {
         type: String,
-        required: true
     },
     password: {
-        type: String,
-        required: true
+        type: String
     },
     firstName: {
         type: String,
@@ -152,6 +124,31 @@ const UserSchema = new mongoose.Schema({
     experience: [WorkExperienceSchema]
 });
 
+const CompanySchema = new mongoose.Schema({
+    Name: { type: String, required: false },
+    Address: [AddressSchema],
+    Industry: { type: String },
+    Email_ID: { type: String, required: false },
+    Logo: { type: String, required: false },
+    TagLine: { type: String, required: false },
+    Websites: { type: [String] },
+    Contact: { type: String, required: false },
+    Years: { type: String, required: false },
+    Project: { type: [String], require: false },
+    Description: { type: String, required: false },
+    secretKey: { type: String, required: false },
+    OwnerDetail: {
+        Name: { type: String, required: false },
+        EmailID: { type: String, required: false },
+        Contact: { type: String, required: false }
+    },
+    HRDetail: {
+        Name: { type: String, required: false },
+        EmailID: { type: String, required: false },
+        Contact: { type: String, required: false }
+    }
+});
+
 const JobSchema = new mongoose.Schema({
     Title: { type: String, required: false },
     Position: { type: String, required: false },
@@ -167,16 +164,15 @@ const JobSchema = new mongoose.Schema({
 });
 
 const SavedJobSchema = new mongoose.Schema({
-    // User_ID:{ type: String, required:true},
-    // Job_ID:{ type: String, required:true},
-    Status: { type: String, enum: [true, false], default: false },
+    Status: { type: Boolean, enum: [true, false], default: false },
     jobId: { type: mongoose.Schema.Types.ObjectId, ref: "Jobs", autopopulate: true },
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "users", autopopulate: true }
 })
 
 const ConnectionSchema = new mongoose.Schema({
     companyId: { type: mongoose.Schema.Types.ObjectId, ref: "companies", autopopulate: true },
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: "users", autopopulate: true }
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "users", autopopulate: true },
+    status:{type:String, enum:["Accepted","Rejected","Pending","Done"]}
 })
 
 const JobApplicationsSchema = new mongoose.Schema({
