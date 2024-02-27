@@ -65,3 +65,21 @@
     height: calc(100vh - 100px);
 
 }
+
+.small-box {
+    border-radius: 0.25rem;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    display: block;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.buttons {
+    color: white;
+    text-decoration: none;
+}
+
+.buttons:hover {
+    color: white;
+    text-decoration: none;
+}
