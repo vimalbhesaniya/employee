@@ -136,7 +136,6 @@
     align-items: center;
     height: 60px;
     overflow: hidden;
-    border-width: 1px;
     transition: all 200ms;
 }
 .navLinkBoxBar{
@@ -146,7 +145,6 @@
     align-items: center;
     height: 60px;
     overflow: hidden;
-    border-width: 1px;
     transition: all 200ms;
 }
 
@@ -161,7 +159,6 @@
     align-items: center;
     height: 60px;
     overflow: hidden;
-    border-width: 1px;
     transition: all 200ms;
     border-bottom: 3px solid  var(--primary-color);
 }
@@ -228,7 +225,7 @@
 }
 
 .navbarLogo{
-    width: calc(30vh - 50px);
+    width: calc(67vh - 50px);
     mix-blend-mode: darken;
     /* max-width: 25vw; */
 }

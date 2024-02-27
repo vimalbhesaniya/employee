@@ -1,3 +1,15 @@
+/* Import Tailwind CSS base styles */
+@import 'tailwindcss/base';
+
+/* Import Tailwind CSS components styles */
+@import 'tailwindcss/components';
+
+/* Import Tailwind CSS utilities styles */
+@import 'tailwindcss/utilities';
+
+/* Your custom CSS can go here */
+
+
 .bodyTermPage {
     font-family: 'Arial', sans-serif;
     padding: 25px;
@@ -236,8 +248,10 @@
     padding: 30px;
     position: absolute;
     top: 100px;
+    flex-direction: column;
     width: 100%;
 }
+
 
 .form-control-default{
     border: none;
@@ -257,3 +271,70 @@
     border-right: 2px solid var(--text-color);
 }
 
+.success{
+    color: var(--success-text-color);
+    background-color: #16f5297c;
+    padding: 10px;
+    border-radius: 10px;
+    transition: 0.3s all;
+    cursor: pointer;
+}
+
+.successActive{
+    background-color: #23856d91;
+    color: rgb(194, 219, 157);
+    padding: 10px;
+    border-radius: 10px;
+    font-weight: 700;
+}
+
+.success:hover{
+    background-color: #0eff00;
+    color: #ffffff;
+    font-weight: 500;
+
+}
+.reject{
+    color: rgb(173, 2, 2);
+    background-color: #8523233f;
+    padding: 10px;
+    border-radius: 10px;
+    transition: 0.3s all;
+    cursor: pointer;
+}
+
+.rejectActive{
+    background-color: #ff000085;
+    color: rgb(255, 230, 230);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.reject:hover{
+    background-color: #ff0404;
+    color: rgb(247, 230, 230);
+    font-weight: 500;
+
+}
+.panding{
+    color: orange;
+    background-color: rgba(252, 180, 45, 0.391);
+    padding: 10px;
+    border-radius: 10px;
+    transition: 0.3s all;
+    cursor: pointer;
+}
+
+.pandingActive{
+    background-color: rgba(229, 173, 32, 0.527);
+    color: rgb(255, 255, 255);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.panding:hover{
+    background-color: #ffa500;
+    color: rgb(255, 255, 255);
+    font-weight: 500;
+
+}

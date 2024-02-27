@@ -27,7 +27,7 @@ const Header = () => {
 
     return (
         <>
-            {showNotification ? <Notifications /> : ""}
+            {showNotification ? <Notifications  handleButtonClick={handleButtonClick} /> : ""}
             <div className={css.navbar}>
                 <div className={css.navbarContainer}>
                     <div className={css.Logo}>
