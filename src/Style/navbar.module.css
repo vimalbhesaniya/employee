@@ -225,7 +225,7 @@
 }
 
 .navbarLogo{
-    width: calc(67vh - 50px);
+    width: 100%;
     mix-blend-mode: darken;
     /* max-width: 25vw; */
 }
@@ -244,6 +244,9 @@
 }
 
 @media only screen and (max-width: 768px) {
+    .navbarLogo{
+        width: 80`%;
+    }
 
     .Link-- {
         display: none;
@@ -328,6 +331,9 @@
     display: none;
 }
 @media (max-width:1024px) {
+    .navbarLogo{
+        width: 70%;
+    }
 .navbarLeft{
     display: none;
 }

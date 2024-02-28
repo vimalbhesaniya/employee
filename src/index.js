@@ -1,5 +1,5 @@
 import React, { createContext, useState } from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import App from './App';
 import Spinner from './Spinner';
 import reportWebVitals from './reportWebVitals';
@@ -14,6 +14,7 @@ const Root = () => {
   return (
     <React.StrictMode>
       <EnableSpinner.Provider value={setSpinnerState}>
+        
       <div className='spinner'>
         {spinner ? <Spinner /> : <App />}
       </div>  

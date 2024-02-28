@@ -11,7 +11,7 @@ import FormContainer from "../../componants/FormContainer";
 import NavbarBeforeLogin from "../../componants/login/NavbarBeforeLogin";
 import ResetPassword from "../../componants/login/ResetPassword";
 
-const LoginAsCompany = ({ setProgress , setLoginScreen }) => {
+const LoginAsCompany = ({ setScreen }) => {
   const x = new Date();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
@@ -19,51 +19,14 @@ const LoginAsCompany = ({ setProgress , setLoginScreen }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [close, setClose] = useState("");
 
-  const handleSubmit = async () => {
-    if (email.length >= 2 && password.length >= 2) {
-      const response = await fetch("http://localhost:5500/login", {
-        body: JSON.stringify({ email, password }),
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((e) => e.json())
-        .catch((e) => {
-          setErrorMessage(
-            "Unable to connect to the server. Please make sure the server is running and try again."
-          );
-        });
-      if (response.auth) {
-        setErrorMessage("");
-        setProgress(100);
-        Cookies.set("token", response?.token, {
-          expires: 7,
-          path: "/",
-        });
-        setTimeout(() => {
-          navigate("/home");
-        }, 1000);
-      } else {
-        setProgress(70);
-        setTimeout(() => {
-          setProgress(100);
-          setErrorMessage(response.result);
-        }, 1000);
-      }
-    } else {
-      setErrorMessage("Provide Email and Password");
-      setTimeout(() => {
-        setErrorMessage("");
-      }, 3000);
-    }
-  };
+  const handleSubmit = () =>{
+    return false
+  }
 
   const leftSection = (
     <div className="leftSectionHeader">
       <span>looking to Jobs ? </span>
-      <span className="screentitle"  onClick={() => setLoginScreen("user")}> Login as Seeker</span>
-
+      <span className="screentitle"  onClick={() => setScreen("user")}> Login as Seeker</span>
     </div>
   );
 

@@ -1,0 +1,25 @@
+.editMain{
+    width: 100%;
+    max-width: 50rem;
+    height: 500px;
+    background-color: red;
+    position: fixed;
+    z-index: 100000;
+    top: 100px;
+    
+}
+.cardContainer{
+    width: 60%;
+}
+
+@media (max-width : 992px) {
+    .cardContainer{
+        width: 75%;
+    }
+}
+
+@media (max-width:768px) {
+    .cardContainer{
+        width: 85%;
+    }
+}

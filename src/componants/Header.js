@@ -6,6 +6,7 @@ import "animate.css";
 import img from "../logo/2.png";
 import { act } from "react-dom/test-utils";
 import Notifications from "./Notifications";
+import GlobalModel from "../Global/GlobalModel";
 const Header = () => {
     const navigate = useNavigate();
     const [active, setActive] = useState(false);
@@ -27,7 +28,7 @@ const Header = () => {
 
     return (
         <>
-            {showNotification ? <Notifications  handleButtonClick={handleButtonClick} /> : ""}
+            {showNotification ? <GlobalModel  handleButtonClick={handleButtonClick} /> : ""}
             <div className={css.navbar}>
                 <div className={css.navbarContainer}>
                     <div className={css.Logo}>

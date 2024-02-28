@@ -5,7 +5,7 @@ import MyModel from "./componants/MyModel";
 import Home from "./componants/Home";
 import Cookies from "js-cookie";
 import { useState } from "react";
-import Login from "./componants/Login";
+import LoginMain from "./componants/login/LoginMain";
 import Signup from "./componants/signup/Signup";
 import NotFound from "./componants/Notfound";
 import Check from "./Auth/check";
@@ -32,7 +32,7 @@ const App = () => {
                             <Route path="/postajob" element={<Postajob />} />
                             <Route path="/search" element={<SearchSection />} />
                         </Route>
-                        <Route path={"/login" } element={<Login />} />
+                        <Route path={"/login" } element={<LoginMain />} />
                         <Route path={"/signup" } element={<Signup />} />
                         <Route path={"/gethelp" } element={<GetHelp />} />
                         <Route path={"/termandconditions" } element={<TermAndConditions />} />

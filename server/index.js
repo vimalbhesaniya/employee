@@ -73,9 +73,8 @@ function generateOTP(length = 6) {
 //     }
 // });
 
-// Login Authentication api 
+// Login Authentication api
 app.post("/login", async (req, res) => {
-<<<<<<< HEAD
     if (req.body.password && req.body.email) {
         const email = req.body.email;
         const auth = await User.findOne({ "email": email })
@@ -94,22 +93,6 @@ app.post("/login", async (req, res) => {
         }
     } else {
         res.send({ result: "Somthing wrong" })
-=======
-    console.log(req.body);
-    if (req.body.password && req.body.email) {
-        let auth = await User.findOne(req.body).select("-password")
-        if (auth) {
-            jwt.sign({ auth }, key, { expiresIn: "1d" }, (err, token) => {
-                err ? res.send("something went wrong") : res.send({ auth, token: token })
-            })
-        }
-        else {
-            res.send({ result: "User  not found" })
-        }
-    }
-    else {
-        res.send({ result: "Something Missing" });
->>>>>>> e5b7437e61f7d7d7bfb6307ad1d012eb6c18d429
     }
 })
 
@@ -135,11 +118,10 @@ app.get("/checkisvalid", verifyToken, async (req, res) => {
     res.send({ authorized: "You are Authorized" });
 });
 
-// user registration api 
+// user registration api
 app.post("/addUser", async (req, res) => {
     req.body.password = await encrypt.hash(req.body.password, 10);
     const email = req.body.email;
-<<<<<<< HEAD
     const user = await User.find({ email: email });
     if (user.length) {
         res.send({
@@ -157,20 +139,6 @@ app.post("/addUser", async (req, res) => {
             });
     }
 });
-=======
-    const user = await User.find({ "email": email });
-    if (user.length) {
-        res.send({ success: false, messge: "Email ID is alerady exits, PLease Enter Unique Id" });
-    } else {
-        const finaldata = new User(req.body);
-        User.insertMany(finaldata).then((e) => {
-            res.status(201).send(e);
-        }).catch((e) => {
-            res.status(400).send(e)
-        })
-    }
-})
->>>>>>> e5b7437e61f7d7d7bfb6307ad1d012eb6c18d429
 
 // app.put("/personaldetail", async (req, res) => {
 //     // const finaldata = new data(req.body);
@@ -319,11 +287,7 @@ app.get("/fetchall/:tbl", async (req, res) => {
 });
 
 // company registration api
-<<<<<<< HEAD
 app.post("/Insert", async (req, res) => {
-=======
-app.post('/Insert', async (req, res) => {
->>>>>>> e5b7437e61f7d7d7bfb6307ad1d012eb6c18d429
     const tablename = req.body.tablename;
     if (!tablename) {
         return res.status(400).send("Table name not provided");
@@ -333,7 +297,6 @@ app.post('/Insert', async (req, res) => {
         return res.status(404).send("Model not found");
     }
     const finaldata = new Model(req.body.columns);
-<<<<<<< HEAD
     Model.insertMany(finaldata)
         .then((e) => {
             res.status(201).send(e);
@@ -342,15 +305,6 @@ app.post('/Insert', async (req, res) => {
             res.status(400).send(e);
         });
 });
-=======
-    Model.insertMany(finaldata).then((e) => {
-        res.status(201).send(e);
-    }).catch((e) => {
-        res.status(400).send(e);
-    })
-})
-
->>>>>>> e5b7437e61f7d7d7bfb6307ad1d012eb6c18d429
 
 // app.post('/jobPost', async (req, res) => {
 //     const tablename = req.body.tablename;
@@ -503,26 +457,17 @@ app.get("/CompanyListing", async (req, res) => {
 app.post("/Clogin", async (req, res) => {
     const to = req.body.email;
     const oneTimeOTP = generateOTP();
-<<<<<<< HEAD
     const comapny = await Company.findOne({ Email_ID: to });
     if (comapny) {
         await Company.updateOne(
             { Email_ID: to },
             { $set: { secretKey: oneTimeOTP } }
-=======
-    const comapny = await Company.findOne({ "Email_ID": to });
-    if (comapny) {
-        await Company.updateOne(
-            { "Email_ID": to },
-            { $set: { "secretKey": oneTimeOTP } }
->>>>>>> e5b7437e61f7d7d7bfb6307ad1d012eb6c18d429
         );
         const subject = "Sending Email";
         const html = "<p>One Time OTP : <b>" + oneTimeOTP + "</b></p>";
         const result = await sendMail(to, subject, html);
         res.send(result);
     } else {
-<<<<<<< HEAD
         res.send({ message: "Company is not available" });
     }
 });
@@ -586,11 +531,6 @@ app.put("/changePwd", async (req, res) => {
         console.error("Error fetching data:", error);
     }
 });
-=======
-        res.send({ message: "OTP is not available" });
-    }
-})
->>>>>>> e5b7437e61f7d7d7bfb6307ad1d012eb6c18d429
 
 app.post("/verify", async (req, res) => {
     const ConOTP = req.body.otp;
@@ -619,10 +559,6 @@ app.post("/FileUpload", async (req, res) => {
     const file = req.body.file;
     res.send(file);
     // handleFileUpload(file);
-<<<<<<< HEAD
 });
 
 app.listen(5500, () => console.log("server started..."));
-=======
-})
->>>>>>> e5b7437e61f7d7d7bfb6307ad1d012eb6c18d429

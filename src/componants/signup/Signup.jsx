@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, {useState } from "react";
 import "../../Style/singup.css";
 import NavbarBeforeLogin from "../login/NavbarBeforeLogin";
 import {  useNavigate } from "react-router-dom";
@@ -43,8 +43,6 @@ const Signup = () => {
   //   isValidStep1(email, password, confirmPassword)
   // );
 
-  const renderform = useMemo(() => { }, [screen]);
-
   const navigate = useNavigate();
   if (Cookies.get("token")) {
     navigate("/home");
@@ -61,7 +59,7 @@ const Signup = () => {
       {screen === "step4" ? <Step4 setScreen={setScreen} /> : ""}
       {screen === "step5" ? <Step5 setScreen={setScreen} /> : ""}
       {screen === "step6" ? <Step6 setScreen={setScreen} /> : ""}
-
+        
       {/* <Footer></Footer> */}
     </>
   );

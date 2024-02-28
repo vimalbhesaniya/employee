@@ -338,3 +338,16 @@
     font-weight: 500;
 
 }
+
+.fontDefaultTitle{
+    font-weight: 600;
+}
+
+.appImageContainer{
+    margin-top: 15px;
+    width: 100%;
+    max-width: 100px;
+}
+.appImage{
+    
+}

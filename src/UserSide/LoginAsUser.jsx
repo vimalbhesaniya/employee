@@ -11,7 +11,7 @@ import NavbarBeforeLogin from "../componants/login/NavbarBeforeLogin";
 import ResetPassword from "../componants/login/ResetPassword";
 import { EnableSpinner } from "..";
 
-const LoginAsUser = ({ setProgress, setLoginScreen }) => {
+const LoginAsUser = ({ setScreen }) => {
     const x = new Date();
     const navigate = useNavigate();
     const setSpinnerState = useContext(EnableSpinner)
@@ -22,6 +22,7 @@ const LoginAsUser = ({ setProgress, setLoginScreen }) => {
     
     const handleSubmit = async () => {
         // navigate("/home")
+        console.log("called");
         if (email.length >= 2 && password.length >= 2) {
             setSpinnerState(true);
             try {
@@ -63,7 +64,7 @@ const LoginAsUser = ({ setProgress, setLoginScreen }) => {
             <span>looking to hire ? </span>
             <span
                 className="screentitle"
-                onClick={() => setLoginScreen("company")}
+                onClick={() => setScreen("company")}
             >
                 {" "}
                 Login as Company
