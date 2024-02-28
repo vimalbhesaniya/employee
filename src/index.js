@@ -1,4 +1,8 @@
 import React, { createContext, useState } from 'react';
+<<<<<<< HEAD
+=======
+// import ReactDOM from 'react-dom';
+>>>>>>> ecd12fee99ade558821884b9c650c3afab8d4306
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import Spinner from './Spinner';

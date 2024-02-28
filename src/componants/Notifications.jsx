@@ -14,7 +14,7 @@ const Notifications = ({handleButtonClick}) => {
                         <img class="flex-shrink-0 mb-2 img-fluid border rounded" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="" style={{ width: "80px", height: "80px" }} />
                     </div>
                         <div class="text-start ps-4 col-md-9">
-                            <h5 class="mb-3 col">Yash Kalambe</h5>
+                            <h5 class="mb-3 col">Vishala Gajera</h5>
                             <span class="me-3 col">Congratulations , Your application was accepted by Microsoft</span>
                         </div>
                     </div>
@@ -33,7 +33,7 @@ const Notifications = ({handleButtonClick}) => {
                     <div class="col-sm-12 col-md-6 d-flex align-items-center">
                         <img class="flex-shrink-0 img-fluid border rounded" src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="" style={{ width: "80px", height: "80px" }} />
                         <div class="text-start ps-4">
-                            <h5 class="mb-3">Yash Kalambe</h5>
+                            <h5 class="mb-3">Vishala Gajera</h5>
                             <span class="me-3">Congratulations , Your application was accepted by Microsoft</span>
                         </div>
                     </div>

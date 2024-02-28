@@ -37,7 +37,7 @@ const Header = () => {
                     <div className={css.navbarLeft}>
                         <div
                             className={
-                                window.location.pathname == `/home`
+                                window.location.pathname === `/home`
                                     ? `${css.navLinkActive}`
                                     : `${css.navLinkBox}`
                             }
@@ -48,7 +48,7 @@ const Header = () => {
                         </div>
                         <div
                             className={
-                                window.location.pathname == `/compaies`
+                                window.location.pathname === `/compaies`
                                     ? `${css.navLinkActive}`
                                     : `${css.navLinkBox}`
                             }
@@ -59,7 +59,7 @@ const Header = () => {
                         </div>
                         <div
                             className={
-                                window.location.pathname == `/nearbyusers`
+                                window.location.pathname === `/nearbyusers`
                                     ? `${css.navLinkActive}`
                                     : `${css.navLinkBox}`
                             }
@@ -73,7 +73,7 @@ const Header = () => {
                         <div className={css.navbarRightChild}>
                             <div
                                 className={
-                                    window.location.pathname == `/search`
+                                    window.location.pathname === `/search`
                                         ? `${css.navLinkActive}`
                                         : `${css.navLinkBox}`
                                 }
@@ -84,7 +84,7 @@ const Header = () => {
                             </div>
                             <div
                                 className={
-                                    window.location.pathname == `/saved`
+                                    window.location.pathname === `/saved`
                                         ? `${css.navLinkActive}`
                                         : `${css.navLinkBox}`
                                 }
@@ -95,7 +95,7 @@ const Header = () => {
                             </div>
                             <div
                                 className={
-                                    window.location.pathname == `/notificaitons`
+                                    window.location.pathname === `/notificaitons`
                                         ? `${css.navLinkActive}`
                                         : `${css.navLinkBox}`
                                 }
@@ -109,7 +109,7 @@ const Header = () => {
                             </div>
                             <div
                                 className={
-                                    window.location.pathname == `/profile`
+                                    window.location.pathname === `/profile`
                                         ? `${css.navLinkActive}`
                                         : `${css.navLinkBox}`
                                 }
@@ -135,7 +135,7 @@ const Header = () => {
                             <div className={css.navbarRightChild}>
                                 <div
                                     className={
-                                        window.location.pathname ==
+                                        window.location.pathname ===
                                             `/notificaitons`
                                             ? `${css.navLinkActive}`
                                             : `${css.navLinkBox}`
