@@ -164,8 +164,10 @@ const JobSchema = new mongoose.Schema({
 });
 
 const SavedJobSchema = new mongoose.Schema({
-    Status: { type: Boolean, enum: [true, false], default: false },
-    jobId: { type: mongoose.Schema.Types.ObjectId, ref: "Jobs", autopopulate: true },
+    // User_ID:{ type: String, required:true},
+    // Job_ID:{ type: String, required:true},
+    Status: { type: String, enum: [true, false], default: true },
+    jobId: { type: mongoose.Schema.Types.ObjectId, ref: "jobs", autopopulate: true },
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "users", autopopulate: true }
 })
 

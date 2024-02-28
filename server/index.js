@@ -2,9 +2,9 @@ require("./db");
 const express = require("express");
 const {
   User,
-  // Address,
-  // Education,
-  // WorkExperience,
+  Address,
+  Education,
+  WorkExperience,
   Company,
   JobPost,
   SavedJob,
@@ -18,6 +18,7 @@ const key = "jobduniya";
 const encrypt = require("bcrypt");
 const crypto = require("crypto");
 const { sendMail } = require("./mailServices");
+const { $_getRule } = require("@hapi/joi/lib/base");
 // const multer = require("multer");
 
 //
@@ -72,24 +73,20 @@ function generateOTP(length = 6) {
 
 // Login Authentication api 
 app.post("/login", async (req, res) => {
+  console.log(req.body);
   if (req.body.password && req.body.email) {
-      const email = req.body.email;
-      const auth = await User.findOne({ "email": email })
-      if (auth) {
-          const pwdMatch = await encrypt.compare(req.body.password, auth.password);
-          if (pwdMatch) {
-              jwt.sign({ auth }, key, { expiresIn: "1d" }, (err, token) => {
-                  err ? res.send("something went wrong") : res.send({ auth, token: token, id: auth._id })
-              })
-          }
-          else {
-              res.send({ result: "Password incorrect" })
-          }
-      } else {
-          res.send({ result: "User not found" })
-      }
-  } else {
-      res.send({ result: "Somthing wrong" })
+    let auth = await User.findOne(req.body).select("-password")
+    if (auth) {
+      jwt.sign({ auth }, key, { expiresIn: "1d" }, (err, token) => {
+        err ? res.send("something went wrong") : res.send({ auth, token: token })
+      })
+    }
+    else {
+      res.send({ result: "User  not found" })
+    }
+  }
+  else {
+    res.send({ result: "Something Missing" });
   }
 })
 
@@ -120,7 +117,6 @@ app.post("/addUser", async (req, res) => {
   req.body.password = await encrypt.hash(req.body.password, 10);
   const email = req.body.email;
   const user = await User.find({ "email": email });
-  // console.log("undefined");
   if (user.length) {
     res.send({ success: false, messge: "Email ID is alerady exits, PLease Enter Unique Id" });
   } else {
@@ -197,8 +193,8 @@ app.post("/addUser", async (req, res) => {
 // })
 
 // Update api
-app.put("/UpdateDetails/:tbl", async (req, res) => {
-  const tablename = req.params.tbl;
+app.put("/UpdateDetails", async (req, res) => {
+  const tablename = req.body.tablename;
   if (!tablename) {
     return res.status(400).send("Table name not provided");
   }
@@ -251,10 +247,16 @@ app.get("/search/:tbl/:keyword/:location", async (req, res) => {
               { "company.Address.city": { $regex: new RegExp(location, "i") } }
             ]
           }
+        },
+        {
+          $group: {
+            _id: "$JobType", // Assuming JobType is the field you want to group by
+            count: { $sum: 1 } // Counting the number of jobs per JobType
+          }
         }
       ]);
       res.send(list);
-    } else {
+    }  else {
       const schema = Model.schema.paths;
       const orQuery = Object.keys(schema)
         .filter((key) => schema[key].instance === "String")
@@ -288,22 +290,22 @@ app.get("/fetchall/:tbl", async (req, res) => {
 });
 
 app.get("/fetchConnectedComany", async (req, res) => {
-  const status=req.body.status;
-  const id2=req.body.id2;
-  if(!status || !id2){
-    res.send({success:false,message:"Please Enter Both Id1 and Id2"});
-  }else{
-    const list=await Connection.find({"userId":id2,"status":status});
-    if(list){
+  const status = req.body.status;
+  const id2 = req.body.id2;
+  if (!status || !id2) {
+    res.send({ success: false, message: "Please Enter Both Id1 and Id2" });
+  } else {
+    const list = await Connection.find({ "userId": id2, "status": status });
+    if (list) {
       res.send(list);
-    }else{
-      res.send({success:false,message:"Couldn't find any data."})
+    } else {
+      res.send({ success: false, message: "Couldn't find any data." })
     }
   }
 })
 // company registration api
-app.post('/Insert/:tbl', async (req, res) => {
-  const tablename = req.params.tbl;
+app.post('/Insert', async (req, res) => {
+  const tablename = req.body.tablename;
   if (!tablename) {
     return res.status(400).send("Table name not provided");
   }
@@ -319,26 +321,27 @@ app.post('/Insert/:tbl', async (req, res) => {
   })
 })
 
-app.post('/jobPost', async (req, res) => {
-  // const tablename = req.body.tablename;
-  // if (!tablename) {
-  //     return res.status(400).send("Table name not provided");
-  // }
-  // const Model = mongoose.model(tablename);
-  // if (!Model) {
-  //     return res.status(404).send("Model not found");
-  // }
-  const finaldata = new JobPost(req.body);
-  JobPost.insertMany(finaldata).then((e) => {
-    res.send({ success: true, messge: "Insert data successfully" });
-  }).catch((e) => {
-    res.send({ success: false, messge: "data are note inserted..." });
-  })
-})
+
+// app.post('/jobPost', async (req, res) => {
+//     const tablename = req.body.tablename;
+//     if (!tablename) {
+//         return res.status(400).send("Table name not provided");
+//     }
+//     const Model = mongoose.model(tablename);
+//     if (!Model) {
+//         return res.status(404).send("Model not found");
+//     }
+//     const finaldata = new Model(req.body);
+//     Model.insertMany(finaldata).then((e) => {
+//         res.status(201).send(e);
+//     }).catch((e) => {
+//         res.status(400).send(e);
+//     })
+// })
 
 app.post("/savedJob", async (req, res) => {
-  const UserID = req.body.User_ID;
-  const JobID = req.body.Job_ID;
+  const UserID = req.body.userId;
+  const JobID = req.body.jobId;
   if (!UserID || !JobID) {
     return res.status(400).send("User Id and Job Id are not provided");
   } else {
@@ -365,19 +368,20 @@ app.post("/deleteSaveJob", async (req, res) => {
   // }
 });
 
-app.get("/ListSavedJob", async (req, res) => {
-  const status = req.body.status;
-  const userid = req.body.User_ID;
-  const list = await SavedJob.find({ User_ID: userid });
-  // res.send(list);
-  const data = [];
-  if (list) {
-    for (let j of list) {
-      if (j.Status === status) {
-        data.push(j);
-      }
-    }
-    res.send(data);
+app.get("/ListJob/:status", async (req, res) => {
+  const status = req.params.status;
+  const list = await SavedJob.find({"userId":req.body.userId,"Status":status});
+  // const data = [];
+  // if (list) {
+  //   for (let j of list) {
+  //     if (j.Status === status) {
+  //       data.push(j);
+  //     }
+  //   }
+  if(list){
+    res.send(list);
+  }else{
+    res.send("Not Found Saved Jobs");
   }
 });
 
@@ -399,32 +403,19 @@ app.get("/ListSavedJob", async (req, res) => {
 // });
 
 app.post("/Follow", async (req, res) => {
-  const userId = req.body.userId;
-  const data = await Connection.findOne({ userId: userId, status: "Pending" });
-  if (data) {
-    res.send(data);
+  const userid = req.body.userId;
+  const companyid = req.body.companyId;
+  if (!userid || !companyid) {
+    return res.status(400).send("User Id and Comapny Id are not provided");
   } else {
-    res.send("Data are not found");
-  }
-});
-
-app.post("/Following", async (req, res) => {
-  const userId = req.body.userId;
-  const data = await Connection.findOne({ userId: userId, status: "Accept" });
-  if (data) {
-    res.send(data);
-  } else {
-    res.send("Data are not found");
-  }
-});
-
-app.post("/Coonnection", async (req, res) => {
-  const userId = req.body.userId;
-  const data = await Connection.findOne({ userId: userId, status: "Done" });
-  if (data) {
-    res.send(data);
-  } else {
-    res.send("Data are not found");
+    const finaldata = new Connection(req.body);
+    Connection.insertMany(finaldata)
+      .then((e) => {
+        res.status(201).send(e);
+      })
+      .catch((e) => {
+        res.status(400).send(e);
+      });
   }
 });
 

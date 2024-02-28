@@ -21,7 +21,7 @@ const LoginAsUser = ({ setProgress, setLoginScreen }) => {
     const [close, setClose] = useState("");
     
     const handleSubmit = async () => {
-        navigate("/home")
+        // navigate("/home")
         if (email.length >= 2 && password.length >= 2) {
             setSpinnerState(true);
             try {
@@ -38,6 +38,7 @@ const LoginAsUser = ({ setProgress, setLoginScreen }) => {
                         Cookies.set("token" , result.token )
                         Cookies.set("userId" , result.id)
                         setSpinnerState(false)
+                        navigate("/home")
                     } , 5000)
                 }
                 else{
@@ -69,6 +70,7 @@ const LoginAsUser = ({ setProgress, setLoginScreen }) => {
             </span>
         </div>
     );
+
 
     return (
         <>

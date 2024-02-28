@@ -17,6 +17,7 @@ import { Country, State, City } from "country-state-city";
 import TermAndConditions from "./componants/Footers/TermAndConditions";
 import GetHelp from "./componants/Footers/GetHelp";
 import SearchSection from "./componants/SearchSection";
+import SavedJobsPage from "./componants/SavedJobsPage";
 
 const App = () => {
     const [modell, setModell] = useState(false);
@@ -30,6 +31,7 @@ const App = () => {
                             <Route path="/nearbyusers" element={<Nearbyusers />} />
                             <Route path="/profile" element={<Profile />} />
                             <Route path="/postajob" element={<Postajob />} />
+                            <Route path="/saved" element={<SavedJobsPage />} />
                             <Route path="/search" element={<SearchSection />} />
                         </Route>
                         <Route path={"/login" } element={<Login />} />

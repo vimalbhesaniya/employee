@@ -55,9 +55,9 @@ const ProfessionBox = ({ onChange, value, arrayKey ,multiple}) => {
     "Czech",
   ];
   const renderOptions =  useMemo(() => {
-    if (arrayKey == "profession")
+    if (arrayKey === "profession")
       return professions.map((e) => <option value={e}>{e}</option>);
-    if (arrayKey == "langauge")
+    if (arrayKey === "langauge")
       return languages.map((e) => <option value={e}>{e}</option>);
   } , []);
 
