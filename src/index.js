@@ -1,15 +1,16 @@
 import React, { createContext, useState } from 'react';
-<<<<<<< HEAD
-=======
 // import ReactDOM from 'react-dom';
->>>>>>> ecd12fee99ade558821884b9c650c3afab8d4306
 import ReactDOM from 'react-dom/client';
+import { ToastContainer } from 'react-toastify';
 import App from './App';
 import Spinner from './Spinner';
 import reportWebVitals from './reportWebVitals';
-import SearchSection from './componants/SearchSection';
 import "./index.css"
-
+import firebase from "firebase/compat/app"
+const firebaseConfig  = {
+  storageBucket : process.env.REACT_APP_STORAGE_BUCKET
+};
+firebase.initializeApp(firebaseConfig)
 const EnableSpinner = createContext();
 
 const Root = () => {
@@ -17,10 +18,10 @@ const Root = () => {
 
   return (
     <React.StrictMode>
-      <EnableSpinner.Provider value={setSpinnerState}>
-        
+      <EnableSpinner.Provider value={[setSpinnerState , spinner]}>
       <div className='spinner'>
-        {spinner ? <Spinner /> : <App />}
+        {spinner&&<Spinner />}
+         <App />
       </div>  
       </EnableSpinner.Provider>
     </React.StrictMode>

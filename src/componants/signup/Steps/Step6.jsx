@@ -1,12 +1,12 @@
 import React, {  useMemo, useState } from "react";
 import "../../../Style/singup.css";
-import ProfessionBox from "../../ProfessionBox";
+import ProfessionBox from "../../Common/ProfessionBox";
 import Lottie from "lottie-react";
 import "react-toastify/dist/ReactToastify.css";
 import Stepper from "react-stepper-horizontal";
-import FormButton from "../../FormButton";
+import FormButton from "../../Common/FormButton";
 import me from "../../../assets/Je3eTqQJrt.json";
-import FormContainer from "../../FormContainer";
+import FormContainer from "../../Common/FormContainer";
 import "../../../Style/login.css";
 import { Link } from "react-router-dom";
 import { isValidStep6 } from "../../../Auth/isValidate";

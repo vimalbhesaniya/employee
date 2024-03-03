@@ -14,35 +14,8 @@ import Step6 from "./Steps/Step6";
 
 
 const Signup = () => {
-  const [screen, setScreen] = useState("step1");
+  const [screen, setScreen] = useState("step3");
   
-  // const handleSubmit = async () => {
-  //   if (email !== "" && password !== "") {
-  //     const result = await fetch("http://localhost:5500/add", {
-  //       body: JSON.stringify({ email, password }),
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //     }).then((e) => e.json());
-  //     if (result.success) {
-  //       toast.success("Your journey is just a few moments away! ", {
-  //         isLoading: true,
-  //         position: "bottom-center",
-  //         autoClose: 1000,
-  //         hideProgressBar: true,
-  //         theme: "light",
-  //       });
-  //     }
-  //   } else {
-  //     toast.error("Email and Passowrd are  ");
-  //   }
-  // };
-
-  // const isValidateStep1 = useMemo(() =>
-  //   isValidStep1(email, password, confirmPassword)
-  // );
-
   const navigate = useNavigate();
   if (Cookies.get("token")) {
     navigate("/home");

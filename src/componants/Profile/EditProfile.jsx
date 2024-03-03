@@ -1,7 +1,8 @@
 import React, { useContext, useState } from 'react'
 import InputText from '../signup/validateInputs'
 import edit from "../../Style/edit.module.css"
-import { ToggleEdit } from '../profile'
+import { ToggleEdit } from '../Common/profile'
+        
 const EditProfile = () => {
     const [progress , setProgress] = useState("0%")
     const toggle =useContext(ToggleEdit)
@@ -31,6 +32,14 @@ const EditProfile = () => {
                         <div><span style={{fontWeight:"bold"}}>Vimal bhesaniya</span></div>
                         <div><span className='font-weight-normal' style={{fontSize:"small"}}>Student at Veer Narmad South Gujarat Univercity</span></div>
                         <div><span style={{fontSize:"10px"}}>Surat, Gujarat, india</span></div>                            
+                    </div>
+                </div>
+                <div className='row'>
+                    <div className='col-6'>
+                        <input type="text" placeholder='First name' className='form-control'/>
+                    </div>
+                    <div className='col-6'>
+                        <input type="text" className='form-control' placeholder='Last name' name="" id="" />
                     </div>
                 </div>
             </div>

@@ -81,7 +81,8 @@ const WorkExperienceSchema = new mongoose.Schema({
 
 const UserSchema = new mongoose.Schema({
     privat : {
-        type :Boolean
+        type :Boolean,
+        default:false
     },
     email: {
         type: String,

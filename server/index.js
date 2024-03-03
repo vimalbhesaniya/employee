@@ -18,7 +18,6 @@ const key = "jobduniya";
 const encrypt = require("bcrypt");
 const crypto = require("crypto");
 const { sendMail } = require("./mailServices");
-const { $_getRule } = require("@hapi/joi/lib/base");
 // const multer = require("multer");
 
 //
@@ -73,32 +72,30 @@ function generateOTP(length = 6) {
 
 // Login Authentication api
 app.post("/login", async (req, res) => {
-<<<<<<< HEAD
     if (req.body.password && req.body.email) {
         const email = req.body.email;
-        const auth = await User.findOne({ "email": email })
-        if (auth) {
-            const pwdMatch = await encrypt.compare(req.body.password, auth.password);
+        const data = await User.findOne({ "email": email })
+        if (data) {
+            const pwdMatch = await encrypt.compare(req.body.password, data.password);
             if (pwdMatch) {
-                jwt.sign({ auth }, key, { expiresIn: "30s" }, (err, token) => {
-                    err ? res.send("something went wrong") : res.send({ auth, token: token, id: auth._id })
+                jwt.sign({ data }, key, { expiresIn: "1d" }, (err, token) => {
+                    err ? res.send("something went wrong") : res.send({ data, token: token, id: data._id })
                 })
             }
             else {
-                res.send({ result: "Password incorrect" })
+                res.send({ error : "Password incorrect" })
             }
         } else {
-            res.send({ result: "User not found" })
+            res.send({ error: "User not found" })
         }
     } else {
-        res.send({ result: "Somthing wrong" })
-=======
+        res.send({ serverError: "Somthing went wrong" })
     console.log(req.body);
     if (req.body.password && req.body.email) {
-        let auth = await User.findOne(req.body).select("-password")
-        if (auth) {
-            jwt.sign({ auth }, key, { expiresIn: "1d" }, (err, token) => {
-                err ? res.send("something went wrong") : res.send({ auth, token: token })
+        let data = await User.findOne(req.body).select("-password")
+        if (data) {
+            jwt.sign({ data }, key, { expiresIn: "1d" }, (err, token) => {
+                err ? res.send("something went wrong") : res.send({ data, token: token })
             })
         }
         else {
@@ -107,9 +104,9 @@ app.post("/login", async (req, res) => {
     }
     else {
         res.send({ result: "Something Missing" });
->>>>>>> e5b7437e61f7d7d7bfb6307ad1d012eb6c18d429
     }
-})
+}})
+
 
 // get all users
 const verifyToken = (req, res, next) => {
@@ -129,6 +126,12 @@ app.get("/users", verifyToken, async (req, res) => {
   res.send(users);
 });
 
+app.get("/profile/:ID", verifyToken, async (req, res) => {
+    const id = req.params.ID;
+  const user = await User.find({_id : id}).select("-password");
+  res.send(user);
+});
+
 app.get("/checkisvalid", verifyToken, async (req, res) => {
   res.send({ authorized: "You are Authorized" });
 });
@@ -137,7 +140,6 @@ app.get("/checkisvalid", verifyToken, async (req, res) => {
 app.post("/addUser", async (req, res) => {
     req.body.password = await encrypt.hash(req.body.password, 10);
     const email = req.body.email;
-<<<<<<< HEAD
     const user = await User.find({ email: email });
     if (user.length) {
         res.send({
@@ -148,27 +150,13 @@ app.post("/addUser", async (req, res) => {
         const finaldata = new User(req.body);
         User.insertMany(finaldata)
             .then((e) => {
-                res.status(201).send(e);
+                res.status(201).send({_id: e[0]._id});
             })
             .catch((e) => {
                 res.status(400).send(e);
             });
     }
 });
-=======
-    const user = await User.find({ "email": email });
-    if (user.length) {
-        res.send({ success: false, messge: "Email ID is alerady exits, PLease Enter Unique Id" });
-    } else {
-        const finaldata = new User(req.body);
-        User.insertMany(finaldata).then((e) => {
-            res.status(201).send(e);
-        }).catch((e) => {
-            res.status(400).send(e)
-        })
-    }
-})
->>>>>>> e5b7437e61f7d7d7bfb6307ad1d012eb6c18d429
 
 // app.put("/personaldetail", async (req, res) => {
 //     // const finaldata = new data(req.body);
@@ -234,28 +222,42 @@ app.post("/addUser", async (req, res) => {
 // })
 
 // Update api
-app.put("/UpdateDetails", async (req, res) => {
-  const tablename = req.body.tablename;
-  if (!tablename) {
-    return res.status(400).send("Table name not provided");
-  }
-  const Model = mongoose.model(tablename);
-  if (!Model) {
-    return res.status(404).send("Model not found");
-  }
-  // res.send(tablename);
-  const list = await Model.find({ $and: [req.body.where] });
-  // res.send(list);
-  if (list) {
-    await Model.updateOne(
-      { $and: [req.body.where] },
-      { $set: req.body.columns }
-    );
-    res.send({ success: true, messge: "updated data successfully" });
-  } else {
-    res.send({ success: false, messge: "data not found" });
-  }
-});
+app.patch("/updateDetails", async (req, res) => {
+    const tablename = req.body.COLLECTION_NAME;
+    if (!tablename) {
+      return res.status(400).send("Table name not provided");
+    }
+    const Model = mongoose.model(tablename);
+    if (!Model) {
+      return res.status(404).send("Model not found");
+    }
+    const { _id , COLUMNS } = req.body;
+    console.log(COLUMNS);
+    if (!_id) {
+      return res.status(400).send("Document ID not provided");
+    }
+    try {
+      const updatedDocument = await Model.findByIdAndUpdate(
+        _id,
+        { $set: COLUMNS },
+        { new: true }
+      );
+  
+      if (updatedDocument) {
+        return res.send({
+          success: true,
+          message: "Updated data successfully",
+          updatedDocument
+        });
+      } else {
+        return res.status(404).send("Document not found");
+      }
+    } catch (error) {
+      console.error("Error updating document:", error);
+      return res.status(500).send("Internal Server Error");
+    }
+  });
+  
 
 // Search Api
 app.get("/search/:tbl/:keyword/:location", async (req, res) => {
@@ -291,7 +293,7 @@ app.get("/search/:tbl/:keyword/:location", async (req, res) => {
         },
         {
           $group: {
-            _id: "$JobType", // Assuming JobType is the field you want to group by
+            _id: _id, // Assuming JobType is the field you want to group by
             count: { $sum: 1 } // Counting the number of jobs per JobType
           }
         }
@@ -345,12 +347,8 @@ app.get("/fetchConnectedComany", async (req, res) => {
   }
 })
 // company registration api
-<<<<<<< HEAD
-app.post("/Insert", async (req, res) => {
-=======
-app.post('/Insert', async (req, res) => {
->>>>>>> e5b7437e61f7d7d7bfb6307ad1d012eb6c18d429
-    const tablename = req.body.tablename;
+app.post("/Insert/:tbl", async (req, res) => {
+    const tablename = req.params.tbl;
     if (!tablename) {
         return res.status(400).send("Table name not provided");
     }
@@ -358,8 +356,7 @@ app.post('/Insert', async (req, res) => {
     if (!Model) {
         return res.status(404).send("Model not found");
     }
-    const finaldata = new Model(req.body.columns);
-<<<<<<< HEAD
+    const finaldata = new Model(req.body);
     Model.insertMany(finaldata)
         .then((e) => {
             res.status(201).send(e);
@@ -368,15 +365,6 @@ app.post('/Insert', async (req, res) => {
             res.status(400).send(e);
         });
 });
-=======
-    Model.insertMany(finaldata).then((e) => {
-        res.status(201).send(e);
-    }).catch((e) => {
-        res.status(400).send(e);
-    })
-})
-
->>>>>>> e5b7437e61f7d7d7bfb6307ad1d012eb6c18d429
 
 // app.post('/jobPost', async (req, res) => {
 //     const tablename = req.body.tablename;
@@ -547,26 +535,17 @@ app.get("/CompanyListing", async (req, res) => {
 app.post("/Clogin", async (req, res) => {
     const to = req.body.email;
     const oneTimeOTP = generateOTP();
-<<<<<<< HEAD
     const comapny = await Company.findOne({ Email_ID: to });
     if (comapny) {
         await Company.updateOne(
             { Email_ID: to },
             { $set: { secretKey: oneTimeOTP } }
-=======
-    const comapny = await Company.findOne({ "Email_ID": to });
-    if (comapny) {
-        await Company.updateOne(
-            { "Email_ID": to },
-            { $set: { "secretKey": oneTimeOTP } }
->>>>>>> e5b7437e61f7d7d7bfb6307ad1d012eb6c18d429
         );
         const subject = "Sending Email";
         const html = "<p>One Time OTP : <b>" + oneTimeOTP + "</b></p>";
         const result = await sendMail(to, subject, html);
         res.send(result);
     } else {
-<<<<<<< HEAD
         res.send({ message: "Company is not available" });
     }
 });
@@ -630,11 +609,6 @@ app.put("/changePwd", async (req, res) => {
         console.error("Error fetching data:", error);
     }
 });
-=======
-        res.send({ message: "OTP is not available" });
-    }
-})
->>>>>>> e5b7437e61f7d7d7bfb6307ad1d012eb6c18d429
 
 app.post("/verify", async (req, res) => {
   const ConOTP = req.body.otp;
@@ -663,12 +637,6 @@ app.post("/FileUpload", async (req, res) => {
     const file = req.body.file;
     res.send(file);
     // handleFileUpload(file);
-<<<<<<< HEAD
-});
-
-app.listen(5500, () => console.log("server started..."));
-=======
 })
->>>>>>> e5b7437e61f7d7d7bfb6307ad1d012eb6c18d429
 
 app.listen(5500, () => console.log("server started..."))   

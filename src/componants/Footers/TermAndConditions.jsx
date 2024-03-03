@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from "react";
 import NavbarBeforeLogin from "../login/NavbarBeforeLogin";
-import FormButton from "../FormButton";
+import FormButton from "../Common/FormButton";
 import { useNavigate } from "react-router-dom";
 import css from "../../Style/inputBoxs.module.css";
 import Footer from "./Footer";

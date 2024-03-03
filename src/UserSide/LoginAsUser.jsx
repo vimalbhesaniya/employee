@@ -1,64 +1,55 @@
 import React, { useContext, useMemo, useState } from "react";
-import FormButton from "../componants/FormButton";
+import FormButton from "../componants/Common/FormButton";
+import server from "../assets/server.json"
 import me from "../assets/me.json";
 import { ToastContainer, toast } from "react-toastify";
 import Cookies from "js-cookie";
-import FormContainer from "../componants/FormContainer";
+import FormContainer from "../componants/Common/FormContainer";
 import InputText from "../componants/signup/validateInputs";
-import { useNavigate, Link } from "react-router-dom";
+import { getApp } from "firebase/app";
+import 'firebase/auth';
+import { useNavigate, Link, json } from "react-router-dom";
 import Lottie from "lottie-react";
 import NavbarBeforeLogin from "../componants/login/NavbarBeforeLogin";
 import ResetPassword from "../componants/login/ResetPassword";
 import { EnableSpinner } from "..";
+import serverERROR from "../assets/serverERROR";
+import useAPI from "../Hooks/USER/useAPI";
 
 const LoginAsUser = ({ setScreen }) => {
     const x = new Date();
+    const api = useAPI();
+    const firebase = getApp()
     const navigate = useNavigate();
-    const setSpinnerState = useContext(EnableSpinner)
+    
+    const [setSpinnerState, spinner] = useContext(EnableSpinner)
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
-    const [close, setClose] = useState("");
-    
-    const handleSubmit = async () => {
-        // navigate("/home")
-        console.log("called");
-        if (email.length >= 2 && password.length >= 2) {
-            setSpinnerState(true);
-            try {
-                const response = await fetch("http://localhost:5500/login", {
-                    body: JSON.stringify({ email, password }),
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                })
-                const result = await response.json();
-                if (result?.auth) {
-                    setTimeout(() => {
-                        Cookies.set("token" , result.token )
-                        Cookies.set("userId" , result.id)
-                        setSpinnerState(false)
-                        navigate("/home")
-                    } , 5000)
-                }
-                else{
-                    setTimeout(()=>{
-                        setErrorMessage(result.result)
-                        setSpinnerState(false)
-                    } , 2000)
+    const [close, setClose] = useState(false);
+    const [serverError, setServerError] = useState(false);
+    const memo = useMemo(() => {
+        return errorMessage;
+    }, [errorMessage])
 
-                }
-            } catch(e) {
-                setSpinnerState(false)
-                setErrorMessage( `${e}Something went wrong`);
+    const handleSubmit = async () => {
+        if (email.length >= 2 && password.length >= 2) {
+            const RESPONSE = await api.postREQUEST("login", JSON.stringify({ email, password }));
+            if(RESPONSE?.data) {
+                Cookies.set("id"  ,RESPONSE.id)
+                Cookies.set("token" ,RESPONSE.token)
+                localStorage.setItem("data",JSON.stringify(RESPONSE.data));
+                navigate("/home");
+            } else {
+                console.log(RESPONSE)
+                setErrorMessage(RESPONSE.error)
             }
         }
         else {
             setErrorMessage("Provide Email and Password");
         }
-    };
-
+    }
+    
     const leftSection = (
         <div className="leftSectionHeader">
             <span>looking to hire ? </span>
@@ -75,13 +66,14 @@ const LoginAsUser = ({ setScreen }) => {
 
     return (
         <>
-            {close ? <ResetPassword close={setClose} /> : ""}
+            {close && <ResetPassword close={setClose} />}
+            {serverError && <serverERROR />}
             <NavbarBeforeLogin leftSection={leftSection} />
             <FormContainer
-                warning={errorMessage}
+                warning={memo}
                 leftSection={
                     <Lottie
-                        animationData={me}
+                        animationData={serverError ? server : me}
                         loop={true}
                         style={{ height: "100%", width: "100%" }}
                     />

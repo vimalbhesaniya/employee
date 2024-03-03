@@ -1,5 +1,5 @@
 import React from 'react'
-import job from "../Style/jobCard.module.css"
+import job from "../../Style/jobCard.module.css"
 
 const JobCard = ({
     logo,

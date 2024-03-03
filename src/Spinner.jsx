@@ -6,18 +6,15 @@ import gif from "./assets/jobduniya (1).gif"
 import spinner from "../src/spinner.module.css"
 
 const Spinner = () => {
-  return (
-    <>
-      <div className={spinner.spinner}>
-      <img src={gif} alt="" style={{
-            height:"400px", width:"400px" 
-        }}  />
-        {/* <Lottie animationData={animatLogo} style={{
-            height:"100px", width:"100px" 
-        }} ></Lottie> */}
-      </div>
-    </>
-  );
+    return (
+        <>
+            <div className={spinner.spinner}>
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </>
+    );
 };
 
 export default Spinner;

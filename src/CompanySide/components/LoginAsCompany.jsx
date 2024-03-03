@@ -6,8 +6,8 @@ import Cookies from "js-cookie";
 import InputText from "../../componants/signup/validateInputs";
 import { useNavigate, Link } from "react-router-dom";
 import Lottie from "lottie-react";
-import FormButton from "../../componants/FormButton";
-import FormContainer from "../../componants/FormContainer";
+import FormButton from "../../componants/Common/FormButton";
+import FormContainer from "../../componants/Common/FormContainer";
 import NavbarBeforeLogin from "../../componants/login/NavbarBeforeLogin";
 import ResetPassword from "../../componants/login/ResetPassword";
 
@@ -17,7 +17,7 @@ const LoginAsCompany = ({ setScreen }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
-  const [close, setClose] = useState("");
+  const [close, setClose] = useState(false); 
 
   const handleSubmit = () =>{
     return false

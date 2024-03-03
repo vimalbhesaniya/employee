@@ -4,9 +4,9 @@ import Lottie from "lottie-react";
 import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
 import Stepper from "react-stepper-horizontal";
-import FormButton from "../../FormButton";
+import FormButton from "../../Common/FormButton";
 import me from "../../../assets/Je3eTqQJrt.json";
-import FormContainer from "../../FormContainer";
+import FormContainer from "../../Common/FormContainer";
 import "../../../Style/login.css";
 import InputText from "../validateInputs";
 import {isValidStep4} from "../../../Auth/isValidate";
@@ -21,7 +21,6 @@ const Step4 = ({setScreen}) => {
     />
   );
   
-  const [defaultWarning, setDefaultWarning] = useState("");
   const [institutionName, setInstitutionName] = useState("");
   const [degreeLevel, setDegreeLevel] = useState("");
   const [startDateSchool, setStartDateSchool] = useState("");

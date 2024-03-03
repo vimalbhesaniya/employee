@@ -1,0 +1,44 @@
+:root{
+    --primary-color: #23A6F0;
+
+}
+.sensetiveDataContainer {
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: 10px;
+    gap: 10px;
+    background-color: rgba(255, 255, 255, 0.367);
+}
+
+.dataContainer {
+    padding: 10px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    flex: 1 0 100%;
+    border-radius: 10px;
+}
+
+.data-item {
+    flex: 1/2 0 100%;
+    padding: 10px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 10px;
+}
+
+
+.data-title{
+    font-weight: 600;
+    color:var(--primary-color);
+}
+
+.datainfoNavigator{
+    font-size: medium;
+    color: #23a5f0c5;
+    cursor: pointer;
+}
+
+.datainfoNavigator:hover{
+    color: #23A6F0;
+    font-weight: 700;
+}

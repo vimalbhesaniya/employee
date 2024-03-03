@@ -1,5 +1,4 @@
 const FileUpload = () => {
-
     const [ImgUrl, setImgUrl] = useState();
     const handleFileUpload = (event) => {
         const selectedFile = event.target.files[0];

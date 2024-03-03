@@ -1,12 +1,12 @@
 import React from "react";
 import Lottie from "lottie-react";
 import { ToastContainer } from "react-toastify";
-import me from "../assets/me.json";
+import me from "../../assets/me.json";
 import FormTextboxes from "./FormTextbox";
 import { Link } from "react-router-dom";
 import FormButton from "./FormButton";
 import { Stepper } from "react-form-stepper";
-import "../Style/login.css";
+import "../../Style/login.css";
 const FormContainer = ({
   footerSection,
   handleSubmit,
@@ -35,7 +35,7 @@ const FormContainer = ({
     <>
       <ToastContainer />
       <div className="--main">
-        <div className="--left">{leftSection}</div>
+        <div className="--left animate_animated animate__zoomIn">{leftSection}</div>
         <div className="--right">
           <div className="--heading">
             <span className="--headingText">{heading}</span>

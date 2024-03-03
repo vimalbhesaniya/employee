@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
-import { ToggleEdit } from '../profile'
-const SensetiveInfo = ({setIsEditProfile}) => {
-    const toggle = useContext(ToggleEdit)
+import { ToggleEdit } from '../Common/profile'
+const SensetiveInfo = () => {
+    const [isEditProfile ,setIsEditProfile] = useContext(ToggleEdit)
 
     return (
         <div className="card-body">
@@ -12,7 +12,7 @@ const SensetiveInfo = ({setIsEditProfile}) => {
                     <p className="" style={{ fontSize: "2.8cqmin", whiteSpace: "nowrap" }} >Connections 340</p>
                 </div>
                 <div className=" d-flex justify-content-between mb-2">
-                    <button type="button" className="btn bgbtn" onClick={() => toggle(true)} >Edit profile</button>
+                    <button type="button" className="btn bgbtn" onClick={() => setIsEditProfile(true)} >Edit profile</button>
                     <label htmlFor='fileReader' className="btn bgbtn">Upload Resume</label>
                     <input type="file" id='fileReader' hidden/>
                 </div>

@@ -1,6 +1,6 @@
 import Cookies from 'js-cookie';
 import React from 'react'
-import img from "../Images/pngwing.com.png"
+import img from "../../Images/pngwing.com.png"
 
 const MyModel = ({ setModell }) => {
     const performLogOut = () => {

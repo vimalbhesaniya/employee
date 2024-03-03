@@ -1,11 +1,7 @@
 import React, { useCallback, useState } from "react";
-import "./ResetPassword.css";
-import css from "../../Style/inputBoxs.module.css";
+import "./ResetPassword.css"
+import css from "../../Style/inputBoxs.module.css"
 
-const ResetPassword = ({ close, mail, otpassword, newpassword }) => {
-  const [email, setEmail] = useState('');
-  const [otp, setOtp] = useState('');
-  const [newPassword, setNewPassword] = useState('');
   const ResetPassword = ({ close }) => {
     const [email, setEmail] = useState("");
     const [otp, setOtp] = useState("");
@@ -21,43 +17,52 @@ const ResetPassword = ({ close, mail, otpassword, newpassword }) => {
 
     const handleEmailSubmit = async (e) => {
       e.preventDefault();
-      setStep(2);
       setMessage('');
-      const response = await fetch("http://localhost:5500/forgot", {
-        body: JSON.stringify({ email }),
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }).then((e) => e.json());
-      console.log(response);
-      if (response.status) {
-        alert(response.result.message)
-        setStep(2);
-        setMessage("");
-      }
-      else {
-        alert(response.message)
-      }
+      if (email.length >= 2) {    
+          const response = await fetch("http://localhost:5500/forgot", {
+              body: JSON.stringify({ email }),
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json",
+                },
+            }).then((e) => e.json());
+            if (response.status) {
+                alert(response.result.message)
+                setStep(2);
+                setMessage("");
+            }
+            else {
+                alert(response.message)
+            }
+        }
+        else{
+            alert("provide email");
+        }
     };
 
     const handleOtpSubmit = async (e) => {
       e.preventDefault();
-      const response = await fetch("http://localhost:5500/checkOTP", {
-        body: JSON.stringify({ otp, email }),
+      if (otp.length === 6) {
+        
+          const response = await fetch("http://localhost:5500/checkOTP", {
+              body: JSON.stringify({ otp, email }),
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-      }).then((e) => e.json());
+    }).then((e) => e.json());
       if (!response.success) {
-        setMessage("OTP is Not valid");
+          setMessage("OTP is Not valid");
       }
       else {
         setStep(3);
         setMessage("You can change the password");
-      }
-    };
+    }
+}
+else{
+    alert("invalid otp ")
+}
+};
 
     const handlePasswordReset = async (e) => {
       e.preventDefault();
@@ -89,10 +94,10 @@ const ResetPassword = ({ close, mail, otpassword, newpassword }) => {
                 <input
                   type="email"
                   value={email}
-                  className={"Finput"}
+                  className={`${css.input} mb-2 mt-2`}
                   onChange={(e) => setEmail(e.target.value)}
                 />
-                <button type="submit" className="Fbutton">
+                <button type="submit" className="bgbtn btn">
                   Submit
                 </button>
               </form>
@@ -103,10 +108,10 @@ const ResetPassword = ({ close, mail, otpassword, newpassword }) => {
                 <input
                   type="text"
                   value={otp}
-                  className={"Finput"}
+                  className={`${css.input} mb-2 mt-2`}
                   onChange={(e) => setOtp(e.target.value)}
                 />
-                <button type="submit" className="Fbutton">
+                <button type="submit" className="btn bgbtn">
                   Submit
                 </button>
               </form>
@@ -116,11 +121,12 @@ const ResetPassword = ({ close, mail, otpassword, newpassword }) => {
                 <label>New Password:</label>
                 <input
                   type="password"
-                  className={"Finput"}
+                  className={`${css.input} mb-2 mt-2`}
+
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
-                <button type="submit" className="Fbutton">
+                <button type="submit" className="btn bgbtn">
                   Reset Password
                 </button>
               </form>
@@ -131,6 +137,5 @@ const ResetPassword = ({ close, mail, otpassword, newpassword }) => {
       </div>
     );
   };
-};
 
 export default ResetPassword;

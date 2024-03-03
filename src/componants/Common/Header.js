@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useState } from "react";
-import css from "../Style/navbar.module.css";
+import css from "../../Style/navbar.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import "animate.css";
-import img from "../logo/2.png";
+import img from "../../logo/2.png";
 import { act } from "react-dom/test-utils";
 import Notifications from "./Notifications";
-import GlobalModel from "../Global/GlobalModel";
+import GlobalModel from "../../Global/GlobalModel";
 const Header = () => {
     const navigate = useNavigate();
     const [active, setActive] = useState(false);

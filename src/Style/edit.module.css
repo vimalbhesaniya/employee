@@ -10,11 +10,14 @@
 }
 .cardContainer{
     width: 60%;
+    
 }
 
 @media (max-width : 992px) {
     .cardContainer{
         width: 75%;
+        height: 70%;
+        overflow: scroll;
     }
 }
 

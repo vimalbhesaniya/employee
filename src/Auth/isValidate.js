@@ -17,20 +17,16 @@ export const isValidStep1 = (email, password, confirmPassword) => {
 };
 
 export const isValidStep2 = (firstName, lastName ,profilePicture) => {
-  if (firstName.length <= 2) {
-    return true;
-  } else if (lastName.length <= 2) {
-    return true;
-  } else if (firstName.length === 1 && lastName.length === 1) {
-    return true;
-  }
-  else if (profilePicture.length <= 2)
-  {
+     if (!firstName) {
     return true
-  }
- else {
-    return false;
-  }
+ }
+ if(!lastName){
+    return true
+ }
+ if(!profilePicture){
+    return true
+ }
+    return false
 };
 export const isValidStep3 = (state, city, personalAddress, pinCode) => {
   if (personalAddress.length > 2 && pinCode.length === 6 && state !== '' && city !== '') {

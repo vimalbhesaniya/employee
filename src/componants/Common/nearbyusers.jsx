@@ -1,6 +1,6 @@
 import React from 'react';
 import Lottie from 'lottie-react';
-import notfound from "../assets/notfound.json"
+import notfound from "../../assets/notfound.json"
 
 const Nearbyusers = ({ title, description, imageUrl }) => {
     return (

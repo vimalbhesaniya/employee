@@ -1,5 +1,5 @@
 import React from 'react';
-import "../Style/noti.css"
+import "../../Style/noti.css"
 
 const Notifications = ({handleButtonClick}) => {
     return (
