@@ -59,6 +59,7 @@ const FormContainer = ({
                     <div className="Forms">
                         {textbox1}
                         <Saved array={arrayValuesSkill} setArray={setArraySkill} />
+                        <Saved array={arrayValues} setArray={setArray} />
                         <div className="--form">
                             {textbox2}
                             {textbox3}

@@ -22,7 +22,6 @@ const Profile = () => {
     useEffect(() => {
         const data = api.getREQUEST(`profile/${Cookies.get('id')}`);
     } , [])
-
     return (
         <ToggleEdit.Provider value={[ isEditProfile,setIsEditProfile]}>
             <>

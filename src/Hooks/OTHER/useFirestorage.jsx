@@ -8,7 +8,7 @@ const useFirestorage = () => {
     const [setSpinnerState,spinner] = useContext(EnableSpinner)
     const Upload = useCallback((img) => {
         if (img) {
-            const storageRef = firebase.storage().ref()
+            const storageRef = firebase.storage().ref('/userprofiles')
             const fileRef = storageRef.child(img.name)
             setSpinnerState(true)
             fileRef.put(img)

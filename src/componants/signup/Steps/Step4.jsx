@@ -31,7 +31,6 @@ const Step4 = ({ setScreen }) => {
     const [endDateSchool, setEndDateSchool] = useState("");
     const [gpa, setGpa] = useState("");
     const [certifications, setCertifications] = useState([]);
-    const [discription, setDiscription] = useState("");
     const [univercity, setUnivercity] = useState("");
     const [school, setSchool] = useState("");
 
@@ -69,9 +68,9 @@ const Step4 = ({ setScreen }) => {
                     univercity,
                 },
             ],
-        });
+        }); 
         console.log(data);
-        // setScreen("step5");
+        setScreen("step5");
     }, [
         institutionName,
         degreeLevel,
@@ -79,7 +78,6 @@ const Step4 = ({ setScreen }) => {
         endDateSchool,
         gpa,
         certifications,
-        discription,
         univercity,
         school,
     ]);
