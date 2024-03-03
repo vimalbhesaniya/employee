@@ -1,6 +1,6 @@
 import React from 'react'
 import "../../Style/profile.css"
-const DataContainer = () => {
+const DataContainer = ({}) => {
     return (
         <>
             <div class="dataContainer">

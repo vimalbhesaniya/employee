@@ -47,6 +47,7 @@ const Profile = () => {
                                 <BasicInfo
                                     firstName={profile.firstName}
                                     lastName={profile.lastName}
+                                    profileImage={profile.profileImage}
                                     profession={profile.profession}
                                     city={
                                         profile.location &&
