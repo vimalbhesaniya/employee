@@ -31,6 +31,8 @@ const Step6 = ({ setScreen }) => {
     const [profession, setProfession] = useState("");
     const [input, setInput] = useState([]);
     const [langauges, setLanguages] = useState([]);
+    const[description , setDescription]  = useState("");
+
 
     const isValidateStep6 = useMemo(
         () =>
@@ -58,7 +60,7 @@ const Step6 = ({ setScreen }) => {
 
     const handleSubmit = useCallback(async () => {
         const id = localStorage.getItem("upd_id");
-        const data = await api.patchREQUEST("updateDetails", "users", id, {langauges , profession ,skills});
+        const data = await api.patchREQUEST("updateDetails", "users", id, {langauges , profession ,skills ,description});
         console.log(data);
         navigate("/login");
 
@@ -72,6 +74,7 @@ const Step6 = ({ setScreen }) => {
             arrayValuesLang={langauges}
             setArraySkill={setSkills}
             setArrayLang={setLanguages}
+            
             navigat={
                 <p className="--navLink">
                     Already have an account : <Link to={"/login"}>Login !</Link>
@@ -114,6 +117,13 @@ const Step6 = ({ setScreen }) => {
                     onKeyUp={(e) => handleEnterLangaugeEvent(e)}
                     placeholder="Langauge known*(press enter to add)"
                     require={true}
+                />
+            }
+            textbox5={
+                <InputText 
+                    inputType={"text"}
+                    onChange={(e => setDescription(e))}
+                    placeHolder={"Describe your self"}
                 />
             }
             button1={

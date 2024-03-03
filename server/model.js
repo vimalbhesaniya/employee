@@ -112,6 +112,9 @@ const UserSchema = new mongoose.Schema({
     secretKey: {
         type: String
     },
+    description : {
+        type : String
+    },
     location: [AddressSchema],
     education: [EducationSchema],
     experience: [WorkExperienceSchema]

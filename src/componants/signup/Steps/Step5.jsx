@@ -80,10 +80,12 @@ const Step5 = ({ setScreen }) => {
                         isFresher,
                         jobTitle,
                         companyName,
+                        userType,
                         startDateWork,
                         endDateWork,
                         responsibilities,
                         achievements,
+                        
                     },
                 ],
             });
@@ -95,6 +97,7 @@ const Step5 = ({ setScreen }) => {
         jobTitle,
         companyName,
         startDateWork,
+        userType,
         endDateWork,
         responsibilities,
         achievements,
@@ -154,7 +157,7 @@ const Step5 = ({ setScreen }) => {
             textbox6={
                 <InputText
                     id="Employeement Type"
-                    onChange={(e) => setCompanyName(e)}
+                    onChange={(e) => setUserType(e)}
                     inputType={"text"}
                     placeHolder={"Employeement type*"}
                     require={true}
