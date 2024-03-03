@@ -86,6 +86,8 @@
     border-radius: 8px;
     align-items: flex-start;
     gap: 16px;
+    flex-basis: 50%;
+    flex-grow: 1;
     align-self: stretch;
     letter-spacing: 0.5px;
 }

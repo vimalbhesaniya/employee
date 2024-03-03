@@ -12,7 +12,8 @@ const InputText = ({
   require,
   minLength = 0,
   maxLength = 100,
-  value
+  value,
+  onEnterHandler
 }) => {
   
   //Validating email if type is email
@@ -85,6 +86,7 @@ const InputText = ({
           onChange={onInputChangeHandler}
           minLength={minLength}
           maxLength={maxLength}
+          onKeyUp={onEnterHandler}
           value={value}
         />
         {password && renderEyeButton}

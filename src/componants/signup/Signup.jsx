@@ -14,7 +14,7 @@ import Step6 from "./Steps/Step6";
 
 
 const Signup = () => {
-  const [screen, setScreen] = useState("step3");
+  const [screen, setScreen] = useState("step6");
   
   const navigate = useNavigate();
   if (Cookies.get("token")) {

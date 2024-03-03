@@ -44,8 +44,9 @@
     overflow: auto;
     justify-content: left;
     margin-bottom: 30px;
+    flex-wrap: wrap;
     align-items: center;
-    flex-direction: column;
+    flex-direction: row;
     gap: 20px;
 }
 
@@ -99,6 +100,31 @@
     gap: 10px;
 }
 
+.--formData{
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+
+
+.skillsss{
+    width: fit-content;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: rgba(190, 190, 190, 0.388);
+    flex-grow: auto;
+    text-align: justify;
+    flex-basis: auto;
+}
+
+.targetToClose{
+    cursor: pointer;
+}
+
+.targetToClose:hover    {
+    color: #23A6F0;
+}
 .--allinput {
     width: 100%;
 }

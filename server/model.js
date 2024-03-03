@@ -30,10 +30,7 @@ const EducationSchema = new mongoose.Schema({
         type: String,
         required: false
     },
-    degreeLevel: {
-        type: String,
-        required: false
-    },
+    degreeLevel: [String],
     startDateSchool: {
         type: Date,
         required: false
@@ -43,20 +40,17 @@ const EducationSchema = new mongoose.Schema({
         required: false
     },
     gpa: {
-        type: Number,
+        type: String,
         required: false
     },
     certifications: [{
         type: String,
         required: false
-    }],
-    onlineCourses: [{
-        type: String,
-        required: false
-    }],
+    }]
 });
 
 const WorkExperienceSchema = new mongoose.Schema({
+    isFresher: { type: Boolean  , default: true },
     userType: {
         type: String,
         required: false
@@ -73,16 +67,14 @@ const WorkExperienceSchema = new mongoose.Schema({
     endDateWork: {
         type: Date
     },
-    responsibilities: {
-        type: String
-    },
-    achievements: [{ type: String, required: false }],
+    responsibilities: [String],
+    achievements: [String],
 });
 
 const UserSchema = new mongoose.Schema({
-    privat : {
-        type :Boolean,
-        default:false
+    privat: {
+        type: Boolean,
+        default: false
     },
     email: {
         type: String,
@@ -175,7 +167,7 @@ const SavedJobSchema = new mongoose.Schema({
 const ConnectionSchema = new mongoose.Schema({
     companyId: { type: mongoose.Schema.Types.ObjectId, ref: "companies", autopopulate: true },
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "users", autopopulate: true },
-    status:{type:String, enum:["Accepted","Rejected","Pending","Done"]}
+    status: { type: String, enum: ["Accepted", "Rejected", "Pending", "Done"] }
 })
 
 const JobApplicationsSchema = new mongoose.Schema({

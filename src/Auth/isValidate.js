@@ -86,19 +86,14 @@ export const isValidStep5 = (jobTitle  , companyName , startDateWork , endDateWo
    return true;
 };
 export const isValidStep6 = (skills , profession , langauges ) => {
-  const schema1 = Joi.string().required().min(2)
-  const schema2 = Joi.string().required().min(2)
-  const schema3 = Joi.string().required().min(2)
-  const result1 = schema1.validate(skills)
-  const result2 = schema2.validate(langauges)
-  const result3 = schema3.validate(profession)
-  if (result1.error) {
+
+  if (skills.length <= 0) {
     return false
   }
-  else if(result2.error){
+  else if(langauges.length <=0){
     return false 
   }
-  else if(result3.error)
+  else if(profession.length <= 2)
   {
     return false
   }

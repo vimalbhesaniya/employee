@@ -47,9 +47,7 @@ const Step3 = ({ setScreen }) => {
         const data = await api.patchREQUEST("updateDetails", "users", id, { location:
             [{personalAddress,pinCode,state,city}]
         })
-        console.log(state);
-        console.log(data);
-        setScreen("step3")
+        setScreen("step4")
     }, [  stateValue , city ,personalAddress,pinCode ])
 
 
