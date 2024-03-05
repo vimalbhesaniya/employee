@@ -119,7 +119,7 @@ const Step6 = ({ setScreen }) => {
                     require={true}
                 />
             }
-            textbox5={
+            textbox6={
                 <InputText 
                     inputType={"text"}
                     onChange={(e => setDescription(e))}

@@ -7,11 +7,13 @@ import Cookies from "js-cookie";
 import { useState } from "react";
 import LoginMain from "./componants/login/LoginMain";
 import Signup from "./componants/signup/Signup";
+import Jobs from "./componants/Common/Jobs";
 import NotFound from "./componants/Common/Notfound";
 import Check from "./Auth/check";
 import Nearbyusers from "./componants/Common/nearbyusers";
 import Profile from "./componants/Common/profile";
 import Search from "./componants/Common/search";
+import JobsList from "./UserSide/JobsList";
 import Postajob from "./componants/Common/postajob";
 import { Country, State, City } from "country-state-city";
 import TermAndConditions from "./componants/Footers/TermAndConditions";
@@ -25,24 +27,26 @@ const App = () => {
     return (
         <>
             {modell ? <MyModel setModell={setModell}></MyModel> : ""}
-                <BrowserRouter>
-                <ToastContainer   limit={1}/>
-                    <Routes>
-                        <Route  element={<Layout />}>
-                            <Route path="/home" element={<Home  setModell={setModell}/>} />
-                            <Route path="/nearbyusers" element={<Nearbyusers />} />
-                            <Route path="/profile" element={<Profile />} />
-                            <Route path="/postajob" element={<Postajob />} />
-                            <Route path="/saved" element={<SavedJobsPage />} />
-                            <Route path="/search" element={<SearchSection />} />
-                        </Route>
-                        <Route path={"/login" } element={<LoginMain />} />
-                        <Route path={"/signup" } element={<Signup />} />
-                        <Route path={"/gethelp" } element={<GetHelp />} />
-                        <Route path={"/termandconditions" } element={<TermAndConditions />} />
-                        <Route path="*" element={<NotFound />} />
-                    </Routes>
-                </BrowserRouter>
+            <BrowserRouter>
+                <ToastContainer limit={1} />
+                <Routes>
+                    <Route element={<Layout />}>
+                        <Route path="/home" element={<Home setModell={setModell} />} />
+                        <Route path="/nearbyusers" element={<Nearbyusers />} />
+                        <Route path="/profile" element={<Profile />} />
+                        <Route path="/postajob" element={<Postajob />} />
+                        <Route path="/saved" element={<SavedJobsPage />} />
+                        <Route path="/search" element={<SearchSection />} />
+                        <Route path={"/jobs/:id"} element={<Jobs />} />
+                        <Route path={"/jobs"} element={<JobsList />} />
+                    </Route>
+                    <Route path={"/login"} element={<LoginMain />} />
+                    <Route path={"/signup"} element={<Signup />} />
+                    <Route path={"/gethelp"} element={<GetHelp />} />
+                    <Route path={"/termandconditions"} element={<TermAndConditions />} />
+                    <Route path="*" element={<NotFound />} />
+                </Routes>
+            </BrowserRouter>
         </>
     );
 };

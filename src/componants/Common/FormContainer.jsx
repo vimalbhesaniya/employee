@@ -70,9 +70,11 @@ const FormContainer = ({
                             {textbox5}
                         </div>
                         {textbox6}
-                        <Saved array={arrayValuesCetrification} setArray={setArrayValuesCertification} />
-                        <Saved array={arrayValuesResp} setArray={setArrayResp} />
-                        {textbox7}
+                        <div className="--form">
+                            <Saved array={arrayValuesResp} setArray={setArrayResp} />
+                            <Saved array={arrayValuesCetrification} setArray={setArrayValuesCertification} />
+                        </div>
+                            {textbox7}
                         <Saved array={arrayValuesAch} setArray={setArrayAch} />
                         {textbox8}
                         {textbox9}

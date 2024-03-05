@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useState   , useEffect} from "react";
 import home from "../../Style/home.module.css"
 import Lottie from "lottie-react";
 import searchjson from "../../assets/search.json";
@@ -9,31 +9,25 @@ import Skeleton, { SkeletonTheme } from "react-loading-skeleton";
 import 'react-loading-skeleton/dist/skeleton.css'
 import Footer from "./Footer";
 import { EnableSpinner } from "../..";
+import useAPI from "../../Hooks/USER/useAPI";
+import GlobalModel from "../../Global/GlobalModel";
+import ViewJob from "./viewJob";
 const Home = ({ setModell }) => {
 const [data, setData] = useState("");
 const [imgLoading, setImgLoading] = useState(true);
 const setSpinner = useContext(EnableSpinner);
 const item = localStorage.getItem("data");
-// useEffect(() => {
-  //   const fetchUsers = async () => {
-  //     const users = await fetch(
-  //       "http://localhost:5500/users",
-  //       {
-  //         headers: {
-  //           authorization: Cookies.get("token"),
-  //         },
-  //       },
-  //       []
-  //     );
-  //     const items = await users.json()
-  //     if (items.unauthorized) {
-  //       // setModell(true);
+const  api = useAPI();
+const [jobs,setJobs ] = useState([]);
 
-  //     }
-  //     setData(items);
-  //   };
-  //   fetchUsers();
-  // }, []);
+    const call = async  () => {
+        const data = await  api.getREQUEST("fetchAll/jobs/4/0" )
+        setJobs(data);
+    }
+    useEffect(() => {
+        // call()
+    } , [])
+
 
   return (
       <>
@@ -152,13 +146,18 @@ const item = localStorage.getItem("data");
                       </button>
                     </div>
                   </div>
-                  <div className={home.jobsCardsSection}></div>
                   <section className={home.jobS}>
-                    <JobCard />
-                    <JobCard />
-                    <JobCard />
-                    <JobCard />
-                    <JobCard />
+                    {jobs?.map((e) => {
+                        return <JobCard  
+                            jobtype={e.Title}
+                            id={e._id}
+                            location={`${e.company&&e.company?.Address[0].city} , ${e.company&&e.company?.Address[0].state}`}
+                            postedtime={e.JobPostedTime.split("T")[0]}
+                            salary={e.Salary}
+                            title={e.Title}
+                            companyLogo={e.company&&e.company.Logo}
+                        />
+                    })}
                   </section>
                 </section>
                 <section className={home.section3}>

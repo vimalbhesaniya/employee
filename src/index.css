@@ -349,6 +349,9 @@
     max-width: 100px;
 }
 
+.appImage{
+    width: 100%;
+}
 
 /* Firefox (uncomment to work in Firefox, although other properties will not work!)  */
 /** {
@@ -363,7 +366,7 @@
   }
   *::-webkit-scrollbar-track {
     border-radius: 5px;
-    background-color: #DFE9EB;
+    /* background-color: #DFE9EB; */
   }
   
   *::-webkit-scrollbar-track:hover {
@@ -386,3 +389,5 @@
   *::-webkit-scrollbar-thumb:active {
     background-color: #1C86C1;
   }
+
+  
