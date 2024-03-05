@@ -8,7 +8,7 @@ const BasicInfo = ({firstName , lastName , profession , city , state , descripti
                 <h5 className="my-3 ">{firstName} {lastName}</h5>
                 <p className="text-muted mb-1">{profession}</p>
                 <p className="text-muted mb-4">{state}, {city}</p>
-                <p className="text-muted text-center ">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempora, quasi, ratione rerum iste numquam omnis fuga beatae porro suscipit animi est ut earum quam consectetur itaque delectus nihil tempore nostrum!</p>
+                <p className="text-muted text-center ">{description}</p>
             </div>
         </div>
     )

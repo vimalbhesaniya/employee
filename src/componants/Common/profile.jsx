@@ -5,7 +5,7 @@ import BasicInfo from "../Profile/BasicInfo";
 import Title from "../Profile/Title";
 import Skills from "../Profile/Skills";
 import SensetiveInfo from "../Profile/SensetiveInfo";
-import EditProfile from "../Profile/EditProfile";
+import EditProfile from "../Profile/Apply";
 import GlobalModel from "../../Global/GlobalModel";
 import EditProfileForm from "../Profile/EditProfileForm";
 import DataContainer from "../Profile/DataContainer";
@@ -30,7 +30,7 @@ const Profile = () => {
         const data = await api.getREQUEST(`profile/${Cookies.get("id")}`);
         if (data[0]) {
             setProfile(data[0]);
-            console.log(profile);
+            console.log(data);
         }
     }, [api]);
 
@@ -54,6 +54,7 @@ const Profile = () => {
                                 <BasicInfo
                                     firstName={profile.firstName}
                                     lastName={profile.lastName}
+                                    description={profile.description}
                                     profileImage={profile.profileImage}
                                     profession={profile.profession}
                                     city={

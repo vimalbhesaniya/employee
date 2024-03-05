@@ -1,40 +1,62 @@
-import React from 'react'
-import job from "../../Style/jobCard.module.css"
+import React, { useEffect, useState } from "react";
+import job from "../../Style/jobCard.module.css";
+import GlobalModel from "../../Global/GlobalModel";
 
 const JobCard = ({
-    logo,
-    cName,
-    postedDate,
-    cardJobPosition,
-    type,
-    city,
-    state,
-    salary
+    onCardClick,
+    id,
+    title,
+    jobtype,
+    location,
+    setModel,
+    salary,
+    postedtime,
+    viewJob,
+    companyLogo,
 }) => {
     return (
         <>
-            <div className={"container"}>
-                <div class="row g-4">
-                    <div class="col-sm-12 col-md-6 d-flex align-items-center">
-                        <img class="flex-shrink-0 img-fluid border rounded" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8dXNlciUyMHByb2ZpbGV8ZW58MHx8MHx8fDA%3D" alt="" style={{ width: "80px", height: "80px", }} />
-                        <div class="text-start ps-4">
-                            <h5 class="mb-3">Software Engineer</h5>
-                            <span class="text-truncate me-3"><i class="fa fa-map-marker-alt text-primary me-2"></i>New York, USA</span>
-                            <span class="text-truncate me-3"><i class="far fa-clock text-primary me-2"></i>Full Time</span>
-                            <span class="text-truncate me-0"><i class="far fa-money-bill-alt text-primary me-2"></i>$123 - $456</span>
+            <div className={viewJob == id ? `${job.box} active` : `${job.box}`} onClick={() => onCardClick(id)}>
+                <div className={job.left}>
+                    <div className={job.Logo}>
+                        <img src={companyLogo} height={100}
+                            className="rounded-3"
+                            onError={(e) => e.target.src = "https://st2.depositphotos.com/1065578/7533/i/450/depositphotos_75333451-stock-photo-abstract-geometric-company-logo.jpg"} width={100} alt="" />
+                    </div>
+                    <div className={job.Details}>
+                        <div className={job.header}>
+                            <h2>{title}</h2>
+                        </div>
+                        <div className={job.basicdetails}>
+                            <div className="d-flex gap-2 justify-content-lg-start   align-content-center ">
+                                <i className="fa fa-location-dot mt-1 "></i>
+                                <span>{location}</span>
+                            </div>
+                            <div className="d-flex gap-2 justify-content-lg-start   align-content-center ">
+                                <i class="fa-regular fa-clock mt-1"></i>
+                                <span>{jobtype}</span>
+                            </div>
+                            <div className="d-flex gap-2 justify-content-lg-start   align-content-center ">
+                                <i class="fa-solid fa-indian-rupee-sign mt-1"></i>
+                                <span>{salary}</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-sm-12 col-md-6 d-flex flex-column align-items-start align-items-md-end justify-content-center">
-                        <div class="d-flex mb-3">
-                            <a class="btn bgbtn btn-square me-3" href=""><i class="far fa-heart text-primary"></i></a>
-                            <a className={`btn ${job.bgbtn}`} href="">Apply Now</a>
-                        </div>
-                        <small class="text-truncate"><i class="far fa-calendar-alt text-primary me-2"></i>Date Line: 01 Jan, 2045</small>
+                </div>
+                <div className={job.right}>
+                    <div>
+                        <button className="btn bgbtn" onClick={() => {
+                            localStorage.setItem("appliedID" , id)
+                            setModel(true)
+                        }}>Apply now</button>
+                    </div>
+                    <div>
+                        <span>{postedtime}</span>
                     </div>
                 </div>
             </div>
         </>
-    )
-}
+    );
+};
 
-export default JobCard
+export default JobCard;

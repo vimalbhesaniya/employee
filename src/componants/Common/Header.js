@@ -28,7 +28,7 @@ const Header = () => {
 
     return (
         <>
-            {showNotification ? <GlobalModel  handleButtonClick={handleButtonClick} /> : ""}
+            {showNotification ? <GlobalModel handleButtonClick={handleButtonClick} /> : ""}
             <div className={css.navbar}>
                 <div className={css.navbarContainer}>
                     <div className={css.Logo}>
@@ -66,6 +66,17 @@ const Header = () => {
                         >
                             <Link className={css.navLink} to={"/nearbyusers"}>
                                 My Applications
+                            </Link>
+                        </div>
+                        <div
+                            className={
+                                window.location.pathname === `/jobs`
+                                    ? `${css.navLinkActive}`
+                                    : `${css.navLinkBox}`
+                            }
+                        >
+                            <Link className={css.navLink} to={"/jobs"}>
+                                Jobs
                             </Link>
                         </div>
                     </div>
@@ -114,7 +125,7 @@ const Header = () => {
                                         : `${css.navLinkBox}`
                                 }
                             >
-                                <Link className={css.navLink} to={"/profile"}>
+                                <Link className={`${css.navLink} `} to={"/profile"}>
                                     <i class="fa-solid fa-user"></i>
                                 </Link>
                             </div>
@@ -203,13 +214,13 @@ const Header = () => {
                         </div>
                         <div
                             className={
-                                window.location.pathname == `/applications`
+                                window.location.pathname == `/jobs`
                                     ? `${css.navLinkActive}`
                                     : `${css.navLinkBox}`
                             }
                         >
-                            <Link className={css.navLink} to={"/applications"}>
-                                <i class="fa-solid fa-shop"></i>
+                            <Link className={css.navLink} to={"/jobs"}>
+                            <i class="fa-solid fa-briefcase"></i>
                             </Link>
                         </div>
                         <div
@@ -220,7 +231,7 @@ const Header = () => {
                             }
                         >
                             <Link className={css.navLink} to={"/profile"}>
-                                <i class="fa-solid fa-user"></i>
+                                <i class="fa-solid fa-users"></i>
                             </Link>
                         </div>
                         <div

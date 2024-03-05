@@ -20,7 +20,7 @@
 }
 
 .data-item {
-    flex: 1/2 0 100%;
+    flex: 0 0 100%;
     padding: 10px;
     background-color: rgb(255, 255, 255);
     border-radius: 10px;
