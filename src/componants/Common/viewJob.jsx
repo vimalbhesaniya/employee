@@ -1,6 +1,7 @@
 import React from 'react'
 import "../../Style/jobview.css"
-const ViewJob = ({ setViewJob, viewJob, visible, setVisible  , data}) => {
+const   ViewJob = ({ setViewJob, viewJob, visible, setVisible  , data}) => {
+    console.log(data);
     return (
         <>
             <div className={"view container z-3 "}  >
@@ -16,19 +17,19 @@ const ViewJob = ({ setViewJob, viewJob, visible, setVisible  , data}) => {
                         <div class="col-12">
                             <div class="sec1-box">
                                 <div class="d-flex justify-content-between">
-                                    <h3 className='fs-4'>Online Web Store Builder (Shopify)</h3>
+                                    <h3 className='fs-4'>{data.company.Industry}</h3>
                                     <div class="icon-box">
                                         <a href="" class="text-decoration-none text-dark"><i class="bx bx-dots-horizontal-rounded d-block fs-1"></i></a>
                                     </div>
                                 </div>
                                 <div class="d-flex align-items-center flex-lg-row flex-md-row flex-sm-row flex-row flex-wrap">
-                                    <span>DCX PH Inc. </span>
-                                    <span>Philippines</span>
+                                    <span>{data.company.Name} </span>
+                                    <span>{data.company.Address[0].personalAddress}</span>
                                     <span> 3 hours ago</span>
                                     <span>13 applicants</span>
                                 </div>
                                 <ul>
-                                    <li><i class="fa fa-briefcase"></i>Remote Full-time</li>
+                                    <li><i class="fa fa-briefcase"></i>{data.Position}</li>
                                     <li><i class="fa fa-building"></i>201-500 employees</li>
                                     <li><i class="fa fa-list-check"></i><a href="">Skills: Shopify, Project Management, +4 more</a></li>
                                     <li><i class="fa fa-shield-halved"></i>Job poster joined LinkedIn in 2019</li>
@@ -46,16 +47,17 @@ const ViewJob = ({ setViewJob, viewJob, visible, setVisible  , data}) => {
                             <div class="sec2-box mt-3">
                                 <h2 class="fs-4">About the job</h2>
                                 <div class="strong-box">
-                                    <strong>Senior Backend Developer (Node.js) - 2.5 to 4 Years Experience</strong>
-                                    <strong>Position: Senior Backend Developer (Node.js) </strong>
-                                    <strong>Location: Ahmedabad, Gujarat </strong>
+                                    <strong>{data.Title} - {data.Experience} Experience</strong>
+                                    <strong>Position: {data.Title}</strong>
+                                    <strong>Location: { data.company.Address[0].state} </strong>
                                 </div>
                                 <div class="about-box">
                                     <p>Overview</p>
                                     <ul class="about-ul">
                                         <li>
-                                            As a Senior Backend Developer at Navkar, you will be an integral part of our development team, contributing to the design, development, and
-                                            optimization of our smart messaging and communication platform.
+                                            {/* As a Senior Backend Developer at Navkar, you will be an integral part of our development team, contributing to the design, development, and
+                                            optimization of our smart messaging and communication platform. */}
+                                            {data.Description.JobDescription}
                                         </li>
                                         <li>
                                             Your primary focus will be on the backend, utilizing your expertise in Node.js and related technologies to build efficient, scalable, and reliable
@@ -64,6 +66,7 @@ const ViewJob = ({ setViewJob, viewJob, visible, setVisible  , data}) => {
                                     </ul>
                                     <p>Key Responsibilities:</p>
                                     <ul class="about-ul">
+                                        <li>{data.Description.TechnicalDescription}</li>
                                         <li>In-depth knowledge in JavaScript including ES6+ and Typescript</li>
                                         <li>Expert in Node.js and frameworks available for it such as express, etc</li>
                                         <li>Expert in node.js file system, HTTP module, Events, etc</li>
