@@ -1,6 +1,6 @@
 import React from 'react'
 import "../../Style/profile.css"
-const DataContainer = ({university,school,institution_name,degreelevel,SDOS,EDOS,GPA,certificates,onlinecourses}) => {
+const Peoples = ({university,school,institution_name,degreelevel,SDOS,EDOS,GPA,certificates,onlinecourses}) => {
     return (
         <>
             <div class="dataContainer">
@@ -24,7 +24,7 @@ const DataContainer = ({university,school,institution_name,degreelevel,SDOS,EDOS
                     <p className="data-title">Start Date of School </p>
                     <p className="data-item-info">{SDOS}</p>
                 </div>
-                <div class="data-item">
+                {/* <div class="data-item">
                     <p className="data-title">End Date of School </p>
                     <p className="data-item-info">{EDOS}</p>
                 </div>
@@ -39,10 +39,10 @@ const DataContainer = ({university,school,institution_name,degreelevel,SDOS,EDOS
                 <div class="data-item">
                     <p className="data-title">Online Courses</p>
                     <p className="data-item-info">{onlinecourses}</p>
-                </div>
+                </div> */}
             </div>
         </>
     )
 }
 
-export default DataContainer
+export default Peoples
