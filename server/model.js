@@ -129,20 +129,16 @@ const CompanySchema = new mongoose.Schema({
     Logo: { type: String, required: false },
     TagLine: { type: String, required: false },
     Websites: { type: [String] },
-    Contact: { type: String, required: false },
-    Years: { type: String, required: false },
-    Project: { type: [String], require: false },
-    Description: { type: String, required: false },
+    establishedYear: { type: String, required: false },
+    Description: { type: [String], required: false },
     secretKey: { type: String, required: false },
     OwnerDetail: {
         Name: { type: String, required: false },
         EmailID: { type: String, required: false },
-        Contact: { type: String, required: false }
     },
     HRDetail: {
         Name: { type: String, required: false },
         EmailID: { type: String, required: false },
-        Contact: { type: String, required: false }
     }
 });
 
@@ -175,7 +171,10 @@ const SavedJobSchema = new mongoose.Schema({
 const ConnectionSchema = new mongoose.Schema({
     companyId: { type: mongoose.Schema.Types.ObjectId, ref: "companies", autopopulate: true },
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "users", autopopulate: true },
-    status: { type: String, enum: ["Accepted", "Rejected", "Pending", "Done"] }
+})
+const userFollowSchema = new mongoose.Schema({
+    userId : { type: mongoose.Schema.Types.ObjectId, ref: "users", autopopulate: false },
+    targetId : { type: [mongoose.Schema.Types.ObjectId], ref: "users", autopopulate: false },
 })
 
 const JobApplicationsSchema = new mongoose.Schema({
@@ -192,6 +191,7 @@ JobSchema.plugin(require("mongoose-autopopulate"))
 SavedJobSchema.plugin(require("mongoose-autopopulate"))
 ConnectionSchema.plugin(require("mongoose-autopopulate"))
 JobApplicationsSchema.plugin(require("mongoose-autopopulate"))
+userFollowSchema.plugin(require("mongoose-autopopulate"))
 
 const User = mongoose.model("users", UserSchema);
 const Company = mongoose.model("companies", CompanySchema);
@@ -199,5 +199,7 @@ const JobPost = mongoose.model("jobs", JobSchema);
 const SavedJob = mongoose.model("savedjobs", SavedJobSchema);
 const Connection = mongoose.model("connections", ConnectionSchema);
 const JobApplications = mongoose.model("jobapplications", JobApplicationsSchema)
+const UserFollow = mongoose.model("userFollow" , userFollowSchema);
 
-module.exports = { User, Company, JobPost, SavedJob, Connection, JobApplications };
+
+module.exports = { User, Company, JobPost, SavedJob, Connection, JobApplications  , UserFollow};

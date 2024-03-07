@@ -244,6 +244,15 @@
     color: #FAFAFA;
 }
 
+.followBtn{
+    background-color: #23a5f0a1;
+    color: white;
+}
+.followBtn:hover{
+    background-color: #23A6F0;
+    color: var(--dark-background-color);
+}
+
 .center{
     display: flex;
     justify-content: center;

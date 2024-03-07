@@ -13,13 +13,10 @@ import Lottie from "lottie-react";
 import NavbarBeforeLogin from "../componants/login/NavbarBeforeLogin";
 import ResetPassword from "../componants/login/ResetPassword";
 import { EnableSpinner } from "..";
-import serverERROR from "../assets/serverERROR";
 import useAPI from "../Hooks/USER/useAPI";
 
 const LoginAsUser = ({ setScreen }) => {
-    const x = new Date();
     const api = useAPI();
-    const firebase = getApp()
     const navigate = useNavigate();
     
     const [setSpinnerState, spinner] = useContext(EnableSpinner)
@@ -36,6 +33,8 @@ const LoginAsUser = ({ setScreen }) => {
         if (email.length >= 2 && password.length >= 2) {
             const RESPONSE = await api.postREQUEST("login", JSON.stringify({ email, password }));
             if(RESPONSE?.data) {
+                const userId = RESPONSE.id
+                await api.postREQUEST("userWhoPerformFollow", JSON.stringify({ userId }));
                 Cookies.set("id"  ,RESPONSE.id)
                 Cookies.set("token" ,RESPONSE.token)
                 localStorage.setItem("data",JSON.stringify(RESPONSE.data));

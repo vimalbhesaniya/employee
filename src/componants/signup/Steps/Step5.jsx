@@ -71,8 +71,6 @@ const Step5 = ({ setScreen }) => {
     );
 
     const handleSubmit = useCallback(async () => {
-        if (isFresher) {
-            alert("called")
             const id = localStorage.getItem("upd_id");
             const data = await api.patchREQUEST("updateDetails", "users", id, {
                 experience: [
@@ -90,9 +88,6 @@ const Step5 = ({ setScreen }) => {
                 ],
             });
             setScreen("step6");
-        } else {
-            setScreen("step6");
-        }
     }, [
         jobTitle,
         companyName,
@@ -211,12 +206,8 @@ const Step5 = ({ setScreen }) => {
             button2={
                 <FormButton
                     className={
-                        isFresher === isValidateStep5
-                            ? "--btnDisabled"
-                            : "--btn"
-                    }
-                    isDisabled={
-                        isFresher ? isValidateStep5 : !isValidateStep5
+                        
+                             "--btn"
                     }
                     text={"Next"}
                     onClick={() => {

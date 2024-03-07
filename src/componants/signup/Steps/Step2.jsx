@@ -50,7 +50,8 @@ const Step2 = ({ setScreen }) => {
         
         const handleSubmit =  useCallback(async () => {
             const id = localStorage.getItem("upd_id");
-            const data  =await api.patchREQUEST("updateDetails" , "users" , id ,{firstName , lastName , profileImage})
+            const data  =await api.patchREQUEST("updateDetails" , "users" , { _id : id } ,{firstName , lastName , profileImage})
+            console.log(data);
             setScreen("step3")
     } , [firstName , lastName , profileImage])
     

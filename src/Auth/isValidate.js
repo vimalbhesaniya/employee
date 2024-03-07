@@ -44,7 +44,6 @@ export const isValidStep4 = (institutionName, endDateSchool, startDateSchool) =>
   }
 };
 export const isValidStep5 = (jobTitle  , companyName , startDateWork , endDateWork , responsibilities , achievements) => {
-
   const schema = Joi.string().required().min(2)
   const schema1 = Joi.string().required().min(2)
   const schema4 = Joi.string().required().min(2)
@@ -59,8 +58,9 @@ export const isValidStep5 = (jobTitle  , companyName , startDateWork , endDateWo
   let result4 = schema4.validate(responsibilities);
   let result5 = schema5.validate(achievements);
   
-   if (result.error ) {
-    return false;
+    
+      if (result.error ) {
+          return false;
    }
    else if(result1.error)
    {
@@ -76,14 +76,15 @@ export const isValidStep5 = (jobTitle  , companyName , startDateWork , endDateWo
    }
    else if(result4.error)
    {
-    return false;
-   }
-   else if(result5.error)
-   {
-    return false;
-   }
-   else 
-   return true;
+       return false;
+    }
+    else if(result5.error)
+    {
+        return false;
+    }
+    else 
+    return true;
+
 };
 export const isValidStep6 = (skills , profession , langauges ) => {
 
