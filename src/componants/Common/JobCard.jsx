@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import job from "../../Style/jobCard.module.css";
 import GlobalModel from "../../Global/GlobalModel";
+import { ActiveModal } from "../..";
 
 const JobCard = ({
     onCardClick,
@@ -14,9 +15,10 @@ const JobCard = ({
     viewJob,
     companyLogo,
 }) => {
+    const [activeModalState , setActiveModalState] = useContext(ActiveModal);
     return (
         <>
-            <div className={viewJob == id ? `${job.box} active` : `${job.box}`} onClick={() => onCardClick(id)}>
+            <div className={`${job.box}`} onClick={() => onCardClick(id)}>
                 <div className={job.left}>
                     <div className={job.Logo}>
                         <img src={companyLogo} height={100}
@@ -47,7 +49,7 @@ const JobCard = ({
                     <div>
                         <button className="btn bgbtn" onClick={() => {
                             localStorage.setItem("appliedID" , id)
-                            setModel(true)
+                            setActiveModalState("ApplyForm")
                         }}>Apply now</button>
                     </div>
                     <div>

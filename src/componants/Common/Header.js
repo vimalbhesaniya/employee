@@ -1,20 +1,17 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import css from "../../Style/navbar.module.css";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import "animate.css";
+import { ActiveModal } from "../..";
 import img from "../../logo/2.png";
 import { act } from "react-dom/test-utils";
 import Notifications from "./Notifications";
 import GlobalModel from "../../Global/GlobalModel";
 const Header = () => {
     const navigate = useNavigate();
+    const [activeModalState  ,setActiveModalState] = useContext(ActiveModal)
     const [active, setActive] = useState(false);
-    const [showNotification, setShowNotification] = useState(false);
-
-    const handleButtonClick = () => {
-        setShowNotification(!showNotification);
-    };
 
     const performLogOut = () => {
         const ok = window.confirm("Are you sure?");
@@ -28,7 +25,6 @@ const Header = () => {
 
     return (
         <>
-            {showNotification ? <GlobalModel handleButtonClick={handleButtonClick} /> : ""}
             <div className={css.navbar}>
                 <div className={css.navbarContainer}>
                     <div className={css.Logo}>
@@ -53,8 +49,8 @@ const Header = () => {
                                     : `${css.navLinkBox}`
                             }
                         >
-                            <Link className={css.navLink} to={"/search"}>
-                                Companies
+                            <Link className={css.navLink} to={"/network"}>
+                                My Network
                             </Link>
                         </div>
                         <div
@@ -104,16 +100,10 @@ const Header = () => {
                                     <i class="fa-solid fa-bookmark"></i>
                                 </Link>
                             </div>
-                            <div
-                                className={
-                                    window.location.pathname === `/notificaitons`
-                                        ? `${css.navLinkActive}`
-                                        : `${css.navLinkBox}`
-                                }
-                            >
+                            <div className={`${css.navLinkBox}`}>
                                 <button
                                     className={css.navLinkBtn}
-                                    onClick={handleButtonClick}
+                                    onClick={()=>setActiveModalState("notifications")}
                                 >
                                     <i class="fa-solid fa-bell"></i>
                                 </button>
@@ -154,7 +144,7 @@ const Header = () => {
                                 >
                                     <button
                                         className={css.navLinkBtn}
-                                        onClick={handleButtonClick}
+                                        // onClick={() =>}
                                     >
                                         <i class="fa-solid fa-bell"></i>
                                     </button>

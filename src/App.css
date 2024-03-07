@@ -62,6 +62,7 @@
 
 .home-- {
     width: 100%;
+    overflow: scroll;
     height: calc(100vh - 100px);
 
 }

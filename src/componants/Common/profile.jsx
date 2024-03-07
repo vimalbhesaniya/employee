@@ -30,7 +30,6 @@ const Profile = () => {
         const data = await api.getREQUEST(`profile/${Cookies.get("id")}`);
         if (data[0]) {
             setProfile(data[0]);
-            console.log(data);
         }
     }, [api]);
 
@@ -46,8 +45,8 @@ const Profile = () => {
                 ) : (
                     ""
                 )}
-                <section style={{ backgroundColor: "#eee" }} className="mt-5">
-                    <div className="container py-5">
+                <section style={{ backgroundColor: "#eee"  }} className="mt-5" >
+                    <div className="container py-5" >
                         <Title title={"User Profile"} />
                         <div className="row">
                             <div className="col-lg-4">
@@ -82,17 +81,17 @@ const Profile = () => {
                                 </div>
                                 <div className="d-flex justify-content-center align-items-center gap-3 mt-2 mb-2">
                                     <div>
-                                        <span className="datainfoNavigator" onClick={() => setScreen("education")}>
+                                        <span className={screen== "education" ? "setActive datainfoNavigator" : "datainfoNavigator"} onClick={() => setScreen("education")}>
                                             Education
                                         </span>
                                     </div>
                                     <div>
-                                        <span className="datainfoNavigator" onClick={() => setScreen("experience")}>
+                                        <span className={screen== "experience" ? "setActive datainfoNavigator" : "datainfoNavigator"} onClick={() => setScreen("experience")}>
                                             Experience
                                         </span>
                                     </div>
                                     <div>
-                                        <span className="datainfoNavigator" onClick={() => setScreen("peoples")}>
+                                        <span className={screen== "peoples" ? "setActive datainfoNavigator" : "datainfoNavigator"} onClick={() => setScreen("peoples")}>
                                             Peoples
                                         </span>
                                     </div>

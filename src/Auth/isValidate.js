@@ -102,3 +102,12 @@ export const isValidStep6 = (skills , profession , langauges ) => {
 
 };
 
+export const isValidApplication =(number , email) => {
+    console.log(number.length);
+    const numberRegex = /^[0-9]{10}$/; 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; 
+    if (number.match(numberRegex)) {
+        return true
+    }
+}
+

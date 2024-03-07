@@ -157,6 +157,10 @@ const JobSchema = new mongoose.Schema({
     Experience: { type: String, required: false },
     JobType: { type: String, required: false },
     Salary: { type: String, required: false },
+    Responsiblities : [String],
+    Overview : [String],
+    Qualificaion :[String],
+    Benifits:[String],
     company: { type: mongoose.Schema.Types.ObjectId, ref: "companies", autopopulate: true }
 });
 

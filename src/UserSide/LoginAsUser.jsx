@@ -39,6 +39,7 @@ const LoginAsUser = ({ setScreen }) => {
                 Cookies.set("id"  ,RESPONSE.id)
                 Cookies.set("token" ,RESPONSE.token)
                 localStorage.setItem("data",JSON.stringify(RESPONSE.data));
+                toast.success("Login Successfully")
                 navigate("/home");
             } else {
                 console.log(RESPONSE)

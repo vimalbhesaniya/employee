@@ -1,14 +1,17 @@
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { ToggleEdit } from '../Common/profile'
+import FollowersModel from './FollowersModel'
+import { ActiveModal } from '../..'
 const SensetiveInfo = ({ personalAddress, langauge }) => {
+    const [activeModalState  ,  setActiveModalState ] = useContext(ActiveModal)
     const [isEditProfile, setIsEditProfile] = useContext(ToggleEdit)
     return (
         <div className="card-body">
             <div className="container">
                 <div className=" d-flex justify-content-between mb-2">
-                    <p className="" style={{ fontSize: "2.8cqmin", whiteSpace: "nowrap" }} >Followers 320</p>
-                    <p className="" style={{ fontSize: "2.8cqmin", whiteSpace: "nowrap" }}>Following  340</p>
-                    <p className="" style={{ fontSize: "2.8cqmin", whiteSpace: "nowrap" }} >Connections 340</p>
+                    <p className="hand" style={{ fontSize: "2.8cqmin", whiteSpace: "nowrap" }}  onClick={() => setActiveModalState("Followers")} >Followers 320</p>
+                    <p className="hand" style={{ fontSize: "2.8cqmin", whiteSpace: "nowrap" }} onClick={() => setActiveModalState("Followings")}>Following  340</p>
+                    <p className="hand" style={{ fontSize: "2.8cqmin", whiteSpace: "nowrap" }} onClick={() => setActiveModalState("connections")}>Connections 340</p>
                 </div>
                 <div className=" d-flex justify-content-between mb-2">
                     <button type="button" className="btn bgbtn" onClick={() => setIsEditProfile(true)} >Edit profile</button>
@@ -45,3 +48,5 @@ const SensetiveInfo = ({ personalAddress, langauge }) => {
 }
 
 export default SensetiveInfo
+
+

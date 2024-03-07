@@ -1,7 +1,6 @@
 import React from 'react'
 import "../../Style/jobview.css"
-const   ViewJob = ({ setViewJob, viewJob, visible, setVisible  , data}) => {
-    console.log(data);
+const ViewJob = ({ setViewJob, viewJob, visible, setVisible, data }) => {
     return (
         <>
             <div className={"view container z-3 "}  >
@@ -49,7 +48,7 @@ const   ViewJob = ({ setViewJob, viewJob, visible, setVisible  , data}) => {
                                 <div class="strong-box">
                                     <strong>{data.Title} - {data.Experience} Experience</strong>
                                     <strong>Position: {data.Title}</strong>
-                                    <strong>Location: { data.company.Address[0].state} </strong>
+                                    <strong>Location: {data.company.Address[0].state} </strong>
                                 </div>
                                 <div class="about-box">
                                     <p>Overview</p>

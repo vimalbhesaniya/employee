@@ -20,11 +20,12 @@
     height: auto;
     position: fixed;
     width: 100%;
+    backdrop-filter: blur(20px);
     z-index: 10000000;
     font-size: 14px;
     padding: 0 10px;
     align-items: center;
-    background-color: whitesmoke;
+    background-color: rgba(255, 255, 255, 0.176);
     border-bottom: 0.2px solid rgba(135, 121, 121, 0.405);
 }
 

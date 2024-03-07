@@ -10,6 +10,7 @@ import Signup from "./componants/signup/Signup";
 import Jobs from "./componants/Common/Jobs";
 import NotFound from "./componants/Common/Notfound";
 import Check from "./Auth/check";
+import RenderModal from "./render-model/RenderModal";
 import Nearbyusers from "./componants/Common/nearbyusers";
 import Profile from "./componants/Common/profile";
 import Search from "./componants/Common/search";
@@ -20,21 +21,37 @@ import TermAndConditions from "./componants/Footers/TermAndConditions";
 import GetHelp from "./componants/Footers/GetHelp";
 import SearchSection from "./componants/Common/SearchSection";
 import SavedJobsPage from "./componants/Common/SavedJobsPage";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, Slide } from "react-toastify";
+import ListUsers from "./UserSide/ListUsers";
 
 const App = () => {
     const [modell, setModell] = useState(false);
     return (
         <>
+
             {modell ? <MyModel setModell={setModell}></MyModel> : ""}
             <BrowserRouter>
-                <ToastContainer limit={1} />
+                <ToastContainer
+                    style={{ zIndex: "10000000000" }}
+                    position="bottom-left"
+                    autoClose={2000}
+                    limit={1}
+                    hideProgressBar
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss={false}
+                    draggable
+                    pauseOnHover
+                    transition={Slide}
+                />
                 <Routes>
                     <Route element={<Layout />}>
                         <Route path="/home" element={<Home setModell={setModell} />} />
                         <Route path="/nearbyusers" element={<Nearbyusers />} />
                         <Route path="/profile" element={<Profile />} />
                         <Route path="/postajob" element={<Postajob />} />
+                        <Route path="/network" element={<ListUsers />} />
                         <Route path="/saved" element={<SavedJobsPage />} />
                         <Route path="/search" element={<SearchSection />} />
                         <Route path={"/jobs/:id"} element={<Jobs />} />

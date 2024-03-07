@@ -3,16 +3,13 @@ import ViewJob from "../componants/Common/viewJob";
 import "../Style/jobview.css";
 import JobCard from "../componants/Common/JobCard";
 import useAPI from "../Hooks/USER/useAPI";
-import GlobalModel from "../Global/GlobalModel";
 import Apply from "../componants/Profile/Apply";
 const JobsList = () => {
 
     const [jobs, setJobs] = useState([]);
     const [viewJob, setViewJob] = useState("");
     const [visible, setVisible] = useState(false);
-    const [model , setModel] = useState(false);
     const [keyword, setKeyword] = useState("");
-    const [appliedJob , setAppliedJob] = useState("");
 
     const api = useAPI();
 
@@ -54,7 +51,6 @@ const JobsList = () => {
 
     return (
         <>
-            {model&&<GlobalModel modelName={<Apply  setModel={setModel}  />}/>}
             <div className="container" style={{marginTop:"100px"}}>
                 <div className="row-jobList">
                     <div className="col-jobList">
@@ -93,7 +89,7 @@ const JobsList = () => {
                 </div>
             </div>
 
-            <div className="container allJobs">
+            <div className="container allJobs"> 
                 <div className="jobCard mt-5 gap-2 d-flex flex-column ">
                     {jobs?.map((e) => {
                         return (
@@ -103,7 +99,6 @@ const JobsList = () => {
                                     setVisible={setVisible}
                                     visible={visible}
                                     viewJob={viewJob}
-                                    setModel={setModel}
                                     jobtype={e.JobType}
                                     id={e._id}
                                     location={`${e.company && e.company?.Address[0].city

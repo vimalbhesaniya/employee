@@ -9,6 +9,9 @@
 
 /* Your custom CSS can go here */
 
+:root{
+    overflow: hidden;
+}
 
 .bodyTermPage {
     font-family: 'Arial', sans-serif;
@@ -353,16 +356,14 @@
     width: 100%;
 }
 
-/* Firefox (uncomment to work in Firefox, although other properties will not work!)  */
-/** {
-  scrollbar-width: thin;
-  scrollbar-color: #23A6F0 #DFE9EB;
-}*/
+.hand{
+    cursor: pointer;
+}
 
-/* Chrome, Edge and Safari */
+
 *::-webkit-scrollbar {
     height: 10px;
-    width: 10px;
+    width: 5px;
   }
   *::-webkit-scrollbar-track {
     border-radius: 5px;

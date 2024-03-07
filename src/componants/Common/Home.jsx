@@ -21,11 +21,11 @@ const  api = useAPI();
 const [jobs,setJobs ] = useState([]);
 
     const call = async  () => {
-        const data = await  api.getREQUEST("fetchAll/jobs/4/0" )
+        const data = await  api.getREQUEST("fetchAll/jobs/6/0" )
         setJobs(data);
     }
     useEffect(() => {
-        // call()
+        call()
     } , [])
 
 
