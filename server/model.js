@@ -174,7 +174,7 @@ const ConnectionSchema = new mongoose.Schema({
 })
 const userFollowSchema = new mongoose.Schema({
     userId : { type: mongoose.Schema.Types.ObjectId, ref: "users", autopopulate: false },
-    targetId : { type: [mongoose.Schema.Types.ObjectId], ref: "users", autopopulate: false },
+    targetId : { type: [mongoose.Schema.Types.ObjectId], ref: "users", autopopulate: true },
 })
 
 const JobApplicationsSchema = new mongoose.Schema({

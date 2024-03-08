@@ -62,7 +62,6 @@ const useAPI = () => {
     
     
     const patchREQUEST = useCallback(async (PATH,COLLECTION_NAME  ,_id, COLUMNS ) => {
-        setSpinnerState(true);
         try {
             const RESPONSE = await fetch(`${process.env.REACT_APP_LOCAL_URL}${PATH}`,
                 {
@@ -78,9 +77,6 @@ const useAPI = () => {
                     })
                 })
             const data = await RESPONSE.json();
-            if (data) {
-                setSpinnerState(false);
-            }
             setData(data);
             return data
         }

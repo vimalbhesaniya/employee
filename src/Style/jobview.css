@@ -4,12 +4,32 @@
     flex-direction: column;
 }
 
+.HOVER{
+    padding: 10px;
+    cursor: pointer;
+    transition: 1s;
+    background-color: #e6e6e6;
+}
+
+.HOVER:hover{
+    background-color: rgba(93, 92, 92, 0.374) !important;
+}
+
 .sec1-box div {
     gap: 10px;
 }
 
 .sec1-box div span {
     display: block;
+}
+
+
+.doanimate{
+transition: 1s all;
+}
+
+.HOVER:hover .doanimate{
+    transform: translateX(5px);
 }
 
 .sec1-box span:nth-child(1):hover {
