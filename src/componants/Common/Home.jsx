@@ -140,7 +140,7 @@ const navigat = useNavigate()
                       </p>
                     </div>
                     <div  className={home.contentRight2}>
-                      <button onClick={navigat("/jobs")} className={home.button}>
+                      <button onClick={() =>navigat("/jobs")} className={home.button}>
                         See all jobs
                         <div className={home.hoverEffect}>
                           <div ></div>
