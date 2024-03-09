@@ -2,10 +2,12 @@ import React, { useCallback, useEffect, useState } from "react";
 import "../Style/jobview.css";
 import useAPI from "../Hooks/USER/useAPI";
 import Cookies from "js-cookie";
+import Card from "./Components/Card";
 
 const ListUsers = () => {
     const [keyword, setKeyword] = useState("");
     const [user, setUser] = useState([]);
+    const [followingId , setFollowingId] = useState([]); 
     const [filterUser, setFilterUser] = useState([]);
     const [followedUser, setFollowedUser] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -32,10 +34,16 @@ const ListUsers = () => {
                 }
 
             );
-            if (users) {
-                setLoading(false)
-            }
             setFollowedUser(users);
+            setFollowingId((prev)=>{
+                if(prev.includes(targetId))
+                {
+                    return prev
+                }
+                else{
+                    return [...prev, targetId]
+                }
+            })
         };
         UpdateFollow();
     }, []);
@@ -58,66 +66,24 @@ const ListUsers = () => {
                     </div>
                 </div>
             </div>
-            
+
             <div className="container card">
-        
                 <div className="card---container">
-                    {user?.map((e) => (
-                        <div className="card---body card ">
-                            <div className="card---picture">
-                                <img
-                                    src={e?.profileImage}
-                                    className="card---img"
-                                    alt=""
-                                    onError={(e) =>
-                                    (e.target.src =
-                                        "https://isobarscience-1bfd8.kxcdn.com/wp-content/uploads/2020/09/default-profile-picture1.jpg")
-                                    }
-                                />
-                            </div>
-                            <div className="card---header">
-                                <div>
-                                    <span className="text-muted fw-semibold">
-                                        {e.firstName} {e.lastName}
-                                    </span>
-                                </div>
-                                <div>
-                                    <span style={{ fontSize: "13px" }}>
-                                        Web Developer
-                                    </span>
-                                </div>
-                                <div style={{ lineHeight: 1 }}>
-                                    <span style={{ fontSize: "12px" }}>
-                                        student at Veer Narmad South Gujarat
-                                        Univercity
-                                    </span>
-                                </div>
-                                <div className="row">
-                                    {
-                                        loading ? <button
-                                        className="btn followBtn p-2 mt-2"
-                                        onClick={() =>
-                                            handleFollowButton(e._id)
-                                        }
-                                    >
-                                        Following
-                                        <i class="fa fa-spinner fa-spin"></i>
-                                    </button>
-                                        :
-                                        <button
-                                            className="btn followBtn p-2 mt-2"
-                                            onClick={() =>
-                                                handleFollowButton(e._id)
-                                            }
-                                        >
-                                            Follow{" "}
-                                            <i class="fa-solid fa-user-plus"></i>
-                                        </button>
-                                    }
-                                </div>
-                            </div>
-                        </div>
-                    ))}
+                    {user.map((e) => {
+                        return<Card
+                            btnText={"Follow"}
+                            firstName={e.firstName}
+                            _id ={e._id}
+                            lastName={e.lastName}
+                            pofession={e.profession}
+                            profileImage={e.profileImage}
+                            following_id={followingId}
+                            univercity={e.education.univercity}
+                            handleFollowButton={() =>handleFollowButton(e._id)}
+                        />
+                    })
+                    }
+
                 </div>
                 <div className="container mt-2">
                     <div className="row p-2">

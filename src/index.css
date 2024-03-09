@@ -253,11 +253,16 @@
     color: var(--dark-background-color);
 }
 
+.tab-content{
+    overflow: scroll;
+}
+
 .center{
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 30px;
+    overflow: scroll;
     position: absolute;
     top: 100px;
     flex-direction: column;

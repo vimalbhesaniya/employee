@@ -41,8 +41,8 @@ const LoginAsUser = ({ setScreen }) => {
                 toast.success("Login Successfully")
                 navigate("/home");
             } else {
-                console.log(RESPONSE)
                 setErrorMessage(RESPONSE.error)
+                console.log(RESPONSE)
             }
         }
         else {

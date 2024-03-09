@@ -187,6 +187,7 @@ const Header = () => {
                         </div>
                     }
                 </div>
+            </div>
                 {active && (
                     <div
                         className={`${css.toggleMenu} animate__animated animate__slideInUp animate__faster`}
@@ -237,7 +238,6 @@ const Header = () => {
                         </div>
                     </div>
                 )}
-            </div>
         </>
     );
 };

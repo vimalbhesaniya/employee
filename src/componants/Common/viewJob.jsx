@@ -56,7 +56,7 @@ const ViewJob = ({ setViewJob, viewJob, visible, setVisible, data }) => {
                                         <li>
                                             {/* As a Senior Backend Developer at Navkar, you will be an integral part of our development team, contributing to the design, development, and
                                             optimization of our smart messaging and communication platform. */}
-                                            {data.Description.JobDescription}
+                                            {data.Description?.JobDescription}
                                         </li>
                                         <li>
                                             Your primary focus will be on the backend, utilizing your expertise in Node.js and related technologies to build efficient, scalable, and reliable
@@ -65,7 +65,7 @@ const ViewJob = ({ setViewJob, viewJob, visible, setVisible, data }) => {
                                     </ul>
                                     <p>Key Responsibilities:</p>
                                     <ul class="about-ul">
-                                        <li>{data.Description.TechnicalDescription}</li>
+                                        <li>{data.Description?.TechnicalDescription}</li>
                                         <li>In-depth knowledge in JavaScript including ES6+ and Typescript</li>
                                         <li>Expert in Node.js and frameworks available for it such as express, etc</li>
                                         <li>Expert in node.js file system, HTTP module, Events, etc</li>

@@ -10,6 +10,7 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import Footer from "./Footer";
 import { EnableSpinner } from "../..";
 import useAPI from "../../Hooks/USER/useAPI";
+import { useNavigate } from "react-router-dom";
 import GlobalModel from "../../Global/GlobalModel";
 import ViewJob from "./viewJob";
 const Home = ({ setModell }) => {
@@ -19,9 +20,10 @@ const setSpinner = useContext(EnableSpinner);
 const item = localStorage.getItem("data");
 const  api = useAPI();
 const [jobs,setJobs ] = useState([]);
+const navigat = useNavigate()
 
     const call = async  () => {
-        const data = await  api.getREQUEST("fetchAll/jobs/6/0" )
+        const data = await  api.getREQUEST("fetchAll/jobs/10/0" )
         setJobs(data);
     }
     useEffect(() => {
@@ -137,11 +139,11 @@ const [jobs,setJobs ] = useState([]);
                         unique skills and aspirations.
                       </p>
                     </div>
-                    <div className={home.contentRight2}>
-                      <button className={home.button}>
+                    <div  className={home.contentRight2}>
+                      <button onClick={navigat("/jobs")} className={home.button}>
                         See all jobs
                         <div className={home.hoverEffect}>
-                          <div></div>
+                          <div ></div>
                         </div>
                       </button>
                     </div>
@@ -149,6 +151,7 @@ const [jobs,setJobs ] = useState([]);
                   <section className={home.jobS}>
                     {jobs?.map((e) => {
                         return <JobCard  
+                        onCardClick={()=>false}
                             jobtype={e.Title}
                             id={e._id}
                             location={`${e.company&&e.company?.Address[0].city} , ${e.company&&e.company?.Address[0].state}`}

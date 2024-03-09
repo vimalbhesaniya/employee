@@ -320,36 +320,75 @@ app.patch("/updateDetails", async (req, res) => {
     }
 });
 
-// Search Api
-app.get("/search/:tbl/:keyword/:location", async (req, res) => {
-    const keyword = req.params.keyword;
-    const location = req.params.location;
-    const tablename = req.params.tbl;
-    if (!tablename) {
-        return res.status(400).send("Table name not provided");
-    }
-    const Model = mongoose.model(tablename);
-    if (!Model) {
-        return res.status(404).send("Model not found");
-    }
 
+
+app.get('/fetchJobs/:keyword', async (req, res) => {
+    const keyword = req.params.keyword;
+    const jobs = await JobPost.find({ "JobType": keyword });
+    if (jobs) {
+        res.status(200).send(jobs);
+    } else {
+        res.status(404).send("jobs are not Found");
+    }
+})
+
+app.get("/jobs", async (req, res) => {
     try {
+        const { title, id } = req.query;
+        let query = {};
+        if (title) {
+            query.Title = { $regex: title, $options: "i" };
+        }
+        if (id) {
+            query._id = id;
+        }
+        const jobs = await JobPost.find(query);
+        res.json(jobs);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: "Server Error" });
+    }
+});
+
+app.get("/search", async (req, res) => {
+    try {
+        const tablename = req.query.tbl;
+        if (!tablename) {
+            return res.status(400).send("Table name not provided");
+        }
+        const Model = mongoose.model(tablename);
+        if (!Model) {
+            return res.status(404).send("Model not found");
+        }
+        const keyword = req.query.keyword;
+        const location = req.query.location;
+        let query = {};
+        if (keyword) {
+            query.Title = { $regex: keyword, $options: "i" };
+        }
+        if (location) {
+            const locationRegex = new RegExp(location.replace(/ /g, "|"), "i");
+            query["$or"] = [
+                { "company.Address.city": { $regex: locationRegex } },
+                { "company.Address.state": { $regex: locationRegex } },
+                { "company.Address.location": { $regex: locationRegex } } // Include 'location' field if you have one
+            ];
+        }
         if (tablename === "jobs") {
-            const list = await Model.aggregate([
+            const jobs = await Model.aggregate([
                 {
-                    $match: {
-                        $or: [
-                            { Title: { $regex: new RegExp(keyword, "i") } },
-                            {
-                                "company.Address.city": {
-                                    $regex: new RegExp(location, "i"),
-                                },
-                            },
-                        ],
-                    },
+                    $lookup: {
+                        from: 'companies',
+                        localField: 'company',
+                        foreignField: '_id',
+                        as: 'company'
+                    }
                 },
+                {
+                    $match: query
+                }
             ]);
-            res.send(list);
+            res.json(jobs);
         } else {
             const schema = Model.schema.paths;
             const orQuery = Object.keys(schema)
@@ -369,24 +408,6 @@ app.get("/search/:tbl/:keyword/:location", async (req, res) => {
     } catch (error) {
         console.error(error);
         res.status(500).send("Internal Server Error");
-    }
-});
-
-app.get("/jobs", async (req, res) => {
-    try {
-        const { title, id } = req.query;
-        let query = {};
-        if (title) {
-            query.Title = { $regex: title, $options: "i" };
-        }
-        if (id) {
-            query._id = id;
-        }
-        const jobs = await JobPost.find(query);
-        res.json(jobs);
-    } catch (err) {
-        console.error(err);
-        res.status(500).json({ error: "Server Error" });
     }
 });
 
@@ -748,7 +769,7 @@ app.post("/userWhoPerformFollow", async (req, res) => {
 app.get("/myFollowers/:id", async (req, res) => {
     try {
         const id = req.params.id
-        const users =await  UserFollow.find({ "userId": id });
+        const users = await UserFollow.find({ "userId": id });
         console.log(users);
         if (users) {
             res.send(users);
@@ -764,17 +785,17 @@ app.get("/myFollowers/:id", async (req, res) => {
 
 app.get("/notFollowed/:userId/:limit", async (req, res) => {
     try {
-        const {userId , limit} = req.params; // Assuming you have authenticated the user and have access to user's ID
+        const { userId, limit } = req.params; // Assuming you have authenticated the user and have access to user's ID
 
         // Find all users who are not followed by the current user
         const usersNotFollowed = await UserFollow.findOne({ userId: userId })
         if (usersNotFollowed) {
             const users = await User.find({
-                    $and: [
-                        { _id: { $ne: userId } },
-                        { _id: { $nin: usersNotFollowed.targetId } }
-                    ]
-                }).limit(limit);
+                $and: [
+                    { _id: { $ne: userId } },
+                    { _id: { $nin: usersNotFollowed.targetId } }
+                ]
+            }).limit(limit);
             res.send(users);
         } else {
             res.send("user not found");

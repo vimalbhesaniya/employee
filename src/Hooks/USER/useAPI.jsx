@@ -29,8 +29,8 @@ const useAPI = () => {
             return data
         }
         catch (error) {
-            setSpinnerState(false);
             setError(error);
+            setSpinnerState(false);
             return error
         }
     }, [data, error, loading]);
@@ -44,6 +44,7 @@ const useAPI = () => {
                         "Content-Type": "application/json",
                         "authorization": Cookies.get("token")
                     },
+                    body: BODY,
                     method: "GET"
                 })
             const data = await RESPONSE.json();

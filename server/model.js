@@ -147,11 +147,10 @@ const JobSchema = new mongoose.Schema({
     Position: { type: String, required: false },
     JobPostedTime: { type: String, default: Date.now, required: false },
     Description: {
-        JobDescription: { type: String, required: false },
-        TechnicalDescription: { type: String, required: false }
+         type: [String], required: false ,
     },
-    Experience: { type: String, required: false },
-    JobType: { type: String, required: false },
+    Experience: { type: [String], required: false },
+    JobType: { type: String,enum : ["FullTime" , "PartTime" , "Remote"] },
     Salary: { type: String, required: false },
     Responsiblities : [String],
     Overview : [String],
