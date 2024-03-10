@@ -34,23 +34,9 @@ const useFirestorage = () => {
         });
     }, []);
 
-    const handleUpdate = useCallback((fileName, updatedFile, path) => {
-        const storageRef = firebase.storage().ref(path);
-        const fileRef = storageRef.child(fileName);
-        fileRef.put(Date.now()+"_"+`${updatedFile}`).then((snapshot) => {
-            snapshot.ref.getDownloadURL()
-                .then((downloadUrl) => {
-                    if (downloadUrl) {
-                        setImageUrl(downloadUrl)
-                        setSpinnerState(false);
-                    }
-                })
-        }).catch((error) => {
-            console.error('Error updating file: ', error);
-        });
-    },[]);
 
-    return { imageUrl, Upload, handleDelete, handleUpdate }
+
+    return { imageUrl, Upload, handleDelete }
 }
 
 export default useFirestorage
