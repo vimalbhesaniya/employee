@@ -64,6 +64,7 @@ const useAPI = () => {
     
     const patchREQUEST = useCallback(async (PATH,COLLECTION_NAME  ,_id, COLUMNS ) => {
         try {
+            setSpinnerState(true)
             const RESPONSE = await fetch(`${process.env.REACT_APP_LOCAL_URL}${PATH}`,
                 {
                     headers: {
@@ -71,6 +72,35 @@ const useAPI = () => {
                         "authorization": Cookies.get("token")
                     },
                     method: "PATCH",
+                    body:JSON.stringify({
+                        COLLECTION_NAME,
+                        COLUMNS,
+                        _id
+                    })
+                })
+            const data = await RESPONSE.json();
+            if (data) {
+                setSpinnerState(false)
+                setData(data);
+            }
+            return data
+        }
+        catch (error) {
+            setSpinnerState(false);
+            setError(error);
+            return error
+        }
+    }, [data, error, loading]);
+    
+    const deleteREQUEST = useCallback(async (PATH,COLLECTION_NAME  ,_id, COLUMNS ) => {
+        try {
+            const RESPONSE = await fetch(`${process.env.REACT_APP_LOCAL_URL}${PATH}`,
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "authorization": Cookies.get("token")
+                    },
+                    method: "DELETE",
                     body:JSON.stringify({
                         COLLECTION_NAME,
                         COLUMNS,

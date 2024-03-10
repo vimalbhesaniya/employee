@@ -1,6 +1,18 @@
-import React from 'react'
+import React, { useEffect } from "react";
 import "../../Style/jobview.css";
-const Card = ({ profileImage, firstName, lastName, following_id, _id,handleFollowButton , btnText , univercity  ,pofession}) => {
+const Card = ({
+    profileImage,
+    firstName,
+    lastName,
+    following_id,
+    _id,
+    handleFollowButton,
+    handleUnFollowButton,
+    btnText,
+    univercity,
+    pofession,
+}) => {
+
     return (
         <>
             <div className="card---body card ">
@@ -10,8 +22,8 @@ const Card = ({ profileImage, firstName, lastName, following_id, _id,handleFollo
                         className="card---img"
                         alt=""
                         onError={(e) =>
-                        (e.target.src =
-                            "https://isobarscience-1bfd8.kxcdn.com/wp-content/uploads/2020/09/default-profile-picture1.jpg")
+                            (e.target.src =
+                                "https://isobarscience-1bfd8.kxcdn.com/wp-content/uploads/2020/09/default-profile-picture1.jpg")
                         }
                     />
                 </div>
@@ -21,27 +33,33 @@ const Card = ({ profileImage, firstName, lastName, following_id, _id,handleFollo
                             {firstName} {lastName}
                         </span>
                     </div>
-                    <div>
-                        <span style={{ fontSize: "13px" }}>
-                            {pofession}
-                        </span>
+                    <div className="ellips">
+                        <span style={{ fontSize: "13px" }}>{pofession}</span>
                     </div>
-                    <div style={{ lineHeight: 1 }}>
-                        <span style={{ fontSize: "12px" }}>
-                            {univercity}
-                        </span>
+                    <div className="ellips">
+                        <span style={{ fontSize: "12px" }}>{univercity}</span>
                     </div>
-                    <div className="row">
-                        <button
-                            className="btn followBtn p-2 mt-2"
-                            onClick={() => handleFollowButton(_id)}>{following_id.includes(_id)? "Following" : btnText}
-                        </button>
+                    <div className="row d-flex  justify-content-center  align-content-center  h-100">
+                        {following_id.includes(_id) ? (
+                            <button
+                                className="btn followBtn p-2 mt-2"
+                                onClick={() => handleFollowButton(_id)}
+                            >
+                                Following
+                            </button>
+                        ) : (
+                            <button
+                                className="btn followBtn p-2 mt-2"
+                                onClick={() => handleUnFollowButton(_id)}
+                            >
+                                Follow
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>
-
         </>
-    )
-}
+    );
+};
 
-export default Card
+export default Card;

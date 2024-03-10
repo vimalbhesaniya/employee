@@ -1,17 +1,14 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import "../Style/jobview.css";
+import React from 'react'
+import Card from '../../UserSide/Components/Card'
+import React, { useCallback, useEffect, useState } from "react";
+import "../../Style/jobview.css";
 import useAPI from "../Hooks/USER/useAPI";
 import Cookies from "js-cookie";
-import { EnableSpinner } from "..";
-import Card from "./Components/Card";
 
-const ListUsers = () => {
-    const [setSpinnerState] = useContext(EnableSpinner)
-    const [keyword, setKeyword] = useState("");
+const AllUsersModel = () => {
     const [user, setUser] = useState([]);
     const [followingId , setFollowingId] = useState([]); 
     const [followedUser, setFollowedUser] = useState([]);
-    const [loading, setLoading] = useState(false);
     const api = useAPI();
     const id = Cookies.get("id");
 
@@ -72,27 +69,9 @@ const ListUsers = () => {
         };
         UpdateFollow();
     }, []);
-    return (
-        <>
-            <div className="container" style={{ marginTop: "100px" }}>
-                <div className="row-jobList">
-                    <div className="col-jobList">
-                        <span className="fs-3">Recommended for you</span>
-                    </div>
-                    <div className="col-jobList">
-                        <div className="job--input">
-                            <input
-                                type="text"
-                                className="form-control h-100 w-100"
-                                placeholder={"type to search"}
-                                onChange={(e) => setKeyword(e.target.value)}
-                            />
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div className="container card">
+  return (
+    <>
+        <div className="container card">
                 <div className="card---container">
                     {user.map((e) => {
                         return<Card
@@ -119,8 +98,8 @@ const ListUsers = () => {
                     </div>
                 </div>
             </div>
-        </>
-    );
-};
+    </>
+    )
+}
 
-export default ListUsers;
+export default AllUsersModel
