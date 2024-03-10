@@ -13,7 +13,7 @@ const SensetiveInfo = ({ personalAddress, langauge }) => {
         const ok = window.confirm("Are you sure?");
         if (ok) {
             Cookies.remove("token");
-            navigate("/login");
+            navigate("/loginasuser");
         } else {
             navigate(window.location.pathname);
         }

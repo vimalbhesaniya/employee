@@ -20,13 +20,13 @@ const LoginAsCompany = ({ setScreen }) => {
   const [close, setClose] = useState(false); 
 
   const handleSubmit = () =>{
-    return false
-  }
+    navigate("/dashboard")
+}
 
   const leftSection = (
     <div className="leftSectionHeader">
       <span>looking to Jobs ? </span>
-      <span className="screentitle"  onClick={() => setScreen("user")}> Login as Seeker</span>
+      <span className="screentitle"  onClick={() => navigate("/loginasuser")}> Login as Seeker</span>
     </div>
   );
 

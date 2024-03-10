@@ -3,7 +3,7 @@ import Card from '../../UserSide/Components/Card'
 import Cookies from 'js-cookie'
 import useAPI from '../../Hooks/USER/useAPI'
 const CompanyProfile = () => {
-    const [compnay , setCompany] = useState([])
+    const [company , setCompany] = useState([])
     const [keyword, setKeyword] = useState("");
     const [followingId , setFollowingId] = useState([]); 
     const [followedUser, setFollowedUser] = useState([]);
@@ -24,7 +24,7 @@ const CompanyProfile = () => {
         getUser();
     }, []);
 
-    console.log(compnay);
+    // console.log(compnay);
     const handleFollowButton = useCallback((targetId) => {
         const UpdateFollow = async () => {
             const users = await api.patchREQUEST(
@@ -77,21 +77,21 @@ const CompanyProfile = () => {
     <>
         <div className="container card">
                 <div className="card---container">
-                    {compnay?.map((e) => {
-                        return <Card 
-                            btnText={"Follow"}
-                            firstName={e.Name}
-                            // _id ={e._id}
-                            // lastName={e.lastName}
-                            // handleUnFollowButton={() => handleUnFollowButton(e._id)}
-                            // pofession={e.profession}
-                            // profileImage={e.profileImage}
-                            // following_id={followingId}
-                            // univercity={e.education[0].univercity}
-                            // handleFollowButton={() =>handleFollowButton(e._id)}
-                        />
+                {company&&company?.map((e) => {
+                        return <Card
+                        btnText={"Connect"}
+                        firstName={e?.Name}
+                        _id ={e?._id}
+                        handleUnFollowButton={() => handleUnFollowButton(e?._id)}
+                        pofession={e?.Industry}
+                        profileImage={e?.Logo}
+                        // following_id={connectingId}
+                        univercity={e.Address && e?.Address[0]?.personalAddress}
+                        handleFollowButton={() =>handleFollowButton(e?._id)}
+                    />
                     })
                     }
+
 
                 </div>
                 <div className="container mt-2">

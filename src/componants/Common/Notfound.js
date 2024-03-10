@@ -9,7 +9,7 @@ const NotFound = () => {
             navigate("/home");
         }
         else{
-            navigate("/login")
+            navigate("/loginasuser")
         }
     }, [navigate]);
     return <h6>redirecting....</h6>;

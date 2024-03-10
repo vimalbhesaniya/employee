@@ -63,7 +63,7 @@ const Step6 = ({ setScreen }) => {
         const id = localStorage.getItem("upd_id");
         const data = await api.patchREQUEST("updateDetails", "users", id, {langauges , profession ,skills ,description});
         console.log(data);
-        navigate("/login");
+        navigate("/loginasuser");
 
     }, [
         profession , skills ,langauges

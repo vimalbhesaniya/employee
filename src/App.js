@@ -1,6 +1,7 @@
 import React, { createContext, useCallback, useEffect } from "react";
 import { Route, BrowserRouter, Routes } from "react-router-dom";
 import Layout from "./Layout";
+import Dashboard from "./CompanySide/components/Dashboard";
 import MyModel from "./componants/Common/MyModel";
 import Home from "./componants/Common/Home";
 import Cookies from "js-cookie";
@@ -23,6 +24,9 @@ import SearchSection from "./componants/Common/SearchSection";
 import SavedJobsPage from "./componants/Common/SavedJobsPage";
 import { ToastContainer, Slide } from "react-toastify";
 import ListUsers from "./UserSide/ListUsers";
+import LoginAsUser from "./UserSide/LoginAsUser";
+import LoginAsCompany from "./CompanySide/components/LoginAsCompany";
+import Sidebar from "./CompanySide/sidebar/Sidebar";
 
 const App = () => {
     const [modell, setModell] = useState(false);
@@ -57,7 +61,11 @@ const App = () => {
                         <Route path={"/jobs/:id"} element={<Jobs />} />
                         <Route path={"/jobs"} element={<JobsList />} />
                     </Route>
-                    <Route path={"/login"} element={<LoginMain />} />
+                    <Route element={<Sidebar />}>
+                        <Route path={"/dashboard"} element={<Dashboard />} />
+                    </Route>
+                    <Route path={"/loginasuser"} element={<LoginAsUser />} />
+                    <Route path={"/loginascompany"} element={<LoginAsCompany />} />
                     <Route path={"/signup"} element={<Signup />} />
                     <Route path={"/gethelp"} element={<GetHelp />} />
                     <Route path={"/termandconditions"} element={<TermAndConditions />} />

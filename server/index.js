@@ -885,6 +885,27 @@ app.get("/getFollowings/:id" , async (req ,res) => {
     }
 })
 
+app.patch('/api/userfollow/:userId/remove/:targetId', async (req, res) => {
+    try {
+        const { userId, targetId } = req.params;
+        
+        // Find the userFollow document for the userId
+        const userFollow = await UserFollow.findOne({ userId });
+
+        // If userFollow document doesn't exist, return error
+        if (!userFollow) {
+            return res.status(404).json({ message: "User follow not found" });
+        }
+
+        // Remove the targetId from the targetIds array
+        const result = await UserFollow.findOneAndUpdate({ userId : userId}, { $pull: { targetId: targetId } });
+
+        return res.status(200).json({ message: "TargetId removed successfully" ,result });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+});
 app.delete("/delete", async (req, res) => {
     try {
         const where = req.body.where;
