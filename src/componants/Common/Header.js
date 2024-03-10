@@ -14,15 +14,6 @@ const Header = () => {
     const [active, setActive] = useState(false);
     const [visible , setVisible ] = useState(false);
 
-    const performLogOut = () => {
-        const ok = window.confirm("Are you sure?");
-        if (ok) {
-            Cookies.remove("token");
-            navigate("/login");
-        } else {
-            navigate(window.location.pathname);
-        }
-    };
 
     return (
         <>
@@ -104,7 +95,6 @@ const Header = () => {
                                         ? `${css.navLinkActive}`
                                         : `${css.navLinkBox}`
                                 }
-                            
                             >
                                 <Link     
                              className={`${css.navLink} `} to={"/profile"}>
@@ -116,7 +106,6 @@ const Header = () => {
                                 <Link
                                     className={css.resMenu}
                                     to={"/notifications"}
-                                    onClick={() => performLogOut()}
                                 >
                                     Employers/Post job
                                 </Link>

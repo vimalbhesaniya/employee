@@ -32,6 +32,7 @@ const Step6 = ({ setScreen }) => {
     const [input, setInput] = useState([]);
     const [langauges, setLanguages] = useState([]);
     const[description , setDescription]  = useState("");
+    console.log(description);
 
 
     const isValidateStep6 = useMemo(

@@ -176,6 +176,10 @@ const userFollowSchema = new mongoose.Schema({
     userId : { type: mongoose.Schema.Types.ObjectId, ref: "users", autopopulate: false },
     targetId : { type: [mongoose.Schema.Types.ObjectId], ref: "users", autopopulate: true },
 })
+const CompanyConnectionsSchema = new mongoose.Schema({
+    userId : { type: mongoose.Schema.Types.ObjectId, ref: "users", autopopulate: false },
+    targetId : { type: [mongoose.Schema.Types.ObjectId], ref: "companies", autopopulate: true },
+})
 
 const JobApplicationsSchema = new mongoose.Schema({
     companyId: { type: mongoose.Schema.Types.ObjectId, ref: "companies", autopopulate: true },
@@ -202,6 +206,7 @@ const SavedJob = mongoose.model("savedjobs", SavedJobSchema);
 const Connection = mongoose.model("connections", ConnectionSchema);
 const JobApplications = mongoose.model("jobapplications", JobApplicationsSchema)
 const UserFollow = mongoose.model("userFollow" , userFollowSchema);
+const CompanyConnections = mongoose.model("companyConnections" , CompanyConnectionsSchema);
 
 
-module.exports = { User, Company, JobPost, SavedJob, Connection, JobApplications  , UserFollow};
+module.exports = { User, Company, JobPost, SavedJob, Connection, JobApplications  , UserFollow ,CompanyConnections};

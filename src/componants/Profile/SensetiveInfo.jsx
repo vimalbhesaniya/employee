@@ -2,9 +2,22 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from 're
 import { ToggleEdit } from '../Common/profile'
 import FollowersModel from './FollowersModel'
 import { ActiveModal } from '../..'
+import { useNavigate } from 'react-router-dom'
+import Cookies from 'js-cookie'
+
 const SensetiveInfo = ({ personalAddress, langauge }) => {
     const [activeModalState  ,  setActiveModalState ] = useContext(ActiveModal)
     const [isEditProfile, setIsEditProfile] = useContext(ToggleEdit)
+    const navigate = useNavigate()
+    const performLogOut = () => {
+        const ok = window.confirm("Are you sure?");
+        if (ok) {
+            Cookies.remove("token");
+            navigate("/login");
+        } else {
+            navigate(window.location.pathname);
+        }
+    };
     return (
         <div className="card-body">
             <div className="container">
@@ -15,6 +28,7 @@ const SensetiveInfo = ({ personalAddress, langauge }) => {
                 </div>
                 <div className=" d-flex justify-content-between mb-2">
                     <button type="button" className="btn bgbtn" onClick={() => setIsEditProfile(true)} >Edit profile</button>
+                    <button type="button" className="btn bgbtnred" onClick={() => performLogOut()} >Log out</button>
                     <label htmlFor='fileReader' className="btn bgbtn">Upload Resume</label>
                     <input type="file" id='fileReader' hidden />
                 </div>
