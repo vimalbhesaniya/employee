@@ -43,16 +43,16 @@ const Card = ({
                         {following_id?.includes(_id) ? (
                             <button
                                 className="btn followBtn p-2 mt-2"
-                                onClick={() => handleFollowButton(_id)}
+                                onClick={() => handleUnFollowButton(_id)}
                             >
-                                Following
+                                {btnText=="Follow" ? "Following" : "Connecting" } {/* Following */}
                             </button>
                         ) : (
                             <button
                                 className="btn followBtn p-2 mt-2"
-                                onClick={() => handleUnFollowButton(_id)}
+                                onClick={() => handleFollowButton(_id)}
                             >
-                                Follow
+                                {btnText} {/* Follow */}
                             </button>
                         )}
                     </div>

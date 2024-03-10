@@ -280,7 +280,7 @@ app.patch("/updateDetails", async (req, res) => {
         if (tablename !== "userFollow") {
             const updatedDocument = await Model.findByIdAndUpdate(
                 _id,
-                { $set: COLUMNS },
+                { $addToSet: { targetId: COLUMNS.targetId } },
                 { new: true }
             );
             if (updatedDocument) {
@@ -311,8 +311,6 @@ app.patch("/updateDetails", async (req, res) => {
                 return res.status(404).send("Document not found");
             }
         }
-
-
     } catch (error) {
         // console.error("Error updating document:", error);
         return res
@@ -463,39 +461,39 @@ app.post("/Insert/:tbl", async (req, res) => {
         });
 });
 
-app.delete("/delete", async (req, res) => {
-    try {
-        const where = req.body.where;
-        const tablename = req.body.tbl;
-        if (!tablename) {
-            return res.status(400).send("Table name not provided");
-        }
-        const Model = mongoose.model(tablename);
-        if (!Model) {
-            return res.status(404).send("Model not found");
-        }
-        // await ConnectDB();
-        const data = await Model.findOneAndDelete(where);
-        if (data) {
-            res.status(411).json({
-                res: "ok",
-                msg: "Data Deleted Successfully",
-                data:data
-            });
-        } else {
-            res.status(400).json({
-                res: "error",
-                msg: "Data not Deleted",
-            });
-        }
-    } catch (error) {
-        res.status(411).json({
-            res: "Error",
-            msg: "Invalid Input Types",
-            error: error,
-        });
-    }
-});
+// app.delete("/delete", async (req, res) => {
+//     try {
+//         const where = req.body.where;
+//         const tablename = req.body.tbl;
+//         if (!tablename) {
+//             return res.status(400).send("Table name not provided");
+//         }
+//         const Model = mongoose.model(tablename);
+//         if (!Model) {
+//             return res.status(404).send("Model not found");
+//         }
+//         // await ConnectDB();
+//         const data = await Model.findOneAndDelete(where);
+//         if (data) {
+//             res.status(411).json({
+//                 res: "ok",
+//                 msg: "Data Deleted Successfully",
+//                 data:data
+//             });
+//         } else {
+//             res.status(400).json({
+//                 res: "error",
+//                 msg: "Data not Deleted",
+//             });
+//         }
+//     } catch (error) {
+//         res.status(411).json({
+//             res: "Error",
+//             msg: "Invalid Input Types",
+//             error: error,
+//         });
+//     }
+// });
 
 // app.post('/jobPost', async (req, res) => {
 //     const tablename = req.body.tablename;
@@ -658,7 +656,7 @@ app.get("/CompanyListing", async (req, res) => {
 
         // Extract user IDs from connections
         const companyIDs = connections.map(
-            (connection) => connection.companyId
+            (connection) => connection.userId
         );
 
         // Find users who have followed the given company
@@ -854,7 +852,7 @@ app.get("/notFollowedCompany/:userId/:limit", async (req, res) => {
 
         const usersNotFollowed = await CompanyConnections.findOne({ userId: userId })
         if (usersNotFollowed) {
-            const users = await CompanyConnections.find({
+            const users = await Company.find({
                 $and: [
                     { _id: { $ne: userId } },
                     { _id: { $nin: usersNotFollowed.targetId } }

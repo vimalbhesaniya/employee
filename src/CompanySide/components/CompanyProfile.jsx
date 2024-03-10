@@ -3,10 +3,10 @@ import Card from '../../UserSide/Components/Card'
 import Cookies from 'js-cookie'
 import useAPI from '../../Hooks/USER/useAPI'
 const CompanyProfile = () => {
-    const [compnay , setCompany] = useState([])
+    const [company , setCompany] = useState([])
     const [keyword, setKeyword] = useState("");
-    const [followingId , setFollowingId] = useState([]); 
-    const [followedUser, setFollowedUser] = useState([]);
+    const [connectingId , setConnectingId] = useState([]); 
+    const [connectedCompany, setConnectedCompany] = useState([]);
     const [loading, setLoading] = useState(false);
     const api = useAPI();
     const id = Cookies.get("id");
@@ -24,10 +24,10 @@ const CompanyProfile = () => {
         getUser();
     }, []);
 
-    console.log(compnay);
+    // console.log(company);
     const handleFollowButton = useCallback((targetId) => {
         const UpdateFollow = async () => {
-            const users = await api.patchREQUEST(
+            const company = await api.patchREQUEST(
                 `updateDetails`,
                 "companyConnections",
                 { userId: id },
@@ -35,11 +35,11 @@ const CompanyProfile = () => {
                     targetId: [targetId],
                 }
             );
-            if (users) {
-                setFollowedUser(users);
+            if (company) {
+                setConnectedCompany(company);
             }
             
-            setFollowingId((prev)=>{
+            setConnectingId((prev)=>{
                 if(prev?.includes(targetId))
                 {
                     return prev.filter(id => id !== targetId);
@@ -51,19 +51,14 @@ const CompanyProfile = () => {
         };
         UpdateFollow();
     }, []);
+    
     const handleUnFollowButton = useCallback((targetId) => {
         const UpdateFollow = async () => {
-            const users = await api.patchREQUEST(
-                `updateDetails`,
-                "userFollow",
-                { userId: id },
-                {
-                    targetId: [targetId],
-                }
+            const users = await api.patchREQUEST(`api/userfollow/${id}/remove/${targetId}`,
+                "companyConnections"
             );
-            setFollowedUser(users);
-            
-            setFollowingId(prev => {
+            setConnectedCompany(users);            
+            setConnectingId(prev => {
                 if (prev?.includes(targetId)) {
                     return prev.filter(id => id !== targetId);
                 } else {
@@ -77,19 +72,18 @@ const CompanyProfile = () => {
     <>
         <div className="container card">
                 <div className="card---container">
-                    {compnay?.map((e) => {
-                        return <Card 
-                            btnText={"Follow"}
-                            firstName={e.Name}
-                            // _id ={e._id}
-                            // lastName={e.lastName}
-                            // handleUnFollowButton={() => handleUnFollowButton(e._id)}
-                            // pofession={e.profession}
-                            // profileImage={e.profileImage}
-                            // following_id={followingId}
-                            // univercity={e.education[0].univercity}
-                            // handleFollowButton={() =>handleFollowButton(e._id)}
-                        />
+                    {company&&company?.map((e) => {
+                        return <Card
+                        btnText={"Connect"}
+                        firstName={e?.Name}
+                        _id ={e?._id}
+                        handleUnFollowButton={() => handleUnFollowButton(e?._id)}
+                        pofession={e?.Industry}
+                        profileImage={e?.Logo}
+                        following_id={connectingId}
+                        univercity={e?.Address[0]?.personalAddress}
+                        handleFollowButton={() =>handleFollowButton(e?._id)}
+                    />
                     })
                     }
 
