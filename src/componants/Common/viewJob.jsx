@@ -67,15 +67,6 @@ const ViewJob = ({ setViewJob, viewJob, visible, setVisible, data }) => {
                                     )}
                                     {/* <li><i class="fa fa-lightbulb"></i>See how you compare to 13 applicants</li> */}
                                 </ul>
-                                <div class="d-flex mt-4 align-items-center">
-                                    <a href="" class="apply-btn">
-                                        <i class="bx bxl-linkedin-square"></i>
-                                        Easy Apply
-                                    </a>
-                                    <a href="" class="save-btn">
-                                        Save
-                                    </a>
-                                </div>
                             </div>
                         </div>
                     </div>

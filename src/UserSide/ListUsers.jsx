@@ -4,6 +4,7 @@ import useAPI from "../Hooks/USER/useAPI";
 import Cookies from "js-cookie";
 import { EnableSpinner } from "..";
 import Card from "./Components/Card";
+import { toast } from "react-toastify";
 
 const ListUsers = () => {
     const [setSpinnerState] = useContext(EnableSpinner)
@@ -18,7 +19,12 @@ const ListUsers = () => {
     useEffect(() => {
         const getUser = async () => {
             const data = await api.getREQUEST(`notFollowed/${id}/10`);
-            setUser(data);
+            if (data) {
+                setUser(data);
+            }
+            else{
+                setUser([]);
+            }
         };
         getUser();
     }, []);
@@ -58,7 +64,6 @@ const ListUsers = () => {
                 {
                     targetId: [targetId],
                 }
-
             );
             setFollowedUser(users);
             
@@ -94,7 +99,34 @@ const ListUsers = () => {
 
             <div className="container card">
                 <div className="card---container">
-                    {user.map((e) => {
+                    {user?.map((e) => {
+                        return<Card
+                            btnText={"Follow"}
+                            firstName={e.firstName}
+                            _id ={e._id}
+                            lastName={e.lastName}
+                            handleUnFollowButton={() => handleUnFollowButton(e._id)}
+                            pofession={e.profession}
+                            profileImage={e.profileImage}
+                            following_id={followingId}
+                            univercity={e.education[0].univercity}
+                            handleFollowButton={() =>handleFollowButton(e._id)}
+                        />
+                    })
+                    }
+
+                </div>
+                <div className="container mt-2">
+                    <div className="row p-2">
+                        <div className="col text-end">
+                            <span className="fs-5 HOVER rounded ">see all <i className="fa fa-chevron-right doanimate"></i> </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="container card">
+                <div className="card---container">
+                    {user?.map((e) => {
                         return<Card
                             btnText={"Follow"}
                             firstName={e.firstName}

@@ -4,6 +4,7 @@ import GlobalModel from "../../Global/GlobalModel";
 import { ActiveModal } from "../..";
 
 const JobCard = ({
+    perFormSave,
     onCardClick,
     id,
     title,
@@ -12,14 +13,17 @@ const JobCard = ({
     setModel,
     salary,
     postedtime,
+    hidden,
     viewJob,
     companyLogo,
+    perFormUnSave,
+    savedId
 }) => {
     const [activeModalState , setActiveModalState] = useContext(ActiveModal);
     return (
         <>
-            <div className={`${job.box}`} onClick={() => onCardClick(id)}>
-                <div className={job.left}>
+            <div className={`${job.box}`} >
+                <div className={job.left} onClick={() => onCardClick(id)}>
                     <div className={job.Logo}>
                         <img src={companyLogo} height={100}
                             className="rounded-3"
@@ -46,14 +50,22 @@ const JobCard = ({
                     </div>
                 </div>
                 <div className={job.right}>
-                    <div>
-                        <button className="btn bgbtn" onClick={() => {
+                    <div className="d-flex gap-2">
+                        {hidden&&<><button className="btn bgbtn"  onClick={() => {
                             localStorage.setItem("appliedID" , id)
                             setActiveModalState("ApplyForm")
                         }}>Apply now</button>
+                        <button className="btn bgbtn" onClick={() => {
+                            perFormSave(id)
+                        }}>save</button> </>}
+                        {!hidden&&
+                            <button className="btn bgbtn"  onClick={() => {
+                            perFormUnSave(savedId)
+                        }}> <i className="fa fa-close"></i> </button>
+                        }
                     </div>
-                    <div>
-                        <span>{postedtime}</span>
+                    <div className="d-flex justify-content-end  w-100">
+                        <span>posted on {postedtime}</span>
                     </div>
                 </div>
             </div>

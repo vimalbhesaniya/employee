@@ -35,7 +35,7 @@ const Step2 = ({ setScreen }) => {
     const handleFileChange =  useCallback(async (event) => {
         const isConfirmed = window.confirm("Are you sure?")
         if (isConfirmed) {
-            await upload.Upload(event.target.files[0]);
+            await upload.Upload(event.target.files[0].name);
         }
     } , []); 
     

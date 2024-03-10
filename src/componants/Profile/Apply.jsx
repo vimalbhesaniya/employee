@@ -5,6 +5,7 @@ import React, {
     useMemo,
     useState,
 } from "react";
+import useFirestorage from "../../Hooks/OTHER/useFirestorage";
 import InputText from "../signup/validateInputs";
 import edit from "../../Style/edit.module.css";
 import success from "../../assets/success.json"
@@ -28,6 +29,7 @@ const Apply = ({ jobs }) => {
     const [form, setFrom] = useState("form1");
     const id = localStorage.getItem("appliedID");
     const api = useAPI();
+    const upload = useFirestorage();
     useEffect(() => {
         const search = async () => {
             try {
@@ -72,9 +74,10 @@ const Apply = ({ jobs }) => {
     );
 
     const handleInput3 = useCallback(
-        (e) => {
-            const file = e.target.files[0].name;
+    async  (e) => {
+            const file = e.target.files[0]?.name;
             if (file.match(/\.pdf$/i)) {
+                await upload.Upload(file , "ApplicationsResumes/" , "application/pdf");
                 setResume(file);
                 setErrorMsg("");
             } else {
@@ -83,6 +86,7 @@ const Apply = ({ jobs }) => {
         },
         [resume]
     );
+    console.log(upload.imageUrl);     
 
     const handleNext1 = () => {
         setProgress("80%");
@@ -90,6 +94,7 @@ const Apply = ({ jobs }) => {
     };
     const handleNext2 = () => {
         const yes = window.confirm("Are you sure you want to submit the application form?")
+
         setProgress("100%");
         setFrom("form3")
         toast.success("Application submited successfully")
@@ -255,6 +260,7 @@ const Apply = ({ jobs }) => {
                                 <input
                                     type="file"
                                     required={true}
+                                    typeof="application/pdf"
                                     className={"form-control"}
                                     onChange={(e) => handleInput3(e)}
                                 />

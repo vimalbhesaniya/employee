@@ -4,6 +4,7 @@ import "../Style/jobview.css";
 import JobCard from "../componants/Common/JobCard";
 import useAPI from "../Hooks/USER/useAPI";
 import Apply from "../componants/Profile/Apply";
+import Cookies from "js-cookie";
 const JobsList = () => {
 
     const [jobs, setJobs] = useState([]);
@@ -47,6 +48,13 @@ const JobsList = () => {
                 return id
             }
         });
+    }
+
+    const perFormSave = async (jobId) => {
+        console.log(jobId);
+        const userId= Cookies.get("id");
+        const response = await api.postREQUEST("savedJob" ,  JSON.stringify({userId , jobId}))
+        
     }
 
     return (
@@ -101,6 +109,8 @@ const JobsList = () => {
                                     viewJob={viewJob}
                                     jobtype={e.JobType}
                                     id={e._id}
+                                    hidden={true}
+                                    perFormSave={perFormSave}
                                     location={`${e.company && e.company?.Address[0].city
                                         } , ${e.company && e.company?.Address[0].state
                                         }`}

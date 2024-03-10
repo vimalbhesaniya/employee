@@ -55,6 +55,7 @@
 .left{
     display: flex;
     flex-wrap: wrap;
+    cursor: pointer;
 }
 
 .right{
