@@ -32,11 +32,6 @@ const Apply = ({ jobs }) => {
     const id = localStorage.getItem("appliedID");
     const userId = Cookies.get("id");
     const api = useAPI();
-<<<<<<< HEAD
-
-=======
-    const upload = useFirestorage();
->>>>>>> b0fc6dbb1f027d9ccec46c7cb839b75c6be6ab9f
     useEffect(() => {
         const search = async () => {
             try {
