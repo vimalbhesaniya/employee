@@ -5,21 +5,21 @@ import "firebase/compat/storage"
 
 const useFirestorage = () => {
     const [imageUrl, setImageUrl] = useState("");
-    const [setSpinnerState, spinner] = useContext(EnableSpinner)
-    const Upload = useCallback((img, path) => {
-        console.log(img);
+    const [setSpinnerState,spinner] = useContext(EnableSpinner)
+    const Upload = useCallback((img) => {
         if (img) {
-            const storageRef = firebase.storage().ref(path)
-            const fileRef = storageRef.child(Date.now()+"_"+`${img.name}`)
+            const storageRef = firebase.storage().ref('/userprofiles')
+            const fileRef = storageRef.child(img.name)
             setSpinnerState(true)
-            fileRef.put(img)
+            fileRef.put(img,metadata)
                 .then((snapshot) => {
                     snapshot.ref.getDownloadURL()
                         .then((downloadUrl) => {
                             if (downloadUrl) {
                                 setImageUrl(downloadUrl)
                                 setSpinnerState(false);
-                            }
+                                return downloadUrl
+                                }
                         })
                 })
         }

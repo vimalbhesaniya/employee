@@ -12,6 +12,7 @@ const Header = () => {
     const navigate = useNavigate();
     const [activeModalState  ,setActiveModalState] = useContext(ActiveModal)
     const [active, setActive] = useState(false);
+    const [visible , setVisible ] = useState(false);
 
     const performLogOut = () => {
         const ok = window.confirm("Are you sure?");
@@ -55,17 +56,6 @@ const Header = () => {
                         </div>
                         <div
                             className={
-                                window.location.pathname === `/nearbyusers`
-                                    ? `${css.navLinkActive}`
-                                    : `${css.navLinkBox}`
-                            }
-                        >
-                            <Link className={css.navLink} to={"/nearbyusers"}>
-                                My Applications
-                            </Link>
-                        </div>
-                        <div
-                            className={
                                 window.location.pathname === `/jobs`
                                     ? `${css.navLinkActive}`
                                     : `${css.navLinkBox}`
@@ -91,12 +81,12 @@ const Header = () => {
                             </div>
                             <div
                                 className={
-                                    window.location.pathname === `/saved`
+                                    window.location.pathname === `/mynetwork`
                                         ? `${css.navLinkActive}`
                                         : `${css.navLinkBox}`
                                 }
                             >
-                                <Link className={css.navLink} to={"/saved"}>
+                                <Link className={`${css.navLink} `} to={"/saved"}>
                                     <i class="fa-solid fa-bookmark"></i>
                                 </Link>
                             </div>
@@ -110,12 +100,14 @@ const Header = () => {
                             </div>
                             <div
                                 className={
-                                    window.location.pathname === `/profile`
+                                    window.location.pathname === `/mynetwork`
                                         ? `${css.navLinkActive}`
                                         : `${css.navLinkBox}`
                                 }
+                            
                             >
-                                <Link className={`${css.navLink} `} to={"/profile"}>
+                                <Link     
+                             className={`${css.navLink} `} to={"/profile"}>
                                     <i class="fa-solid fa-user"></i>
                                 </Link>
                             </div>
@@ -173,7 +165,6 @@ const Header = () => {
                                     >
                                         <span
                                             className={css.navMenuBar}
-                                            to={"/saved"}
                                         >
                                             {active ? (
                                                 <i class="fa-solid fa-xmark"></i>
@@ -216,12 +207,23 @@ const Header = () => {
                         </div>
                         <div
                             className={
+                                window.location.pathname == `/saved`
+                                    ? `${css.navLinkActive}`
+                                    : `${css.navLinkBox}`
+                            }
+                        >
+                            <Link className={css.navLink} to={"/saved"}>
+                                <i class="fa-solid fa-bookmark"></i>
+                            </Link>
+                        </div>
+                        <div
+                            className={
                                 window.location.pathname == `/profile`
                                     ? `${css.navLinkActive}`
                                     : `${css.navLinkBox}`
                             }
                         >
-                            <Link className={css.navLink} to={"/profile"}>
+                            <Link className={css.navLink} to={"/network"}>
                                 <i class="fa-solid fa-users"></i>
                             </Link>
                         </div>

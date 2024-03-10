@@ -5,6 +5,7 @@ import React, {
     useMemo,
     useState,
 } from "react";
+import useFirestorage from "../../Hooks/OTHER/useFirestorage";
 import InputText from "../signup/validateInputs";
 import edit from "../../Style/edit.module.css";
 import success from "../../assets/success.json"
@@ -31,7 +32,11 @@ const Apply = ({ jobs }) => {
     const id = localStorage.getItem("appliedID");
     const userId = Cookies.get("id");
     const api = useAPI();
+<<<<<<< HEAD
 
+=======
+    const upload = useFirestorage();
+>>>>>>> b0fc6dbb1f027d9ccec46c7cb839b75c6be6ab9f
     useEffect(() => {
         const search = async () => {
             try {
@@ -76,9 +81,10 @@ const Apply = ({ jobs }) => {
     );
 
     const handleInput3 = useCallback(
-        (e) => {
-            const file = e.target.files[0].name;
+    async  (e) => {
+            const file = e.target.files[0]?.name;
             if (file.match(/\.pdf$/i)) {
+                await upload.Upload(file , "ApplicationsResumes/" , "application/pdf");
                 setResume(file);
                 setErrorMsg("");
             } else {
@@ -87,6 +93,7 @@ const Apply = ({ jobs }) => {
         },
         [resume]
     );
+    console.log(upload.imageUrl);     
 
     const handleNext1 = () => {
         setProgress("80%");
@@ -96,6 +103,7 @@ const Apply = ({ jobs }) => {
     };
     const handleNext2 = async () => {
         const yes = window.confirm("Are you sure you want to submit the application form?")
+<<<<<<< HEAD
         if (yes) {
             await upload.Upload(resume, "/ApplicationsResume");
             const Email = localStorage.getItem("Email");
@@ -110,6 +118,12 @@ const Apply = ({ jobs }) => {
             setActiveModalState("")
             localStorage.clear();
         }
+=======
+
+        setProgress("100%");
+        setFrom("form3")
+        toast.success("Application submited successfully")
+>>>>>>> b0fc6dbb1f027d9ccec46c7cb839b75c6be6ab9f
     };
     console.log(url);
 
@@ -275,6 +289,7 @@ const Apply = ({ jobs }) => {
                                 <input
                                     type="file"
                                     required={true}
+                                    typeof="application/pdf"
                                     className={"form-control"}
                                     onChange={(e) => handleInput3(e)}
                                 />

@@ -8,6 +8,6 @@
     background-color: rgba(0, 0, 0, 0.791) ;
     backdrop-filter: blur(2px);
     position: fixed;
-    z-index: 1000000;
+    z-index: 100000000000;
 }
 

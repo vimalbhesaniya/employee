@@ -516,6 +516,7 @@ app.delete("/delete", async (req, res) => {
 app.post("/savedJob", async (req, res) => {
     const UserID = req.body.userId;
     const JobID = req.body.jobId;
+    console.log(req.body);
     if (!UserID || !JobID) {
         return res.status(400).send("User Id and Job Id are not provided");
     } else {
@@ -542,19 +543,10 @@ app.post("/deleteSaveJob", async (req, res) => {
     // }
 });
 
-app.get("/ListJob/:status", async (req, res) => {
-    const status = req.params.status;
+app.get("/ListJob/:id", async (req, res) => {
     const list = await SavedJob.find({
-        userId: req.body.userId,
-        Status: status,
+        userId: req.params.id,
     });
-    // const data = [];
-    // if (list) {
-    //   for (let j of list) {
-    //     if (j.Status === status) {
-    //       data.push(j);
-    //     }
-    //   }
     if (list) {
         res.send(list);
     } else {
@@ -832,7 +824,7 @@ app.get("/notFollowed/:userId/:limit", async (req, res) => {
             }).limit(limit);
             res.send(users);
         } else {
-            res.send("user not found");
+            res.send({message : "user not found"});
         }
     } catch (error) {
         console.error(error);
@@ -840,4 +832,52 @@ app.get("/notFollowed/:userId/:limit", async (req, res) => {
     }
 });
 
+app.get("/getFollowings/:id" , async (req ,res) => {
+    try{
+        const  users =await UserFollow.find({userId : req.params.id})
+        if (users.length !== 0) {
+            res.send(users);
+        }
+        else{
+            res.send({message :"Users not found"});
+        }
+    }
+    catch(e){
+        res.send(e);
+    }
+})
+
+app.delete("/delete", async (req, res) => {
+    try {
+        const where = req.body.where;
+        const tablename = req.body.COLLECTION_NAME;
+        if (!tablename) {
+            return res.status(400).send("Table name not provided");
+        }
+        const Model = mongoose.model(tablename);
+        if (!Model) {
+            return res.status(404).send("Model not found");
+        }
+        // await ConnectDB();
+        const data = await Model.findOneAndDelete(where);
+        if (data) {
+            res.status(200).json({
+                res: "ok",
+                msg: "Data Deleted Successfully",
+                data:data
+            });
+        } else {
+            res.status(400).json({
+                res: "error",
+                msg: "Data not Deleted",
+            });
+        }
+    } catch (error) {
+        res.status(411).json({
+            res: "Error",
+            msg: "Invalid Input Types",
+            error: error,
+        });
+    }
+});
 app.listen(5500, () => console.log("server started..."));

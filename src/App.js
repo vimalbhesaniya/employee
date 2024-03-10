@@ -48,7 +48,7 @@ const App = () => {
                 <Routes>
                     <Route element={<Layout />}>
                         <Route path="/home" element={<Home setModell={setModell} />} />
-                        <Route path="/nearbyusers" element={<Nearbyusers />} />
+                        <Route path="/saved" element={<Nearbyusers />} />
                         <Route path="/profile" element={<Profile />} />
                         <Route path="/postajob" element={<Postajob />} />
                         <Route path="/network" element={<ListUsers />} />
