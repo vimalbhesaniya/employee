@@ -18,7 +18,7 @@ const useFirestorage = () => {
                             if (downloadUrl) {
                                 setImageUrl(downloadUrl)
                                 setSpinnerState(false);
-                                                                }
+                            }
                         })
                 })
         }
