@@ -15,7 +15,6 @@ import useAPI from "../../Hooks/USER/useAPI";
 import { isValidApplication } from "../../Auth/isValidate";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
-import useFirestorage from "../../Hooks/OTHER/useFirestorage";
 
 const Apply = ({ jobs }) => {
     const upload = useFirestorage();
@@ -98,7 +97,6 @@ const Apply = ({ jobs }) => {
     };
     const handleNext2 = async () => {
         const yes = window.confirm("Are you sure you want to submit the application form?")
-<<<<<<< HEAD
         if (yes) {
             await upload.Upload(resume, "/ApplicationsResume");
             const Email = localStorage.getItem("Email");
@@ -113,12 +111,10 @@ const Apply = ({ jobs }) => {
             setActiveModalState("")
             localStorage.clear();
         }
-=======
 
         setProgress("100%");
         setFrom("form3")
         toast.success("Application submited successfully")
->>>>>>> b0fc6dbb1f027d9ccec46c7cb839b75c6be6ab9f
     };
     console.log(url);
 
