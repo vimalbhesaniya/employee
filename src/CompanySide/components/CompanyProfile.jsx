@@ -1,16 +1,10 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
-import "../Style/jobview.css";
-import useAPI from "../Hooks/USER/useAPI";
-import Cookies from "js-cookie";
-import { EnableSpinner } from "..";
-import Card from "./Components/Card";
-import { toast } from "react-toastify";
-import CompanyProfile from "../CompanySide/components/CompanyProfile";
-
-const ListUsers = () => {
-    const [setSpinnerState] = useContext(EnableSpinner)
+import React, { useCallback, useEffect, useState } from 'react'
+import Card from '../../UserSide/Components/Card'
+import Cookies from 'js-cookie'
+import useAPI from '../../Hooks/USER/useAPI'
+const CompanyProfile = () => {
+    const [compnay , setCompany] = useState([])
     const [keyword, setKeyword] = useState("");
-    const [user, setUser] = useState([]);
     const [followingId , setFollowingId] = useState([]); 
     const [followedUser, setFollowedUser] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -19,22 +13,23 @@ const ListUsers = () => {
 
     useEffect(() => {
         const getUser = async () => {
-            const data = await api.getREQUEST(`notFollowed/${id}/100`);
+            const data = await api.getREQUEST(`notFollowedCompany/${id}/10`);
             if (data) {
-                setUser(data);
+                setCompany(data);
             }
             else{
-                setUser([]);
+                setCompany([]);
             }
         };
         getUser();
     }, []);
 
+    console.log(compnay);
     const handleFollowButton = useCallback((targetId) => {
         const UpdateFollow = async () => {
             const users = await api.patchREQUEST(
                 `updateDetails`,
-                "userFollow",
+                "companyConnections",
                 { userId: id },
                 {
                     targetId: [targetId],
@@ -78,40 +73,22 @@ const ListUsers = () => {
         };
         UpdateFollow();
     }, []);
-    return (
-        <>
-            <div className="container" style={{ marginTop: "100px" }}>
-                <div className="row-jobList">
-                    <div className="col-jobList">
-                        <span className="fs-3">Recommended for you</span>
-                    </div>
-                    <div className="col-jobList">
-                        <div className="job--input">
-                            <input
-                                type="text"
-                                className="form-control h-100 w-100"
-                                placeholder={"type to search"}
-                                onChange={(e) => setKeyword(e.target.value)}
-                            />
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div className="container card">
+  return (
+    <>
+        <div className="container card">
                 <div className="card---container">
-                    {user?.map((e) => {
-                        return<Card
+                    {compnay?.map((e) => {
+                        return <Card 
                             btnText={"Follow"}
-                            firstName={e?.firstName}
-                            _id ={e?._id}
-                            lastName={e?.lastName}
-                            handleUnFollowButton={() => handleUnFollowButton(e?._id)}
-                            pofession={e?.profession}
-                            profileImage={e?.profileImage}
-                            following_id={followingId}
-                            univercity={e?.education[0]?.univercity}
-                            handleFollowButton={() =>handleFollowButton(e?._id)}
+                            firstName={e.Name}
+                            // _id ={e._id}
+                            // lastName={e.lastName}
+                            // handleUnFollowButton={() => handleUnFollowButton(e._id)}
+                            // pofession={e.profession}
+                            // profileImage={e.profileImage}
+                            // following_id={followingId}
+                            // univercity={e.education[0].univercity}
+                            // handleFollowButton={() =>handleFollowButton(e._id)}
                         />
                     })
                     }
@@ -125,9 +102,8 @@ const ListUsers = () => {
                     </div>
                 </div>
             </div>
-                {/* <CompanyProfile /> */}
-        </>
-    );
-};
+    </>
+    )
+}
 
-export default ListUsers;
+export default CompanyProfile

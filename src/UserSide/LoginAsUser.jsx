@@ -35,6 +35,7 @@ const LoginAsUser = ({ setScreen }) => {
             if(RESPONSE?.data) {
                 const userId = RESPONSE.id
                 await api.postREQUEST("userWhoPerformFollow", JSON.stringify({ userId }));
+                await api.postREQUEST("userWhoPerformFollowToCompany", JSON.stringify({ userId }));
                 Cookies.set("id"  ,RESPONSE.id)
                 Cookies.set("token" ,RESPONSE.token)
                 localStorage.setItem("data",JSON.stringify(RESPONSE.data));

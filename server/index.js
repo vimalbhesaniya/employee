@@ -5,6 +5,7 @@ const {
     Address,
     Education,
     WorkExperience,
+    CompanyConnections,
     Company,
     JobPost,
     UserFollow,
@@ -791,6 +792,21 @@ app.post("/userWhoPerformFollow", async (req, res) => {
             });
     }
 })
+app.post("/userWhoPerformFollowToCompany", async (req, res) => {
+    const id = req.body.userId;
+    if (!id) {
+        return res.status(400).send("User Id and Job Id are not provided");
+    } else {
+        const finaldata = new CompanyConnections(req.body);
+        CompanyConnections.insertMany(finaldata)
+            .then((e) => {
+                res.status(201).send(e);
+            })
+            .catch((e) => {
+                res.status(400).send(e);
+            });
+    }
+})
 
 app.get("/myFollowers/:id", async (req, res) => {
     try {
@@ -817,6 +833,28 @@ app.get("/notFollowed/:userId/:limit", async (req, res) => {
         const usersNotFollowed = await UserFollow.findOne({ userId: userId })
         if (usersNotFollowed) {
             const users = await User.find({
+                $and: [
+                    { _id: { $ne: userId } },
+                    { _id: { $nin: usersNotFollowed.targetId } }
+                ]
+            }).limit(limit);
+            res.send(users);
+        } else {
+            res.send({message : "user not found"});
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: "Server Error" });
+    }
+});
+
+app.get("/notFollowedCompany/:userId/:limit", async (req, res) => {
+    try {
+        const { userId, limit } = req.params; 
+
+        const usersNotFollowed = await CompanyConnections.findOne({ userId: userId })
+        if (usersNotFollowed) {
+            const users = await CompanyConnections.find({
                 $and: [
                     { _id: { $ne: userId } },
                     { _id: { $nin: usersNotFollowed.targetId } }

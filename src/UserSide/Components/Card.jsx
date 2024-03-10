@@ -40,7 +40,7 @@ const Card = ({
                         <span style={{ fontSize: "12px" }}>{univercity}</span>
                     </div>
                     <div className="row d-flex  justify-content-center  align-content-center  h-100">
-                        {following_id.includes(_id) ? (
+                        {following_id?.includes(_id) ? (
                             <button
                                 className="btn followBtn p-2 mt-2"
                                 onClick={() => handleFollowButton(_id)}

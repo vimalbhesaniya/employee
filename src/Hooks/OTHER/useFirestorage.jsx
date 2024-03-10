@@ -27,7 +27,10 @@ const useFirestorage = () => {
                 })
         }
     }, []);
+<<<<<<< HEAD
     
+=======
+>>>>>>> 3ab854244fc43566a2bf2ceb0eb9ab6f07e9e68c
     const handleDelete = useCallback((fileName, path) => {
         const storageRef = firebase.storage().ref(path);
         const fileRef = storageRef.child(fileName);

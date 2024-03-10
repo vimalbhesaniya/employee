@@ -244,6 +244,15 @@
     color: #FAFAFA;
 }
 
+.bgbtnred{
+    background-color: #f03e23a1;
+}
+
+.bgbtnred:hover{
+    background-color: #f02323;
+    color: #FAFAFA;
+}
+
 .followBtn{
     background-color: #23a5f0a1;
     color: white;
