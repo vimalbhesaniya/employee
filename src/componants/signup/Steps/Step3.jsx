@@ -27,10 +27,10 @@ const Step3 = ({ setScreen }) => {
     const [personalAddress, setPersonalAddress] = useState("");
     const [pinCode, setPinCode] = useState("");
     const [stateValue, setStateValue] = useState("");
-    const [state, setState] = useState("");
-
+    
     const api = useAPI();
-
+    
+    const [state, setState] = useState("");
     const handleState = (stateValue) => {
         setStateValue(stateValue);
     };

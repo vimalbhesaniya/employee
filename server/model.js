@@ -171,6 +171,7 @@ const ConnectionSchema = new mongoose.Schema({
     companyId: { type: mongoose.Schema.Types.ObjectId, ref: "companies", autopopulate: true },
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "users", autopopulate: true },
 })
+
 const userFollowSchema = new mongoose.Schema({
     userId : { type: mongoose.Schema.Types.ObjectId, ref: "users", autopopulate: false },
     targetId : { type: [mongoose.Schema.Types.ObjectId], ref: "users", autopopulate: true },
@@ -179,7 +180,9 @@ const userFollowSchema = new mongoose.Schema({
 const JobApplicationsSchema = new mongoose.Schema({
     companyId: { type: mongoose.Schema.Types.ObjectId, ref: "companies", autopopulate: true },
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "users", autopopulate: true },
-    jobid: { type: mongoose.Schema.Types.ObjectId, ref: "jobs", autopopulate: true }
+    jobid: { type: mongoose.Schema.Types.ObjectId, ref: "jobs", autopopulate: true },
+    cv: {
+    }, 
 })
 
 UserSchema.plugin(require("mongoose-autopopulate"))

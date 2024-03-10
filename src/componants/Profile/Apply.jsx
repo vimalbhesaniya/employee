@@ -14,10 +14,11 @@ import useAPI from "../../Hooks/USER/useAPI";
 import { isValidApplication } from "../../Auth/isValidate";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
+import useFirestorage from "../../Hooks/OTHER/useFirestorage";
 
 const Apply = ({ jobs }) => {
-    
-    const [activeModalState , setActiveModalState ] = useContext(ActiveModal);
+    const upload = useFirestorage();
+    const [activeModalState, setActiveModalState] = useContext(ActiveModal);
     const [progress, setProgress] = useState("0%");
     const [data, setData] = useState([]);
     const [user, setUser] = useState([]);
@@ -26,8 +27,11 @@ const Apply = ({ jobs }) => {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [resume, setResume] = useState("");
     const [form, setFrom] = useState("form1");
+    const [url, setUrl] = useState();
     const id = localStorage.getItem("appliedID");
+    const userId = Cookies.get("id");
     const api = useAPI();
+
     useEffect(() => {
         const search = async () => {
             try {
@@ -87,13 +91,29 @@ const Apply = ({ jobs }) => {
     const handleNext1 = () => {
         setProgress("80%");
         setFrom("form2")
+        localStorage.setItem("Email", userEmail);
+        localStorage.setItem("phoneNumber", phoneNumber);
     };
-    const handleNext2 = () => {
+    const handleNext2 = async () => {
         const yes = window.confirm("Are you sure you want to submit the application form?")
-        setProgress("100%");
-        setFrom("form3")
-        toast.success("Application submited successfully")
+        if (yes) {
+            await upload.Upload(resume, "/ApplicationsResume");
+            const Email = localStorage.getItem("Email");
+            const phoneNumber = localStorage.getItem("phoneNumber");
+            console.log(Email, phoneNumber);
+            // const RESPONSE = await api.postREQUEST("login", JSON.stringify({ Email, phoneNumber }));
+            setUrl(upload.imageUrl);
+            setProgress("100%");
+            setFrom("form3")
+            toast.success("Application submited successfully")
+        } else {
+            setActiveModalState("")
+            localStorage.clear();
+        }
     };
+    console.log(url);
+
+    
 
     let isTrue = useMemo(() => {
         if (userEmail && phoneNumber) {
@@ -212,7 +232,7 @@ const Apply = ({ jobs }) => {
                                     }
                                     placeholder="Phone Number"
                                 />
-                                <span>{}</span>
+                                <span>{ }</span>
                             </div>
                         </div>
                         <div className="row mt-4">
@@ -294,9 +314,9 @@ const Apply = ({ jobs }) => {
                         {" "}
                         <span className="mt-3 fs-5">Your Application have been submited.</span>
                         <div className="row mt-3 gap-3 h-50 d-flex  justify-content-center  align-content-center ">
-                        <div className="w-50 d-flex justify-content-center  align-content-center  h-25"> 
+                            <div className="w-50 d-flex justify-content-center  align-content-center  h-25">
                                 <Lottie animationData={success} width={100} > </Lottie>
-                        </div>
+                            </div>
                         </div>
                     </>
                 ) : (

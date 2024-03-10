@@ -462,6 +462,40 @@ app.post("/Insert/:tbl", async (req, res) => {
         });
 });
 
+app.delete("/delete", async (req, res) => {
+    try {
+        const where = req.body.where;
+        const tablename = req.body.tbl;
+        if (!tablename) {
+            return res.status(400).send("Table name not provided");
+        }
+        const Model = mongoose.model(tablename);
+        if (!Model) {
+            return res.status(404).send("Model not found");
+        }
+        // await ConnectDB();
+        const data = await Model.findOneAndDelete(where);
+        if (data) {
+            res.status(411).json({
+                res: "ok",
+                msg: "Data Deleted Successfully",
+                data:data
+            });
+        } else {
+            res.status(400).json({
+                res: "error",
+                msg: "Data not Deleted",
+            });
+        }
+    } catch (error) {
+        res.status(411).json({
+            res: "Error",
+            msg: "Invalid Input Types",
+            error: error,
+        });
+    }
+});
+
 // app.post('/jobPost', async (req, res) => {
 //     const tablename = req.body.tablename;
 //     if (!tablename) {
