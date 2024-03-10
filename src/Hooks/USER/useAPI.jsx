@@ -92,7 +92,8 @@ const useAPI = () => {
         }
     }, [data, error, loading]);
     
-    const deleteREQUEST = useCallback(async (PATH,COLLECTION_NAME  ,_id, COLUMNS ) => {
+    
+    const deleteREQUEST = useCallback(async (PATH,COLLECTION_NAME , WHERE ) => {
         try {
             const RESPONSE = await fetch(`${process.env.REACT_APP_LOCAL_URL}${PATH}`,
                 {
@@ -103,8 +104,7 @@ const useAPI = () => {
                     method: "DELETE",
                     body:JSON.stringify({
                         COLLECTION_NAME,
-                        COLUMNS,
-                        _id
+                        WHERE
                     })
                 })
             const data = await RESPONSE.json();
@@ -118,7 +118,7 @@ const useAPI = () => {
         }
     }, [data, error, loading]);
     
-    return {postREQUEST ,getREQUEST ,patchREQUEST }
+    return {postREQUEST ,getREQUEST ,deleteREQUEST,patchREQUEST }
 }
 
 export default useAPI

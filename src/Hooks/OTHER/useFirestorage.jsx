@@ -11,19 +11,46 @@ const useFirestorage = () => {
             const storageRef = firebase.storage().ref('/userprofiles')
             const fileRef = storageRef.child(img.name)
             setSpinnerState(true)
-            fileRef.put(img)
+            fileRef.put(img,metadata)
                 .then((snapshot) => {
                     snapshot.ref.getDownloadURL()
                         .then((downloadUrl) => {
                             if (downloadUrl) {
                                 setImageUrl(downloadUrl)
                                 setSpinnerState(false);
-                            }
+                                                                }
                         })
                 })
         }
     }, []);
-    return { Upload, imageUrl }
+
+    const handleDelete = useCallback((fileName, path) => {
+        const storageRef = firebase.storage().ref(path);
+        const fileRef = storageRef.child(fileName);
+        fileRef.delete().then(() => {
+            console.log('File deleted successfully');
+        }).catch((error) => {
+            console.error('Error deleting file: ', error);
+        });
+    }, []);
+
+    const handleUpdate = useCallback((fileName, updatedFile, path) => {
+        const storageRef = firebase.storage().ref(path);
+        const fileRef = storageRef.child(fileName);
+        fileRef.put(Date.now()+"_"+`${updatedFile}`).then((snapshot) => {
+            snapshot.ref.getDownloadURL()
+                .then((downloadUrl) => {
+                    if (downloadUrl) {
+                        setImageUrl(downloadUrl)
+                        setSpinnerState(false);
+                    }
+                })
+        }).catch((error) => {
+            console.error('Error updating file: ', error);
+        });
+    },[]);
+
+    return { imageUrl, Upload, handleDelete, handleUpdate }
 }
 
 export default useFirestorage

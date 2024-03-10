@@ -444,7 +444,6 @@ transition: 1s all;
 }
 
 .jobCard{
-    cursor: pointer;
     z-index: -1;
 
 }
