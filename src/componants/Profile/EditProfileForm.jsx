@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useCallback, useEffect } from 'react'
 import DataList from "./assets/DataList";
 import edit from "../../Style/edit.module.css"
 import ProfessionBox from "./assets/ProfessionBox";
@@ -8,29 +8,90 @@ import EditAddress from './Edit/EditAddress';
 import ProfilePreview from '../signup/Steps/profilePreview';
 import { ToggleEdit } from '../Common/profile';
 import useFirestorage from "../../Hooks/OTHER/useFirestorage";
+import Cookies from 'js-cookie';
+import useAPI from '../../Hooks/USER/useAPI';
 
 const EditProfileForm = () => {
     const upload = useFirestorage();
     const [profilePicture, setProfilePicture] = useState("");
+    const [image, setImage] = useState("");
     const [isEditProfile, setIsEditProfile] = useContext(ToggleEdit)
     const [education, setEducation] = useState(false);
     const [experience, setExperience] = useState(false);
     const [address, setAddress] = useState(false);
-    const handleFileChange = (event) => {
-        try {
-            const file = event.target.files[0];
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [profileImage, setprofileImage] = useState("");
+    const [skills, setSkills] = useState([]);
+    const [profession, setProfession] = useState("");
+    const [input, setInput] = useState([]);
+    const [langauges, setLanguages] = useState([]);
+    const api = useAPI();
+    const url = upload.imageUrl
+    // const handleFileChange = (event) => {
+    //     try {
+    //         const file = event.target.files[0];
 
-            if (file) {
-                setProfilePicture(URL.createObjectURL(file));
-            } else {
-                setProfilePicture("");
-            }
-        } catch (error) {
-            console.error("Error creating object URL:", error);
+    //         if (file) {
+    //             setProfilePicture(URL.createObjectURL(file));
+    //         } else {
+    //             setProfilePicture("");
+    //         }
+    //     } catch (error) {
+    //         console.error("Error creating object URL:", error);
+    //     }
+    // }
+
+
+    const handleEnterSkillsEvent = (e) => {
+        if (e.key == "Enter") {
+            setSkills([...skills, input]);
+            e.target.value = "";
         }
-    }
-    
-    
+    };
+
+    const handleEnterLangaugeEvent = (e) => {
+        if (e.key == "Enter") {
+            setLanguages([...langauges, input]);
+            e.target.value = "";
+        }
+    };
+
+    const handleFileChange = useCallback(async (event) => {
+        await upload.Upload(event.target.files[0].name, '/userprofiles', 'image/jpeg');
+    });
+
+    useEffect(() => {
+        setprofileImage(url);
+    }, [url])
+
+    // const fileUpload = async () => {
+    //     await upload.Upload(image, '/userprofiles', 'image/jpeg');
+    // }
+    const handleSubmit = useCallback(async () => {
+        const id = Cookies.get("id");
+        // console.log(profileImage);
+        const data = await api.patchREQUEST("updateDetails", "users", id, {firstName , lastName , langauges , profession ,skills});
+    }, [
+        firstName , 
+        lastName , 
+        // profileImage, 
+        langauges,
+        profession , 
+        skills 
+    ]);
+
+
+    // const handleFileChange =  useCallback(async (event) => {
+    //     const isConfirmed = window.confirm("Are you sure?")
+    //     if (isConfirmed) {
+    //         await upload.Upload(event.target.files[0].name);
+    //     }
+    // } , []); 
+
+    // useEffect(() => {
+    //     setprofileImage(url);
+    // }, [url])
     return (
         <>
             <div className={`card container animate__animated ${isEditProfile ? `animate__bounceInDown` : `animate__bounceOutUp`} h-50  overflow-scroll bg-body-secondary ${edit.cardContainer}`}>
@@ -41,40 +102,41 @@ const EditProfileForm = () => {
                 <div className="row mb-3">
                     <div className="col-md-6">
                         <label htmlFor="" className="form-label" > First name :</label>
-                        <input type="text" className="form-control " placeholder="first name" required />
+                        <input type="text" className="form-control " placeholder="first name" required onChange={(e) => setFirstName(e.target.value)} />
                     </div>
                     <div className="col-md-6">
                         <label htmlFor="" className="form-label">Last name :</label>
-                        <input type="text" className="form-control " placeholder="last name" required />
+                        <input type="text" className="form-control " placeholder="last name" required onChange={(e) => setLastName(e.target.value)} />
                     </div>
                 </div>
-                <div className="row mb-3">
+                {/* <div className="row mb-3">
                     <div className="col-md-10">
                         <label htmlFor="" className="form-label ">Profile picture :</label>
                         <input type="file" className="form-control" onChange={(e) => handleFileChange(e)} />
                     </div>
                     <div className="col-md-2">
-                        <ProfilePreview image={profilePicture} />
+                        <ProfilePreview image={profileImage} />
                     </div>
-                </div>
+                </div> */}
                 <div className="row mb-3 ">
                     <div className="col-md-6">
                         <label htmlFor="" className="form-label">Langauges :</label>
-                        <input list="langauge" placeholder="Langauges-must be comma(,) saparated" className="form-control" />
+                        <input list="langauge" placeholder="Langauges-must be comma(,) saparated" className="form-control" onChange={(e) => setLanguages(e.target.value)} onKeyUp={(e) => handleEnterLangaugeEvent(e)} />
                         <DataList Id={"langauge"} />
                     </div>
                     <div className="col-md-6">
                         <label htmlFor="" className="form-label">Profession :</label>
-                        <input list="profession" placeholder="profession" className="form-control" />
+                        <input list="profession" placeholder="profession" className="form-control" onChange={(e) => setProfession(e.target.value)} />
                         <ProfessionBox id={"profession"} />
                     </div>
                 </div>
                 <div className="row mb-3">
                     <div className="col-md-12">
                         <label htmlFor="" className="form-label">Skills :</label>
-                        <input type="text" placeholder="Skills-must be comma(,) saparated" className="form-control" />
+                        <input type="text" placeholder="Skills-must be comma(,) saparated" className="form-control" onChange={(e) => setSkills(e.target.value)} onKeyUp={(e) => handleEnterSkillsEvent(e)} />
                     </div>
                 </div>
+                <button type="Submit" value="Submit" className="btn btn-info w-25 mb-3" data-mdb-ripple-init onClick={() => handleSubmit()}>Save</button>
                 <div className="row">
                     <div className="col-md mb-2 ">
                         <p className=''>Edit your education</p>
@@ -98,7 +160,7 @@ const EditProfileForm = () => {
                 <div className="row mb-2 ">
                     <div className="col-md">
                         <p className=''>Edit your Experience</p>
-                        <button className="btn btn-info" onClick={() => setExperience(!experience)}> {!experience ?  "Experience" : `Close`}</button>
+                        <button className="btn btn-info" onClick={() => setExperience(!experience)}> {!experience ? "Experience" : `Close`}</button>
                     </div>
                 </div>
                 {
@@ -106,7 +168,7 @@ const EditProfileForm = () => {
                     <EditExperience />
                 }
             </div>
-            
+
         </>
     );
 }
