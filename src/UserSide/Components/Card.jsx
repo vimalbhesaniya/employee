@@ -45,14 +45,14 @@ const Card = ({
                                 className="btn followBtn p-2 mt-2"
                                 onClick={() => handleUnFollowButton(_id)}
                             >
-                                Following
+                                {btnText=="Follow" ? "Following" : "Connecting" } {/* Following */}
                             </button>
                         ) : (
                             <button
                                 className="btn followBtn p-2 mt-2"
                                 onClick={() => handleFollowButton(_id)}
                             >
-                                Follow
+                                {btnText} {/* Follow */}
                             </button>
                         )}
                     </div>

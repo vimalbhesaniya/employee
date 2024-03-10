@@ -5,8 +5,8 @@ import useAPI from '../../Hooks/USER/useAPI'
 const CompanyProfile = () => {
     const [company , setCompany] = useState([])
     const [keyword, setKeyword] = useState("");
-    const [followingId , setFollowingId] = useState([]); 
-    const [followedUser, setFollowedUser] = useState([]);
+    const [connectingId , setConnectingId] = useState([]); 
+    const [connectedCompany, setConnectedCompany] = useState([]);
     const [loading, setLoading] = useState(false);
     const api = useAPI();
     const id = Cookies.get("id");
@@ -25,9 +25,10 @@ const CompanyProfile = () => {
     }, []);
 
     // console.log(compnay);
+    // console.log(company);
     const handleFollowButton = useCallback((targetId) => {
         const UpdateFollow = async () => {
-            const users = await api.patchREQUEST(
+            const company = await api.patchREQUEST(
                 `updateDetails`,
                 "companyConnections",
                 { userId: id },
@@ -35,11 +36,11 @@ const CompanyProfile = () => {
                     targetId: [targetId],
                 }
             );
-            if (users) {
-                setFollowedUser(users);
+            if (company) {
+                setConnectedCompany(company);
             }
             
-            setFollowingId((prev)=>{
+            setConnectingId((prev)=>{
                 if(prev?.includes(targetId))
                 {
                     return prev.filter(id => id !== targetId);
@@ -51,19 +52,14 @@ const CompanyProfile = () => {
         };
         UpdateFollow();
     }, []);
+    
     const handleUnFollowButton = useCallback((targetId) => {
         const UpdateFollow = async () => {
-            const users = await api.patchREQUEST(
-                `updateDetails`,
-                "userFollow",
-                { userId: id },
-                {
-                    targetId: [targetId],
-                }
+            const users = await api.patchREQUEST(`api/userfollow/${id}/remove/${targetId}`,
+                "companyConnections"
             );
-            setFollowedUser(users);
-            
-            setFollowingId(prev => {
+            setConnectedCompany(users);            
+            setConnectingId(prev => {
                 if (prev?.includes(targetId)) {
                     return prev.filter(id => id !== targetId);
                 } else {
@@ -77,7 +73,7 @@ const CompanyProfile = () => {
     <>
         <div className="container card">
                 <div className="card---container">
-                {company&&company?.map((e) => {
+                    {company&&company?.map((e) => {
                         return <Card
                         btnText={"Connect"}
                         firstName={e?.Name}
@@ -91,8 +87,6 @@ const CompanyProfile = () => {
                     />
                     })
                     }
-
-
                 </div>
                 <div className="container mt-2">
                     <div className="row p-2">

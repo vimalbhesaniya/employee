@@ -61,17 +61,6 @@ const EditEducation = () => {
     school,
   ]);
 
-  const handleInput3 =  useCallback(async (event) => {
-  const upldateFile=event.target.files[0].name;
-    const file = "VISHALA_GAJERA_RESUME (1).pdf";
-    await upload.handleUpdate(file,upldateFile, '/ApplicationsResume');
-        // await upload.Upload(event.target.files[0].name);
-} , []); 
-  useEffect(() => {
-    setImage(url);
-  }, [url])
-
-
   return (
     <div className="card container   w-100  bg-body-secondary cardContainer">
       <div className='d-flex justify-content-between align-align-items-center  '>
@@ -122,14 +111,7 @@ const EditEducation = () => {
           <input type="text" placeholder="certifications-must be comma(,) separated" className="form-control" name="certifications" onChange={(e) => setCertifications(e.target.value)} onKeyUp={(e) => handleEnterCertificationEvent(e)} />
         </div>
       </div>
-      <input
-        type="file"
-        required={true}
-        className={"form-control"}
-        onChange={(e) => handleInput3(e)}
-      />
       <button type="Submit" value="Submit" className="btn btn-info w-25 mb-3" data-mdb-ripple-init onClick={() => handleSubmit()}>Save</button>
-      {/* <button type='Submit' value="Submit" className="btn btn-info w-25 mb-3" data-mdb-ripple-init onClick={() => handleUpdateFile()}>Update Image</button> */}
     </div>
   );
 }

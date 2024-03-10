@@ -11,7 +11,7 @@ const ListUsers = () => {
     const [setSpinnerState] = useContext(EnableSpinner)
     const [keyword, setKeyword] = useState("");
     const [user, setUser] = useState([]);
-    const [followingId , setFollowingId] = useState([]); 
+    const [followingId, setFollowingId] = useState([]);
     const [followedUser, setFollowedUser] = useState([]);
     const [loading, setLoading] = useState(false);
     const api = useAPI();
@@ -19,11 +19,11 @@ const ListUsers = () => {
 
     useEffect(() => {
         const getUser = async () => {
-            const data = await api.getREQUEST(`notFollowed/${id}/100`);
+            const data = await api.getREQUEST(`notFollowed/${id}/10`);
             if (data) {
                 setUser(data);
             }
-            else{
+            else {
                 setUser([]);
             }
         };
@@ -43,28 +43,26 @@ const ListUsers = () => {
             if (users) {
                 setFollowedUser(users);
             }
-            
-            setFollowingId((prev)=>{
-                if(prev?.includes(targetId))
-                {
+
+            setFollowingId((prev) => {
+                if (prev?.includes(targetId)) {
                     return prev.filter(id => id !== targetId);
                 }
-                else{
+                else {
                     return [...prev, targetId]
                 }
             })
         };
         UpdateFollow();
     }, []);
+    
     const handleUnFollowButton = useCallback((targetId) => {
 
         const UpdateFollow = async () => {
-            const users = await api.patchREQUEST(
-                `api/userfollow/${id}/remove/${targetId}`,
+            const users = await api.patchREQUEST(`api/userfollow/${id}/remove/${targetId}`,
                 "userFollow"
             );
-            setFollowedUser(users);
-            
+            setFollowedUser(users);            
             setFollowingId(prev => {
                 if (prev?.includes(targetId)) {
                     return prev.filter(id => id !== targetId);
@@ -75,6 +73,7 @@ const ListUsers = () => {
         };
         UpdateFollow();
     }, []);
+        
     return (
         <>
             <div className="container" style={{ marginTop: "100px" }}>
@@ -97,18 +96,18 @@ const ListUsers = () => {
 
             <div className="container card">
                 <div className="card---container">
-                    {user?.map((e) => {
-                        return<Card
+                    {user&&user?.map((e) => {
+                        return <Card
                             btnText={"Follow"}
                             firstName={e?.firstName}
-                            _id ={e?._id}
+                            _id={e?._id}
                             lastName={e?.lastName}
                             handleUnFollowButton={() => handleUnFollowButton(e?._id)}
                             pofession={e?.profession}
                             profileImage={e?.profileImage}
                             following_id={followingId}
                             univercity={e?.education[0]?.univercity}
-                            handleFollowButton={() =>handleFollowButton(e?._id)}
+                            handleFollowButton={() => handleFollowButton(e?._id)}
                         />
                     })
                     }
