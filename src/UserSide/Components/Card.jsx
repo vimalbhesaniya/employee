@@ -8,7 +8,8 @@ const Card = ({
     _id,
     handleFollowButton,
     handleUnFollowButton,
-    btnText,
+    no ,
+    yes,
     univercity,
     pofession,
 }) => {
@@ -29,7 +30,7 @@ const Card = ({
                 </div>
                 <div className="card---header">
                     <div>
-                        <span className="text-muted fw-semibold">
+                        <span className="text-muted ellips fw-semibold">
                             {firstName} {lastName}
                         </span>
                     </div>
@@ -45,14 +46,14 @@ const Card = ({
                                 className="btn followBtn p-2 mt-2"
                                 onClick={() => handleUnFollowButton(_id)}
                             >
-                                {btnText=="Follow" ? "Following" : "Connecting" } {/* Following */}
+                                {no}
                             </button>
                         ) : (
                             <button
                                 className="btn followBtn p-2 mt-2"
                                 onClick={() => handleFollowButton(_id)}
                             >
-                                {btnText} {/* Follow */}
+                                {yes}
                             </button>
                         )}
                     </div>

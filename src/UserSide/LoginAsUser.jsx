@@ -56,7 +56,7 @@ const LoginAsUser = ({ setScreen }) => {
             <span>looking to hire ? </span>
             <span
                 className="screentitle"
-                onClick={() => setScreen("company")}
+                onClick={() => navigate("/loginascompany")}
             >
                 {" "}
                 Login as Company

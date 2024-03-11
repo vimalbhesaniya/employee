@@ -1,8 +1,26 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Modal from '../../render-model/Modal';
 import css from "../../Style/follow.module.css";
-
+import useAPI from '../../Hooks/USER/useAPI';
+import Cookies from 'js-cookie';
 const Body = ({onClose}) => {
+    const api = useAPI();
+    const [company , setCompany] = useState([]);
+    const [errorMessage , setErrorMessage]  = useState("");
+    useEffect(() => {
+        const apiCall =async () =>{
+            const id = Cookies.get("id");
+            const c = await api.getREQUEST(`getConnections/${id}`)
+            if (c) {
+                setCompany(c[0].targetId);
+            }
+            else if(c.message)
+            {
+                setErrorMessage(c.message)
+            } 
+        }
+        apiCall()
+    } , [])
     return (
         <>
             <div className={css.container}>
@@ -25,121 +43,30 @@ const Body = ({onClose}) => {
                         placeholder="search..."
                     />
                 </div>
-                <div className="d-flex flex-column gap-3">
-                    <div className={css.body}>
-                        <div className={css.profile}>
+                <div className="d-flex flex-column justify-content-center  align-content-center  gap-3">
+                {  company?.map((e) => {
+                    return <div className={`row d-flex justify-content-center  align-items-center` }>
+                        <div className={"col-4"}>
                             <div className={css.imgDiv}>
                                 <img
                                     onError={(e) =>
                                     (e.target.src =
                                         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIwRBD9gNuA2GjcOf6mpL-WuBhJADTWC3QVQ&usqp=CAU")
                                     }
-                                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSk_x_zUaCKM1ffaKKErUvIVKEwcDD_DWPBeg&usqp=CAU"
+                                    src={e.Logo}
                                     className={css.img}
                                     alt=""
                                 />
                             </div>
                         </div>
-                        <div className={css.discription}>
-                            <span className="fs-6">Vimal bhesaniya</span>
-                            <button className="btn bgbtn">following</button>
+                        <div className={"col-4 ellips"}>
+                            <span className="fs-6" style={{width:"10px"}}>{e.Name}</span>
+                        </div>
+                        <div className='col-4'>
+                            <button className="btn bgbtn">Unfollow</button>
                         </div>
                     </div>
-                    <div className={css.body}>
-                        <div className={css.profile}>
-                            <div className={css.imgDiv}>
-                                <img
-                                    onError={(e) =>
-                                    (e.target.src =
-                                        "https://img.freepik.com/premium-vector/anonymous-user-flat-icon-vector-illustration-with-long-shadow_520826-1932.jpg")
-                                    }
-                                    src="https://images.pelasxels.com/photos/34534/people-peoples-homeless-male.jpg?auto=compress&cs=tinysrgb&w=600"
-                                    className={css.img}
-                                    alt=""
-                                />
-                            </div>
-                        </div>
-                        <div className={css.discription}>
-                            <span className="fs-6">yash Kalambe</span>
-                            <button className="btn bgbtn">following</button>
-                        </div>
-                    </div>
-                    <div className={css.body}>
-                        <div className={css.profile}>
-                            <div className={css.imgDiv}>
-                                <img
-                                    onError={(e) =>
-                                    (e.target.src =
-                                        "https://img.freepik.com/premium-vector/anonymous-user-flat-icon-vector-illustration-with-long-shadow_520826-1932.jpg")
-                                    }
-                                    src="https://images.pelasxels.com/photos/34534/people-peoples-homeless-male.jpg?auto=compress&cs=tinysrgb&w=600"
-                                    className={css.img}
-                                    alt=""
-                                />
-                            </div>
-                        </div>
-                        <div className={css.discription}>
-                            <span className="fs-6">yash Kalambe</span>
-                            <button className="btn bgbtn">following</button>
-                        </div>
-                    </div>
-                    <div className={css.body}>
-                        <div className={css.profile}>
-                            <div className={css.imgDiv}>
-                                <img
-                                    onError={(e) =>
-                                    (e.target.src =
-                                        "https://img.freepik.com/premium-vector/anonymous-user-flat-icon-vector-illustration-with-long-shadow_520826-1932.jpg")
-                                    }
-                                    src="https://images.pelasxels.com/photos/34534/people-peoples-homeless-male.jpg?auto=compress&cs=tinysrgb&w=600"
-                                    className={css.img}
-                                    alt=""
-                                />
-                            </div>
-                        </div>
-                        <div className={css.discription}>
-                            <span className="fs-6">yash Kalambe</span>
-                            <button className="btn bgbtn">following</button>
-                        </div>
-                    </div>
-                    <div className={css.body}>
-                        <div className={css.profile}>
-                            <div className={css.imgDiv}>
-                                <img
-                                    onError={(e) =>
-                                    (e.target.src =
-                                        "https://img.freepik.com/premium-vector/anonymous-user-flat-icon-vector-illustration-with-long-shadow_520826-1932.jpg")
-                                    }
-                                    src="https://images.pelasxels.com/photos/34534/people-peoples-homeless-male.jpg?auto=compress&cs=tinysrgb&w=600"
-                                    className={css.img}
-                                    alt=""
-                                />
-                            </div>
-                        </div>
-                        <div className={css.discription}>
-                            <span className="fs-6">yash Kalambe</span>
-                            <button className="btn bgbtn">following</button>
-                        </div>
-                    </div>
-                    <div className={css.body}>
-                        <div className={css.profile}>
-                            <div className={css.imgDiv}>
-                                <img
-                                    onError={(e) =>
-                                    (e.target.src =
-                                        "https://img.freepik.com/premium-vector/anonymous-user-flat-icon-vector-illustration-with-long-shadow_520826-1932.jpg")
-                                    }
-                                    src="https://images.pelasxels.com/photos/34534/people-peoples-homeless-male.jpg?auto=compress&cs=tinysrgb&w=600"
-                                    className={css.img}
-                                    alt=""
-                                />
-                            </div>
-                        </div>
-                        <div className={css.discription}>
-                            <span className="fs-6">yash Kalambe</span>
-                            <button className="btn bgbtn">following</button>
-                        </div>
-                    </div>
+                })  }
                 </div>
             </div>
         </>

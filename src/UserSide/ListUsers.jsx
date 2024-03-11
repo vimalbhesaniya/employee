@@ -57,6 +57,7 @@ const ListUsers = () => {
     }, []);
     
     const handleUnFollowButton = useCallback((targetId) => {
+
         const UpdateFollow = async () => {
             const users = await api.patchREQUEST(`api/userfollow/${id}/remove/${targetId}`,
                 "userFollow"
@@ -101,6 +102,8 @@ const ListUsers = () => {
                             firstName={e?.firstName}
                             _id={e?._id}
                             lastName={e?.lastName}
+                            yes={"Follow"}
+                            no={"Following"}
                             handleUnFollowButton={() => handleUnFollowButton(e?._id)}
                             pofession={e?.profession}
                             profileImage={e?.profileImage}
@@ -120,7 +123,7 @@ const ListUsers = () => {
                     </div>
                 </div>
             </div>
-            <CompanyProfile />
+                <CompanyProfile />
         </>
     );
 };

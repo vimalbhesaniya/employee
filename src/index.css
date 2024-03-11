@@ -1,13 +1,7 @@
-/* Import Tailwind CSS base styles */
+/* src/index.css */
 @import 'tailwindcss/base';
-
-/* Import Tailwind CSS components styles */
 @import 'tailwindcss/components';
-
-/* Import Tailwind CSS utilities styles */
 @import 'tailwindcss/utilities';
-
-/* Your custom CSS can go here */
 
 :root{
     overflow: hidden;

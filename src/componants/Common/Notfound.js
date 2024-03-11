@@ -5,11 +5,8 @@ const NotFound = () => {
     const navigate = useNavigate();
     useEffect(() => {
         const token = Cookies.get("token");
-        if (token) {
-            navigate("/home");
-        }
-        else{
-            navigate("/login")
+        if (!token) {
+            navigate("/loginasuser")
         }
     }, [navigate]);
     return <h6>redirecting....</h6>;

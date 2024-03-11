@@ -23,6 +23,7 @@ const EditProfileForm = () => {
     const [lastName, setLastName] = useState("");
     const [profileImage, setprofileImage] = useState("");
     const [skill, setSkills] = useState([]);
+    const [skill, setSkills] = useState([]);
     const [profession, setProfession] = useState("");
     const [input, setInput] = useState([]);
     const [langauge, setLanguages] = useState([]);
@@ -45,6 +46,7 @@ const EditProfileForm = () => {
 
     const handleEnterSkillsEvent = (e) => {
         if (e.key == "Enter") {
+            setSkills([...skill, input]);
             setSkills([...skill, input]);
             e.target.value = "";
         }
@@ -73,6 +75,7 @@ const EditProfileForm = () => {
         const langauges = langauge.split(",")
         const id = Cookies.get("id");
         // console.log(profileImage);
+        const skills = skill.split(",")
         const data = await api.patchREQUEST("updateDetails", "users", id, {firstName , lastName , langauges , profession ,skills});
     }, [
         firstName , 
@@ -80,6 +83,7 @@ const EditProfileForm = () => {
         // profileImage, 
         langauge,
         profession , 
+        skill 
         skill
     ]);
 
@@ -104,11 +108,11 @@ const EditProfileForm = () => {
                 <div className="row mb-3">
                     <div className="col-md-6">
                         <label htmlFor="" className="form-label" > First name :</label>
-                        <input type="text" className="form-control " placeholder="first name" required onChange={(e) => setFirstName(e.target.value)} />
+                        <input type="text" className="form-control " placeholder="first name" onChange={(e) => setFirstName(e.target.value)} />
                     </div>
                     <div className="col-md-6">
                         <label htmlFor="" className="form-label">Last name :</label>
-                        <input type="text" className="form-control " placeholder="last name" required onChange={(e) => setLastName(e.target.value)} />
+                        <input type="text" className="form-control " placeholder="last name"  onChange={(e) => setLastName(e.target.value)} />
                     </div>
                 </div>
                 {/* <div className="row mb-3">

@@ -25,13 +25,18 @@ const Profile = () => {
     const [isEditProfile, setIsEditProfile] = useState(false);
     const [screen, setScreen] = useState("education");
     const [profile, setProfile] = useState([]);
-    const [location,setLocation]=useState([]);
-    console.log(location);
-    const [state,setState]=useState("");
-    const [user,setUser]=useState([]);
+    const [ln , setLn] =useState("");
+    const [lnc , setLnc] =useState("");
 
     const call = useCallback(async () => {
         const data = await api.getREQUEST(`profile/${Cookies.get("id")}`);
+        const id = Cookies.get("id");
+        const users = await api.getREQUEST(`getFollowings/${id}`)
+        console.log(users);
+        setLn(users[0]?.targetId?.length);
+        const com = await api.getREQUEST(`getConnections/${id}`)
+        console.log(com);
+        setLnc(com[0].targetId.length);
         if (data[0]) {
             setProfile(data[0]);
             console.log(data);
@@ -89,6 +94,8 @@ const Profile = () => {
                             <div className="col-lg-8">
                                 <div className="card mb-4">
                                     <SensetiveInfo
+                                    ln={ln}
+                                    lnc={lnc}
                                         personalAddress={
                                             profile.location &&
                                             profile.location[0].personalAddress

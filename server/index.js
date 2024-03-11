@@ -105,7 +105,7 @@ const verifyToken = (req, res, next) => {
     console.warn("called ", token);
     if (token) {
         jwt.verify(token, key, (err, valid) => {
-            err ? res.send({ unauthorized: "invalid token" }) : next();
+            err ? res.send({ status: false  ,  authorization : "Invalid Token"}) : next();
         });
     } else {
         res.send({ result: "provide a token from headers" });
@@ -262,7 +262,7 @@ app.patch("/updateDetails", async (req, res) => {
             return res.status(400).send("Document ID not provided");
         }
 
-        if (tablename !== "userFollow") {
+        if (tablename !== "userFollow" && tablename !== "companyConnections") {
             const updatedDocument = await Model.findByIdAndUpdate(
                 _id,
                 { $set: COLUMNS },
@@ -653,15 +653,15 @@ app.get("/CompanyListing", async (req, res) => {
         res.status(500).send("Internal Server Error");
     }
 });
-
 app.post("/Clogin", async (req, res) => {
     if (req.body.password && req.body.email) {
         const email = req.body.email;
-        const data = await Company.findOne({ email: email });
+        const data = await Company.findOne({ Email: email });
+        console.log(data);
         if (data) {
             const pwdMatch = await encrypt.compare(
                 req.body.password,
-                data.password
+                data.Password
             );
             if (pwdMatch) {
                 jwt.sign({ data }, key, { expiresIn: "1d" }, (err, token) => {
@@ -861,21 +861,57 @@ app.get("/notFollowedCompany/:userId/:limit", async (req, res) => {
     }
 });
 
-app.get("/getFollowings/:id", async (req, res) => {
-    try {
-        const users = await UserFollow.find({ userId: req.params.id })
+app.get("/getFollowings/:id" , async (req ,res) => {
+    try{
+        const  users =await UserFollow.find({userId : req.params.id})
         if (users.length !== 0) {
             res.send(users);
         }
-        else {
-            res.send({ message: "Users not found" });
+        else{
+            res.send({message :"Users not found"});
         }
     }
-    catch (e) {
+    catch(e){
         res.send(e);
     }
 })
 
+app.get("/getConnections/:id" , async (req ,res) => {
+    try{
+        const  users =await CompanyConnections.find({userId : req.params.id})
+        if (users.length !== 0) {
+            res.send(users);
+        }
+        else{
+            res.send({message :"Users not found"});
+        }
+    }
+    catch(e){
+        res.send(e);
+    }
+})
+
+app.patch('/api/userfollow/:userId/remove/:targetId', async (req, res) => {
+    try {
+        const { userId, targetId } = req.params;
+        
+        // Find the userFollow document for the userId
+        const userFollow = await UserFollow.findOne({ userId });
+
+        // If userFollow document doesn't exist, return error
+        if (!userFollow) {
+            return res.status(404).json({ message: "User follow not found" });
+        }
+
+        // Remove the targetId from the targetIds array
+        const result = await UserFollow.findOneAndUpdate({ userId : userId}, { $pull: { targetId: targetId } });
+
+        return res.status(200).json({ message: "TargetId removed successfully" ,result });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+});
 app.delete("/delete", async (req, res) => {
     try {
         const where = req.body.where;
@@ -910,29 +946,9 @@ app.delete("/delete", async (req, res) => {
     }
 });
 
-app.get("/getUser/:userId/:city/:state", async (req, res) => {
-    const userId = req.params.userId;
-    const city = req.params.city;
-    const state = req.params.state;
-
-    try {
-        const users = await User.find({
-            _id: { $ne: userId },
-            $or: [
-                { "location.city": city },
-                { "location.state": state }
-            ]
-        });
-
-        if (users.length > 0) {
-            res.send(users);
-        } else {
-            res.send("Users Not Found");
-        }
-    } catch (error) {
-        console.error(error);
-        res.status(500).send("Internal Server Error");
-    }
-});
-
+app.get("/authenitcation" , verifyToken , (req , res) => {
+    res.send({
+        status : true
+    })
+})
 app.listen(5500, () => console.log("server started..."));

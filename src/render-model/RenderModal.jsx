@@ -5,6 +5,7 @@ import ConnectionModel from "../componants/Profile/ConnectionModel";
 import ApplyModel from "../componants/Profile/ApplyModel";
 import FollowingModel from "../componants/Profile/FollowingModel";
 import Notifications from "../componants/Common/Notifications";
+import PostAJob from "../CompanySide/Modals/PostAJob";
 
 const RenderModal = ({}) => {
   const [activeModalState, setActiveModalState] = useContext(ActiveModal);
@@ -22,6 +23,8 @@ const RenderModal = ({}) => {
       return <ConnectionModel onClose={onClose} />;
     case "notifications":
       return <Notifications onClose={onClose} />;
+    case "postajob":
+      return <PostAJob onClose={onClose} />;
     default:
       return;
   }

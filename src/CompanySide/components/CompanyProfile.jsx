@@ -24,6 +24,7 @@ const CompanyProfile = () => {
         getUser();
     }, []);
 
+    // console.log(compnay);
     // console.log(company);
     const handleFollowButton = useCallback((targetId) => {
         const UpdateFollow = async () => {
@@ -74,19 +75,19 @@ const CompanyProfile = () => {
                 <div className="card---container">
                     {company&&company?.map((e) => {
                         return <Card
-                        btnText={"Connect"}
+                        no={"Connected"}
+                        yes={"Connect"}
                         firstName={e?.Name}
                         _id ={e?._id}
                         handleUnFollowButton={() => handleUnFollowButton(e?._id)}
                         pofession={e?.Industry}
                         profileImage={e?.Logo}
                         following_id={connectingId}
-                        univercity={e?.Address[0]?.personalAddress}
+                        univercity={e.Address && e?.Address[0]?.personalAddress}
                         handleFollowButton={() =>handleFollowButton(e?._id)}
                     />
                     })
                     }
-
                 </div>
                 <div className="container mt-2">
                     <div className="row p-2">

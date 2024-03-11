@@ -195,7 +195,7 @@ EducationSchema.plugin(require("mongoose-autopopulate"))
 WorkExperienceSchema.plugin(require("mongoose-autopopulate"))
 JobSchema.plugin(require("mongoose-autopopulate"))
 SavedJobSchema.plugin(require("mongoose-autopopulate"))
-ConnectionSchema.plugin(require("mongoose-autopopulate"))
+CompanyConnectionsSchema.plugin(require("mongoose-autopopulate"))
 JobApplicationsSchema.plugin(require("mongoose-autopopulate"))
 userFollowSchema.plugin(require("mongoose-autopopulate"))
 

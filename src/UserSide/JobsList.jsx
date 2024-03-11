@@ -96,7 +96,6 @@ const JobsList = () => {
                     </div>
                 </div>
             </div>
-
             <div className="container allJobs"> 
                 <div className="jobCard mt-5 gap-2 d-flex flex-column ">
                     {jobs?.map((e) => {
