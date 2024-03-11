@@ -25,16 +25,33 @@ const Profile = () => {
     const [isEditProfile, setIsEditProfile] = useState(false);
     const [screen, setScreen] = useState("education");
     const [profile, setProfile] = useState([]);
+    const [location,setLocation]=useState([]);
+    console.log(location);
+    const [state,setState]=useState("");
+    const [user,setUser]=useState([]);
 
     const call = useCallback(async () => {
         const data = await api.getREQUEST(`profile/${Cookies.get("id")}`);
         if (data[0]) {
             setProfile(data[0]);
+            console.log(data);
+            setLocation(data[0].location)
         }
+        console.log(location);
+        
+        User();
     }, [api]);
 
+    const User = useCallback(async () => {
+        const users = await api.getREQUEST(`getUser/${Cookies.get("id")}/${location&&location[0].city}/${location&&location[0].state}`);
+        if (users[0]) {
+            setUser(users);
+        }
+    }, []);
+    
+    
     useEffect(() => {
-        call();
+        call()
     }, []);
 
     return (
@@ -133,37 +150,24 @@ const Profile = () => {
                                             }
                                         /> : ""}
                                         
-                                    {screen === "experience" ? <Experience 
-                                        userType={
-                                            profile.experience &&
-                                            profile?.experience[0]?.userType
+                                    
+                                    {screen === "peoples" ? 
+                                    user&&user.map((e)=>{
+                                    return <Peoples 
+                                        profileImage={e.profileImage}
+                                        firstName={e.firstName}
+                                        lastName={e.lastName}
+                                        profession={e.profession}
+                                        city={
+                                            e.location &&
+                                            e?.location[0]?.city
                                         }
-                                        jobTitle={
-                                            profile.experience &&
-                                            profile?.experience[0]?.jobTitle
+                                        state={
+                                            e.location &&
+                                            e?.location[0]?.state
                                         }
-                                        companyName={
-                                            profile.experience &&
-                                            profile?.experience[0]?.companyName
-                                        }
-                                        startDateWork={
-                                            profile.experience &&
-                                            profile?.experience[0]?.startDateWork
-                                        }
-                                        endDateWork={
-                                            profile.experience &&
-                                            profile?.experience[0]?.endDateWork
-                                        }
-                                        responsibilities={
-                                            profile.experience &&
-                                            profile?.experience[0]?.responsibilities
-                                        }
-                                        achievements={
-                                            profile.experience &&
-                                            profile?.experience[0]?.achievements
-                                        }
-                                    /> : ""}
-                                    {screen === "peoples" ? <Peoples /> : ""}
+                                    /> 
+                                    }): ""}
                                 </div>
                             </div>
                         </div>

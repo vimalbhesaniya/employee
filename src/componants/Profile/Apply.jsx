@@ -78,7 +78,7 @@ const Apply = ({ jobs }) => {
     async  (e) => {
             const file = e.target.files[0]?.name;
             if (file.match(/\.pdf$/i)) {
-                await upload.Upload(file , "ApplicationsResumes/" , "application/pdf");
+                await upload.Upload(file , "/ApplicationsResumes" , "application/pdf");
                 setResume(file);
                 setErrorMsg("");
             } else {
@@ -98,7 +98,7 @@ const Apply = ({ jobs }) => {
     const handleNext2 = async () => {
         const yes = window.confirm("Are you sure you want to submit the application form?")
         if (yes) {
-            await upload.Upload(resume, "/ApplicationsResume");
+            await upload.Upload(resume, "/ApplicationsResume","application/pdf");
             const Email = localStorage.getItem("Email");
             const phoneNumber = localStorage.getItem("phoneNumber");
             console.log(Email, phoneNumber);

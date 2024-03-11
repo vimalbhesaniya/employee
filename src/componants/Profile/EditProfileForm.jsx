@@ -22,10 +22,10 @@ const EditProfileForm = () => {
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [profileImage, setprofileImage] = useState("");
-    const [skills, setSkills] = useState([]);
+    const [skill, setSkills] = useState([]);
     const [profession, setProfession] = useState("");
     const [input, setInput] = useState([]);
-    const [langauges, setLanguages] = useState([]);
+    const [langauge, setLanguages] = useState([]);
     const api = useAPI();
     const url = upload.imageUrl
     // const handleFileChange = (event) => {
@@ -45,30 +45,32 @@ const EditProfileForm = () => {
 
     const handleEnterSkillsEvent = (e) => {
         if (e.key == "Enter") {
-            setSkills([...skills, input]);
+            setSkills([...skill, input]);
             e.target.value = "";
         }
     };
-
+    
     const handleEnterLangaugeEvent = (e) => {
         if (e.key == "Enter") {
-            setLanguages([...langauges, input]);
+            setLanguages([...langauge, input]);
             e.target.value = "";
         }
     };
-
+    
     const handleFileChange = useCallback(async (event) => {
         await upload.Upload(event.target.files[0].name, '/userprofiles', 'image/jpeg');
     });
-
+    
     useEffect(() => {
         setprofileImage(url);
     }, [url])
-
+    
     // const fileUpload = async () => {
-    //     await upload.Upload(image, '/userprofiles', 'image/jpeg');
-    // }
-    const handleSubmit = useCallback(async () => {
+        //     await upload.Upload(image, '/userprofiles', 'image/jpeg');
+        // }
+        const handleSubmit = useCallback(async () => {
+        const skills = skill.split(",")
+        const langauges = langauge.split(",")
         const id = Cookies.get("id");
         // console.log(profileImage);
         const data = await api.patchREQUEST("updateDetails", "users", id, {firstName , lastName , langauges , profession ,skills});
@@ -76,9 +78,9 @@ const EditProfileForm = () => {
         firstName , 
         lastName , 
         // profileImage, 
-        langauges,
+        langauge,
         profession , 
-        skills 
+        skill
     ]);
 
 

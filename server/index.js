@@ -96,21 +96,6 @@ app.post("/login", async (req, res) => {
         }
     } else {
         res.send({ serverError: "Somthing went wrong" });
-        console.log(req.body);
-        if (req.body.password && req.body.email) {
-            let data = await User.findOne(req.body).select("-password");
-            if (data) {
-                jwt.sign({ data }, key, { expiresIn: "1d" }, (err, token) => {
-                    err
-                        ? res.send("something went wrong")
-                        : res.send({ data, token: token });
-                });
-            } else {
-                res.send({ result: "User  not found" });
-            }
-        } else {
-            res.send({ result: "Something Missing" });
-        }
     }
 });
 
@@ -280,7 +265,7 @@ app.patch("/updateDetails", async (req, res) => {
         if (tablename !== "userFollow") {
             const updatedDocument = await Model.findByIdAndUpdate(
                 _id,
-                { $addToSet: { targetId: COLUMNS.targetId } },
+                { $set: COLUMNS },
                 { new: true }
             );
             if (updatedDocument) {
@@ -670,20 +655,28 @@ app.get("/CompanyListing", async (req, res) => {
 });
 
 app.post("/Clogin", async (req, res) => {
-    const to = req.body.email;
-    const oneTimeOTP = generateOTP();
-    const comapny = await Company.findOne({ Email_ID: to });
-    if (comapny) {
-        await Company.updateOne(
-            { Email_ID: to },
-            { $set: { secretKey: oneTimeOTP } }
-        );
-        const subject = "Sending Email";
-        const html = "<p>One Time OTP : <b>" + oneTimeOTP + "</b></p>";
-        const result = await sendMail(to, subject, html);
-        res.send(result);
+    if (req.body.password && req.body.email) {
+        const email = req.body.email;
+        const data = await Company.findOne({ email: email });
+        if (data) {
+            const pwdMatch = await encrypt.compare(
+                req.body.password,
+                data.password
+            );
+            if (pwdMatch) {
+                jwt.sign({ data }, key, { expiresIn: "1d" }, (err, token) => {
+                    err
+                        ? res.send("something went wrong")
+                        : res.send({ data, token: token, id: data._id });
+                });
+            } else {
+                res.send({ error: "Password incorrect" });
+            }
+        } else {
+            res.send({ error: "Company not found" });
+        }
     } else {
-        res.send({ message: "Company is not available" });
+        res.send({ serverError: "Somthing went wrong" });
     }
 });
 
@@ -838,7 +831,7 @@ app.get("/notFollowed/:userId/:limit", async (req, res) => {
             }).limit(limit);
             res.send(users);
         } else {
-            res.send({message : "user not found"});
+            res.send({ message: "user not found" });
         }
     } catch (error) {
         console.error(error);
@@ -848,7 +841,7 @@ app.get("/notFollowed/:userId/:limit", async (req, res) => {
 
 app.get("/notFollowedCompany/:userId/:limit", async (req, res) => {
     try {
-        const { userId, limit } = req.params; 
+        const { userId, limit } = req.params;
 
         const usersNotFollowed = await CompanyConnections.findOne({ userId: userId })
         if (usersNotFollowed) {
@@ -860,7 +853,7 @@ app.get("/notFollowedCompany/:userId/:limit", async (req, res) => {
             }).limit(limit);
             res.send(users);
         } else {
-            res.send({message : "user not found"});
+            res.send({ message: "user not found" });
         }
     } catch (error) {
         console.error(error);
@@ -868,17 +861,17 @@ app.get("/notFollowedCompany/:userId/:limit", async (req, res) => {
     }
 });
 
-app.get("/getFollowings/:id" , async (req ,res) => {
-    try{
-        const  users =await UserFollow.find({userId : req.params.id})
+app.get("/getFollowings/:id", async (req, res) => {
+    try {
+        const users = await UserFollow.find({ userId: req.params.id })
         if (users.length !== 0) {
             res.send(users);
         }
-        else{
-            res.send({message :"Users not found"});
+        else {
+            res.send({ message: "Users not found" });
         }
     }
-    catch(e){
+    catch (e) {
         res.send(e);
     }
 })
@@ -900,7 +893,7 @@ app.delete("/delete", async (req, res) => {
             res.status(200).json({
                 res: "ok",
                 msg: "Data Deleted Successfully",
-                data:data
+                data: data
             });
         } else {
             res.status(400).json({
@@ -916,4 +909,30 @@ app.delete("/delete", async (req, res) => {
         });
     }
 });
+
+app.get("/getUser/:userId/:city/:state", async (req, res) => {
+    const userId = req.params.userId;
+    const city = req.params.city;
+    const state = req.params.state;
+
+    try {
+        const users = await User.find({
+            _id: { $ne: userId },
+            $or: [
+                { "location.city": city },
+                { "location.state": state }
+            ]
+        });
+
+        if (users.length > 0) {
+            res.send(users);
+        } else {
+            res.send("Users Not Found");
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
 app.listen(5500, () => console.log("server started..."));
