@@ -1,40 +1,32 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Navbar from '../Navbar/Navbar'
-import { Outlet } from 'react-router-dom'
+import { Link, Outlet, useNavigate } from 'react-router-dom'
+import "../Styles/Styles.css"
+import Cookies from 'js-cookie'
 const Sidebar = () => {
+    const naviget = useNavigate()
+    useEffect(() => {   
+        const token = Cookies.get("token");
+        if (!token) {
+            naviget("/companylogin");
+        }
+    })
     return (
         <>
             <main className='d-flex w-100'>
                 <header>
-                    <nav id="sidebarMenu" class="collapse d-lg-block sidebar collapse bg-white">
-                        <div class="position-sticky">
-                            <div class="list-group list-group-flush mx-3 mt-4">
-                                <a href="#" class="list-group-item list-group-item-action py-2" data-mdb-ripple-init
-                                    aria-current="true">
-                                    <i class="fas fa-tachometer-alt fa-fw me-3"></i><span>Main dashboard</span>
-                                </a>
-                                <a href="#" class="list-group-item list-group-item-action py-2 active" data-mdb-ripple-init>
-                                    <i class="fas fa-chart-area fa-fw me-3"></i><span>Website traffic </span>
-                                </a>
-                                <a href="#" class="list-group-item list-group-item-action py-2" data-mdb-ripple-init><i
-                                    class="fas fa-lock fa-fw me-3"></i><span>Password</span></a>
-                                <a href="#" class="list-group-item list-group-item-action py-2" data-mdb-ripple-init><i
-                                    class="fas fa-chart-line fa-fw me-3"></i><span>Analytics</span></a>
-                                <a href="#" class="list-group-item list-group-item-action py-2" data-mdb-ripple-init>
-                                    <i class="fas fa-chart-pie fa-fw me-3"></i><span>SEO</span>
-                                </a>
-                                <a href="#" class="list-group-item list-group-item-action py-2" data-mdb-ripple-init><i
-                                    class="fas fa-chart-bar fa-fw me-3"></i><span>Orders</span></a>
-                                <a href="#" class="list-group-item list-group-item-action py-2" data-mdb-ripple-init><i
-                                    class="fas fa-globe fa-fw me-3"></i><span>International</span></a>
-                                <a href="#" class="list-group-item list-group-item-action py-2" data-mdb-ripple-init><i
-                                    class="fas fa-building fa-fw me-3"></i><span>Partners</span></a>
-                                <a href="#" class="list-group-item list-group-item-action py-2" data-mdb-ripple-init><i
-                                    class="fas fa-calendar fa-fw me-3"></i><span>Calendar</span></a>
-                                <a href="#" class="list-group-item list-group-item-action py-2" data-mdb-ripple-init><i
-                                    class="fas fa-users fa-fw me-3"></i><span>Users</span></a>
-                                <a href="#" class="list-group-item list-group-item-action py-2" data-mdb-ripple-init><i
-                                    class="fas fa-money-bill fa-fw me-3"></i><span>Sales</span></a>
+                    <nav id="sidebarMenu" style={{marginTop:"80px"}} className="collapse d-lg-block sidebar collapse bg-white">
+                        <div className="position-sticky">
+                            <div className="list-group list-group-flush mx-3 bgPrimary rounded-1  mt-4">
+                                <Link to={"/companyprofile"} className="text-nowrap  list-group-item  py-2" >
+                                    <i className="fa fa-tachometer-alt  me-3 text-light"></i><span className='text-light'>Main dashboard</span>
+                                </Link>
+                                <Link to={"/joblisting"} className='className="text-nowrap  list-group-item  py-2"'>
+                                <i class="fa-solid fa-briefcase me-3 text-white"></i><span className='text-light'>Job Listings</span>
+                                </Link>
+                                {/* <Link to={"/"} className='className="text-nowrap  list-group-item  py-2"'>
+                                    <i className='fa fa-plus text-light me-3 '></i><span className='text-light'>Post a job</span>
+                                </Link> */}
                             </div>
                         </div>
                     </nav>

@@ -75,13 +75,14 @@ const CompanyProfile = () => {
                 <div className="card---container">
                     {company&&company?.map((e) => {
                         return <Card
-                        btnText={"Connect"}
+                        no={"Connected"}
+                        yes={"Connect"}
                         firstName={e?.Name}
                         _id ={e?._id}
                         handleUnFollowButton={() => handleUnFollowButton(e?._id)}
                         pofession={e?.Industry}
                         profileImage={e?.Logo}
-                        // following_id={connectingId}
+                        following_id={connectingId}
                         univercity={e.Address && e?.Address[0]?.personalAddress}
                         handleFollowButton={() =>handleFollowButton(e?._id)}
                     />

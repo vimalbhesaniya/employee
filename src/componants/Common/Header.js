@@ -24,7 +24,6 @@ const Header = () => {
         }
     };
 
-    console.log(visible);
     return (
         <>
             <div className={css.navbar}>

@@ -7,12 +7,12 @@ import Cookies from "js-cookie";
 
 const  Layout = () => {
     const naviget = useNavigate();
-    // useEffect(() => {   
-    //     const token = Cookies.get("token");
-    //     if (!token) {
-    //         naviget("/login");
-    //     }
-    // })
+    useEffect(() => {   
+        const token = Cookies.get("token");
+        if (!token) {
+            naviget("/companylogin");
+        }
+    })
     return (
 		<>
 			<div className="  " >

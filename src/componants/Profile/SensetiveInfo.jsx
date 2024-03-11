@@ -5,7 +5,7 @@ import { ActiveModal } from '../..'
 import { useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie'
 
-const SensetiveInfo = ({ personalAddress, langauge }) => {
+const SensetiveInfo = ({ personalAddress, langauge ,lnc , ln}) => {
     const [activeModalState  ,  setActiveModalState ] = useContext(ActiveModal)
     const [isEditProfile, setIsEditProfile] = useContext(ToggleEdit)
     const navigate = useNavigate()
@@ -23,8 +23,8 @@ const SensetiveInfo = ({ personalAddress, langauge }) => {
             <div className="container">
                 <div className=" d-flex justify-content-between mb-2">
                     <p className="hand" style={{ fontSize: "2.8cqmin", whiteSpace: "nowrap" }}  onClick={() => setActiveModalState("Followers")} >Followers 320</p>
-                    <p className="hand" style={{ fontSize: "2.8cqmin", whiteSpace: "nowrap" }} onClick={() => setActiveModalState("Followings")}>Following  340</p>
-                    <p className="hand" style={{ fontSize: "2.8cqmin", whiteSpace: "nowrap" }} onClick={() => setActiveModalState("connections")}>Connections 340</p>
+                    <p className="hand" style={{ fontSize: "2.8cqmin", whiteSpace: "nowrap" }} onClick={() => setActiveModalState("Followings")}>Following  {ln}</p>
+                    <p className="hand" style={{ fontSize: "2.8cqmin", whiteSpace: "nowrap" }} onClick={() => setActiveModalState("connections")}>Connections {lnc}</p>
                 </div>
                 <div className=" d-flex justify-content-between mb-2">
                     <button type="button" className="btn bgbtn" onClick={() => setIsEditProfile(true)} >Edit profile</button>

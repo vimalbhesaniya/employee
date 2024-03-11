@@ -120,7 +120,7 @@ const verifyToken = (req, res, next) => {
     console.warn("called ", token);
     if (token) {
         jwt.verify(token, key, (err, valid) => {
-            err ? res.send({ unauthorized: "invalid token" }) : next();
+            err ? res.send({ status: false  ,  authorization : "Invalid Token"}) : next();
         });
     } else {
         res.send({ result: "provide a token from headers" });
@@ -277,10 +277,10 @@ app.patch("/updateDetails", async (req, res) => {
             return res.status(400).send("Document ID not provided");
         }
 
-        if (tablename !== "userFollow") {
+        if (tablename !== "userFollow" && tablename !== "companyConnections") {
             const updatedDocument = await Model.findByIdAndUpdate(
                 _id,
-                { $addToSet: { targetId: COLUMNS.targetId } },
+                { $set: COLUMNS },
                 { new: true }
             );
             if (updatedDocument) {
@@ -668,22 +668,30 @@ app.get("/CompanyListing", async (req, res) => {
         res.status(500).send("Internal Server Error");
     }
 });
-
 app.post("/Clogin", async (req, res) => {
-    const to = req.body.email;
-    const oneTimeOTP = generateOTP();
-    const comapny = await Company.findOne({ Email_ID: to });
-    if (comapny) {
-        await Company.updateOne(
-            { Email_ID: to },
-            { $set: { secretKey: oneTimeOTP } }
-        );
-        const subject = "Sending Email";
-        const html = "<p>One Time OTP : <b>" + oneTimeOTP + "</b></p>";
-        const result = await sendMail(to, subject, html);
-        res.send(result);
+    if (req.body.password && req.body.email) {
+        const email = req.body.email;
+        const data = await Company.findOne({ Email: email });
+        console.log(data);
+        if (data) {
+            const pwdMatch = await encrypt.compare(
+                req.body.password,
+                data.Password
+            );
+            if (pwdMatch) {
+                jwt.sign({ data }, key, { expiresIn: "1d" }, (err, token) => {
+                    err
+                        ? res.send("something went wrong")
+                        : res.send({ data, token: token, id: data._id });
+                });
+            } else {
+                res.send({ error: "Password incorrect" });
+            }
+        } else {
+            res.send({ error: "Company not found" });
+        }
     } else {
-        res.send({ message: "Company is not available" });
+        res.send({ serverError: "Somthing went wrong" });
     }
 });
 
@@ -883,6 +891,21 @@ app.get("/getFollowings/:id" , async (req ,res) => {
     }
 })
 
+app.get("/getConnections/:id" , async (req ,res) => {
+    try{
+        const  users =await CompanyConnections.find({userId : req.params.id})
+        if (users.length !== 0) {
+            res.send(users);
+        }
+        else{
+            res.send({message :"Users not found"});
+        }
+    }
+    catch(e){
+        res.send(e);
+    }
+})
+
 app.patch('/api/userfollow/:userId/remove/:targetId', async (req, res) => {
     try {
         const { userId, targetId } = req.params;
@@ -937,4 +960,10 @@ app.delete("/delete", async (req, res) => {
         });
     }
 });
+
+app.get("/authenitcation" , verifyToken , (req , res) => {
+    res.send({
+        status : true
+    })
+})
 app.listen(5500, () => console.log("server started..."));

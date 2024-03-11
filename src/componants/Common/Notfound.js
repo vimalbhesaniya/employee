@@ -5,10 +5,7 @@ const NotFound = () => {
     const navigate = useNavigate();
     useEffect(() => {
         const token = Cookies.get("token");
-        if (token) {
-            navigate("/home");
-        }
-        else{
+        if (!token) {
             navigate("/loginasuser")
         }
     }, [navigate]);

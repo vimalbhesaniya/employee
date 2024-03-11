@@ -9,6 +9,8 @@ import { useState } from "react";
 import LoginMain from "./componants/login/LoginMain";
 import Signup from "./componants/signup/Signup";
 import Jobs from "./componants/Common/Jobs";
+
+import CompanyProfile from "./CompanySide/profile/CompanyProfile";
 import NotFound from "./componants/Common/Notfound";
 import Check from "./Auth/check";
 import RenderModal from "./render-model/RenderModal";
@@ -24,9 +26,11 @@ import SearchSection from "./componants/Common/SearchSection";
 import SavedJobsPage from "./componants/Common/SavedJobsPage";
 import { ToastContainer, Slide } from "react-toastify";
 import ListUsers from "./UserSide/ListUsers";
+import ProtectedRoute from "./CompanySide/Protected/ProtectedRoute";
 import LoginAsUser from "./UserSide/LoginAsUser";
 import LoginAsCompany from "./CompanySide/components/LoginAsCompany";
 import Sidebar from "./CompanySide/sidebar/Sidebar";
+import JobListing from "./CompanySide/components/JobListing";
 
 const App = () => {
     const [modell, setModell] = useState(false);
@@ -63,9 +67,11 @@ const App = () => {
                     </Route>
                     <Route element={<Sidebar />}>
                         <Route path={"/dashboard"} element={<Dashboard />} />
+                        <Route path={"/companyprofile"} element={<CompanyProfile />} />
+                        <Route path={"/joblisting"} element={<JobListing />} />
                     </Route>
-                    <Route path={"/loginasuser"} element={<LoginAsUser />} />
                     <Route path={"/loginascompany"} element={<LoginAsCompany />} />
+                    <Route path={"/loginasuser"} element={<LoginAsUser />} />
                     <Route path={"/signup"} element={<Signup />} />
                     <Route path={"/gethelp"} element={<GetHelp />} />
                     <Route path={"/termandconditions"} element={<TermAndConditions />} />
