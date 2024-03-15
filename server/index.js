@@ -1,3 +1,5 @@
+
+
 require("./db");
 const express = require("express");
 const {
@@ -11,6 +13,7 @@ const {
     UserFollow,
     SavedJob,
     Connection,
+    FeedBack
 } = require("./model");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -73,6 +76,7 @@ function generateOTP(length = 6) {
 // });
 
 // Login Authentication api
+
 app.post("/login", async (req, res) => {
     if (req.body.password && req.body.email) {
         const email = req.body.email;
@@ -105,7 +109,7 @@ const verifyToken = (req, res, next) => {
     console.warn("called ", token);
     if (token) {
         jwt.verify(token, key, (err, valid) => {
-            err ? res.send({ status: false  ,  authorization : "Invalid Token"}) : next();
+            err ? res.send({ unauthorized: "invalid token" }) : next();
         });
     } else {
         res.send({ result: "provide a token from headers" });
@@ -149,6 +153,7 @@ app.post("/addUser", async (req, res) => {
             });
     }
 });
+
 app.post("/addCompany", async (req, res) => {
     req.body.Password = await encrypt.hash(req.body.Password, 10);
     const email = req.body.Email;
@@ -262,7 +267,7 @@ app.patch("/updateDetails", async (req, res) => {
             return res.status(400).send("Document ID not provided");
         }
 
-        if (tablename !== "userFollow" && tablename !== "companyConnections") {
+        if (tablename !== "userFollow") {
             const updatedDocument = await Model.findByIdAndUpdate(
                 _id,
                 { $set: COLUMNS },
@@ -303,8 +308,6 @@ app.patch("/updateDetails", async (req, res) => {
             .send({ message: "Internal Server Error", error });
     }
 });
-
-
 
 app.get('/fetchJobs/:keyword', async (req, res) => {
     const keyword = req.params.keyword;
@@ -426,6 +429,7 @@ app.get("/fetchConnectedComany", async (req, res) => {
         }
     }
 });
+
 // company registration api
 app.post("/Insert/:tbl", async (req, res) => {
     const tablename = req.params.tbl;
@@ -653,15 +657,15 @@ app.get("/CompanyListing", async (req, res) => {
         res.status(500).send("Internal Server Error");
     }
 });
+
 app.post("/Clogin", async (req, res) => {
     if (req.body.password && req.body.email) {
         const email = req.body.email;
-        const data = await Company.findOne({ Email: email });
-        console.log(data);
+        const data = await Company.findOne({ email: email });
         if (data) {
             const pwdMatch = await encrypt.compare(
                 req.body.password,
-                data.Password
+                data.password
             );
             if (pwdMatch) {
                 jwt.sign({ data }, key, { expiresIn: "1d" }, (err, token) => {
@@ -783,6 +787,7 @@ app.post("/userWhoPerformFollow", async (req, res) => {
             });
     }
 })
+
 app.post("/userWhoPerformFollowToCompany", async (req, res) => {
     const id = req.body.userId;
     if (!id) {
@@ -861,57 +866,21 @@ app.get("/notFollowedCompany/:userId/:limit", async (req, res) => {
     }
 });
 
-app.get("/getFollowings/:id" , async (req ,res) => {
-    try{
-        const  users =await UserFollow.find({userId : req.params.id})
-        if (users.length !== 0) {
-            res.send(users);
-        }
-        else{
-            res.send({message :"Users not found"});
-        }
-    }
-    catch(e){
-        res.send(e);
-    }
-})
-
-app.get("/getConnections/:id" , async (req ,res) => {
-    try{
-        const  users =await CompanyConnections.find({userId : req.params.id})
-        if (users.length !== 0) {
-            res.send(users);
-        }
-        else{
-            res.send({message :"Users not found"});
-        }
-    }
-    catch(e){
-        res.send(e);
-    }
-})
-
-app.patch('/api/userfollow/:userId/remove/:targetId', async (req, res) => {
+app.get("/getFollowings/:id", async (req, res) => {
     try {
-        const { userId, targetId } = req.params;
-        
-        // Find the userFollow document for the userId
-        const userFollow = await UserFollow.findOne({ userId });
-
-        // If userFollow document doesn't exist, return error
-        if (!userFollow) {
-            return res.status(404).json({ message: "User follow not found" });
+        const users = await UserFollow.find({ userId: req.params.id })
+        if (users.length !== 0) {
+            res.send(users);
         }
-
-        // Remove the targetId from the targetIds array
-        const result = await UserFollow.findOneAndUpdate({ userId : userId}, { $pull: { targetId: targetId } });
-
-        return res.status(200).json({ message: "TargetId removed successfully" ,result });
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ message: "Internal server error" });
+        else {
+            res.send({ message: "Users not found" });
+        }
     }
-});
+    catch (e) {
+        res.send(e);
+    }
+})
+
 app.delete("/delete", async (req, res) => {
     try {
         const where = req.body.where;
@@ -946,9 +915,120 @@ app.delete("/delete", async (req, res) => {
     }
 });
 
-app.get("/authenitcation" , verifyToken , (req , res) => {
-    res.send({
-        status : true
-    })
+app.get("/getUser", async (req, res) => {
+    const userId = req.query.userId;
+    const city = req.query.city;
+    const state = req.query.state;
+
+    try {
+        const users = await User.find({
+            _id: { $ne: userId },
+            $or: [
+                { "location.city": city },
+                { "location.state": state }
+            ]
+        });
+
+        if (users.length > 0) {
+            res.send(users);
+        } else {
+            res.send("Users Not Found");
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+    }
+});
+
+app.patch('/api/userfollow/:userId/remove/:targetId', async (req, res) => {
+    try {
+        const { userId, targetId } = req.params;
+
+        // Find the userFollow document for the userId
+        const userFollow = await UserFollow.findOne({ userId });
+
+        // If userFollow document doesn't exist, return error
+        if (!userFollow) {
+            return res.status(404).json({ message: "User follow not found" });
+        }
+
+        // Remove the targetId from the targetIds array
+        const result = await UserFollow.findOneAndUpdate({ userId: userId }, { $pull: { targetId: targetId } });
+
+        return res.status(200).json({ message: "TargetId removed successfully", result });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Internal server error" });
+    }
+});
+
+app.get("/getFollowers/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+        const users = await UserFollow.find({ targetId: { $in: id } });
+        if (users && users.length > 0) {
+            const userIds = users.map(user => user.userId);
+            const followersData = await User.find({ _id: { $in: userIds } });
+
+            if (followersData && followersData.length > 0) {
+                res.send(followersData);
+            } else {
+                res.send({ message: "Data Not Found" });
+            }
+        } else {
+            res.send({ message: "No Followers Found for the specified user" });
+        }
+    }
+    catch (e) {
+        console.log(e);
+        res.send(e);
+    }
 })
+
+app.get("/getConnections/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+        const users = await CompanyConnections.find({ targetId: { $in: id } });
+        if (users && users.length > 0) {
+            const userIds = users.map(user => user.userId);
+            const connectionsData = await User.find({ _id: { $in: userIds } });
+
+            if (connectionsData && connectionsData.length > 0) {
+                res.send(connectionsData);
+            } else {
+                res.send({ message: "Data Not Found" });
+            }
+        } else {
+            res.send({ message: "No Followers Found for the specified user" });
+        }
+    }
+    catch (e) {
+        console.log(e);
+        res.send(e);
+    }
+})
+
+app.post("/feedback", async (req, res) => {
+    const userId = req.body.userId;
+    const feedback = req.body.feedback;
+    if (!userId || !feedback) {
+        res.send({ success: false, message: "UserId & Feedback are not available" });
+    } else {
+        const user = await User.find({ _id: userId });
+        if (user) {
+            const firstName = user[0].firstName;
+            const lastName = user[0].lastName;
+            const to = user[0].email;
+            const finaldata = new FeedBack(req.body);
+            await FeedBack.insertMany(finaldata);
+            const subject = "Send FeedBack";
+            const html = "<p>You will received the new feedback from <b>" + firstName + "</b><b> " + lastName + " .</b></p>" + "<p><b>These Feedback is :</b>" + feedback + "</p>";
+            const result = await sendMail(to, subject, html);
+            res.send(result);
+        } else {
+            res.send({ success: false, message: "User not found" });
+        }
+    }
+})
+
 app.listen(5500, () => console.log("server started..."));

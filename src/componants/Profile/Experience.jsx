@@ -26,11 +26,15 @@ const Experience = ({userType,jobTitle,companyName,startDateWork,endDateWork,res
                 </div>
                 <div class="data-item">
                     <p className="data-title">Responsibilities</p>
-                    <p className="data-item-info">{responsibilities}</p>
+                    {responsibilities&&responsibilities.map((e)=>
+                        <li className="data-item-info">{e}</li>
+                    )}
                 </div>
                 <div class="data-item">
                     <p className="data-title">Achievements</p>
-                    <p className="data-item-info">{achievements}</p>
+                    {achievements&&achievements.map((e)=>
+                        <li className="data-item-info">{e}</li>
+                    )}
                 </div>
             </div>
         </>

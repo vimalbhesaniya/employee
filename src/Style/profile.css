@@ -41,6 +41,12 @@
     color:var(--primary-color);
 }
 
+.multi{
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
 .datainfoNavigator{
     font-size: medium;
     color: #23a5f0c5;

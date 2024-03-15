@@ -2,40 +2,29 @@ import { useState, useCallback,useEffect } from "react";
 import useAPI from "../../../Hooks/USER/useAPI";
 import Cookies from "js-cookie";
 import useFirestorage from "../../../Hooks/OTHER/useFirestorage";
+import Saved from "../../Common/Boxes";
 
 const EditEducation = () => {
   const api = useAPI();
   const [institutionName, setInstitutionName] = useState("");
   const [input, setInput] = useState([]);
-  const [degreeLevel, setDegreeLevel] = useState([]);
+  const [degreeLevels, setDegreeLevel] = useState([]);
   const [startDateSchool, setStartDateSchool] = useState("");
   const [endDateSchool, setEndDateSchool] = useState("");
   const [gpa, setGpa] = useState("");
-  const [certifications, setCertifications] = useState([]);
+  const [certificat, setCertifications] = useState([]);
   const [univercity, setUnivercity] = useState("");
   const [school, setSchool] = useState("");
   const [updateimg, setUpdateImg] = useState();
   const [image, setImage] = useState();
   const upload = useFirestorage();
-  const url = upload.imageUrl
-
-  const handleEnterDegreeEvent = (e) => {
-    if (e.key == "Enter") {
-      setDegreeLevel([...degreeLevel, input]);
-      e.target.value = "";
-    }
-  };
-
-  const handleEnterCertificationEvent = (e) => {
-    if (e.key == "Enter") {
-      setCertifications([...certifications, input]);
-      e.target.value = "";
-    }
-  };
+  const url = upload.imageUrl;
 
   const handleSubmit = useCallback(async () => {
 
     const id = Cookies.get("id");
+    const degreeLevel = degreeLevels.split(",");
+    const certifications = certificat.split(",");
     const data = await api.patchREQUEST("updateDetails", "users", id, {
       education: [
         {
@@ -52,11 +41,11 @@ const EditEducation = () => {
     });
   }, [
     institutionName,
-    degreeLevel,
+    degreeLevels,
     startDateSchool,
     endDateSchool,
     gpa,
-    certifications,
+    certificat,
     univercity,
     school,
   ]);
@@ -80,7 +69,7 @@ const EditEducation = () => {
       <div className="row mb-3">
         <div className="col-md-12">
           <label htmlFor="" className="form-label">Degree Level :</label>
-          <input type="text" placeholder="degreeLevel-must be comma(,) separated" className="form-control" name="degreeLevel" onChange={(e) => setDegreeLevel(e.target.value)} onKeyUp={(e) => handleEnterDegreeEvent(e)} />
+          <input type="text" placeholder="degreeLevel-must be comma(,) separated" className="form-control" name="degreeLevel" onChange={(e) => setDegreeLevel(e.target.value)} />
         </div>
       </div>
       <div className="row mb-3">
@@ -108,7 +97,7 @@ const EditEducation = () => {
       <div className="row mb-3">
         <div className="col-md-12">
           <label htmlFor="" className="form-label">Certifications :</label>
-          <input type="text" placeholder="certifications-must be comma(,) separated" className="form-control" name="certifications" onChange={(e) => setCertifications(e.target.value)} onKeyUp={(e) => handleEnterCertificationEvent(e)} />
+          <input type="text" placeholder="certifications-must be comma(,) separated" className="form-control" name="certifications" onChange={(e) => setCertifications(e.target.value)}/>
         </div>
       </div>
       <button type="Submit" value="Submit" className="btn btn-info w-25 mb-3" data-mdb-ripple-init onClick={() => handleSubmit()}>Save</button>

@@ -5,28 +5,44 @@ import "firebase/compat/storage"
 
 const useFirestorage = () => {
     const [imageUrl, setImageUrl] = useState("");
-    const [setSpinnerState,spinner] = useContext(EnableSpinner)
-    const Upload = useCallback((img , path , type) => {
+    const [setSpinnerState, spinner] = useContext(EnableSpinner)
+    // const Upload = useCallback((img, path, type) => {
+    //     if (img) {
+    //         const storageRef = firebase.storage().ref(path)
+    //         const fileRef = storageRef.child(img)
+    //         const metadata = {
+    //             contentType: type,
+    //         };
+    //         setSpinnerState(true)
+    //         fileRef.put(img, metadata)
+    //             .then((snapshot) => {
+    //                 snapshot.ref.getDownloadURL()
+    //                     .then((downloadUrl) => {
+    //                         if (downloadUrl) {
+    //                             setImageUrl(downloadUrl)
+    //                             setSpinnerState(false);
+    //                             return downloadUrl
+    //                         }
+    //                     })
+    //             })
+    //     }
+    // }, []);
+    const Upload = useCallback((img) => {
         if (img) {
-            const storageRef = firebase.storage().ref(path)
-            const fileRef = storageRef.child(img)
-            const metadata = {
-                contentType: type,
-              };
+            const storageRef = firebase.storage().ref('/Files');
+            const fileRef = storageRef.child(Date.now() + "_" + `${img}`)
             setSpinnerState(true)
-            fileRef.put(img,metadata)
-                .then((snapshot) => {
-                    snapshot.ref.getDownloadURL()
-                        .then((downloadUrl) => {
-                            if (downloadUrl) {
-                                setImageUrl(downloadUrl)
-                                setSpinnerState(false);
-                                return downloadUrl
-                                }
-                        })
+
+            fileRef.put(img).then((snapshot) => {
+                snapshot.ref.getDownloadURL().then((downloadURL) => {
+                    console.log(downloadURL);
+                    setImageUrl(downloadURL);
+                    setSpinnerState(false);
                 })
+            });
         }
-    }, []);
+    });
+
     const handleDelete = useCallback((fileName, path) => {
         const storageRef = firebase.storage().ref(path);
         const fileRef = storageRef.child(fileName);

@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import useAPI from '../../Hooks/USER/useAPI';
 import ViewJob from '../../componants/Common/viewJob';
 import JobCard from '../../componants/Common/JobCard';
-
+import Cookies from 'js-cookie';
+    
 const JobsCard = () => {
     const [jobs, setJobs] = useState([]);
     const [viewJob, setViewJob] = useState("");

@@ -18,7 +18,9 @@ const Education = ({univercity,school,institutionName,degreeLevel,startDateSchoo
                 </div>
                 <div class="data-item">
                     <span className="data-title">Degree Level </span>
-                    <span className="data-item-info">{degreeLevel}</span>
+                    {degreeLevel&&degreeLevel.map((e)=>
+                        <li className="data-item-info">{e}</li>
+                    )}
                 </div>
                 <div class="data-item">
                     <span className="data-title">Start Date of School </span>
@@ -34,7 +36,9 @@ const Education = ({univercity,school,institutionName,degreeLevel,startDateSchoo
                 </div>
                 <div class="data-item">
                     <span className="data-title">Certifications </span>
-                    <span className="data-item-info">{certifications}</span>
+                    {certifications&&certifications.map((e)=>
+                        <li className="data-item-info">{e}</li>
+                    )}
                 </div>
                 {/* <div class="data-item">
                     <p className="data-title">Online Courses</p>

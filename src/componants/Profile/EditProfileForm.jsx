@@ -23,7 +23,6 @@ const EditProfileForm = () => {
     const [lastName, setLastName] = useState("");
     const [profileImage, setprofileImage] = useState("");
     const [skill, setSkills] = useState([]);
-    const [skill, setSkills] = useState([]);
     const [profession, setProfession] = useState("");
     const [input, setInput] = useState([]);
     const [langauge, setLanguages] = useState([]);
@@ -46,7 +45,6 @@ const EditProfileForm = () => {
 
     const handleEnterSkillsEvent = (e) => {
         if (e.key == "Enter") {
-            setSkills([...skill, input]);
             setSkills([...skill, input]);
             e.target.value = "";
         }
@@ -71,11 +69,10 @@ const EditProfileForm = () => {
         //     await upload.Upload(image, '/userprofiles', 'image/jpeg');
         // }
         const handleSubmit = useCallback(async () => {
-        const skills = skill.split(",")
         const langauges = langauge.split(",")
         const id = Cookies.get("id");
         // console.log(profileImage);
-        const skills = skill.split(",")
+        const skills = skill.split(",");
         const data = await api.patchREQUEST("updateDetails", "users", id, {firstName , lastName , langauges , profession ,skills});
     }, [
         firstName , 
@@ -84,7 +81,6 @@ const EditProfileForm = () => {
         langauge,
         profession , 
         skill 
-        skill
     ]);
 
 

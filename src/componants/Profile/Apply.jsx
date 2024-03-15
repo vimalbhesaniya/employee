@@ -15,9 +15,11 @@ import useAPI from "../../Hooks/USER/useAPI";
 import { isValidApplication } from "../../Auth/isValidate";
 import Cookies from "js-cookie";
 import { toast } from "react-toastify";
+import UploadPdf from "../../Hooks/OTHER/UploadPdf";
+import useUploadPdf from "../../Hooks/OTHER/UploadPdf";
 
 const Apply = ({ jobs }) => {
-    const upload = useFirestorage();
+    const upload = useUploadPdf();
     const [activeModalState, setActiveModalState] = useContext(ActiveModal);
     const [progress, setProgress] = useState("0%");
     const [data, setData] = useState([]);
@@ -25,7 +27,7 @@ const Apply = ({ jobs }) => {
     const [userEmail, setUserEmail] = useState("");
     const [errorMsg, setErrorMsg] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
-    const [resume, setResume] = useState("");
+    const [selectedFile, setSelectedFile] = useState(null);
     const [form, setFrom] = useState("form1");
     const [url, setUrl] = useState();
     const id = localStorage.getItem("appliedID");
@@ -41,7 +43,7 @@ const Apply = ({ jobs }) => {
             }
         };
         const user = async () => {
-            const data = await api.getREQUEST(`profile/${Cookies.get("id")}`);
+            const data = await api.getREQUEST(`profile / ${Cookies.get("id")}`);
             if (data[0]) {
                 setUser(data[0]);
             }
@@ -74,20 +76,20 @@ const Apply = ({ jobs }) => {
         [phoneNumber]
     );
 
-    const handleInput3 = useCallback(
-    async  (e) => {
-            const file = e.target.files[0]?.name;
-            if (file.match(/\.pdf$/i)) {
-                await upload.Upload(file , "/ApplicationsResumes" , "application/pdf");
-                setResume(file);
-                setErrorMsg("");
-            } else {
-                setErrorMsg("this file is not valid");
-            }
-        },
-        [resume]
-    );
-    console.log(upload.imageUrl);     
+    const handleChange = (event) => {
+        const file = event.target.files[0];
+        if (file && file.type === "application/pdf") {
+            setSelectedFile(file);
+        } else {
+            setSelectedFile(null);
+            toast.error("Please select a PDF file only!");
+        }
+    };
+
+    useEffect(() => {
+        setUrl(upload.url);
+    }, [upload.url])
+
 
     const handleNext1 = () => {
         setProgress("80%");
@@ -95,30 +97,8 @@ const Apply = ({ jobs }) => {
         localStorage.setItem("Email", userEmail);
         localStorage.setItem("phoneNumber", phoneNumber);
     };
-    const handleNext2 = async () => {
-        const yes = window.confirm("Are you sure you want to submit the application form?")
-        if (yes) {
-            await upload.Upload(resume, "/ApplicationsResume","application/pdf");
-            const Email = localStorage.getItem("Email");
-            const phoneNumber = localStorage.getItem("phoneNumber");
-            console.log(Email, phoneNumber);
-            // const RESPONSE = await api.postREQUEST("login", JSON.stringify({ Email, phoneNumber }));
-            setUrl(upload.imageUrl);
-            setProgress("100%");
-            setFrom("form3")
-            toast.success("Application submited successfully")
-        } else {
-            setActiveModalState("")
-            localStorage.clear();
-        }
 
-        setProgress("100%");
-        setFrom("form3")
-        toast.success("Application submited successfully")
-    };
-    console.log(url);
 
-    
 
     let isTrue = useMemo(() => {
         if (userEmail && phoneNumber) {
@@ -128,13 +108,6 @@ const Apply = ({ jobs }) => {
         }
     }, [userEmail, phoneNumber]);
 
-    let isResumeTrue = useMemo(() => {
-        if (resume) {
-            return false;
-        } else {
-            return true;
-        }
-    }, [resume]);
 
     return (
         <>
@@ -164,9 +137,9 @@ const Apply = ({ jobs }) => {
                         </div>
                     </div>
                 </div>
-                <span className="mt-3 fs-5">Contect Info</span>
                 {form === "form1" ? (
                     <>
+                        <span className="mt-3 fs-5">Contect Info</span>
                         <div className="row">
                             <div className="col-md-2 appImageContainer">
                                 <img
@@ -270,21 +243,26 @@ const Apply = ({ jobs }) => {
                 )}
                 {form == "form2" ? (
                     <>
-                        {" "}
                         <span className="mt-3 fs-5">Upload your resume</span>
                         <div className="row mt-3 gap-3 ">
-                            <div className="col-12">
-                                <label htmlFor="" className="form-label">
-                                    resume*
-                                </label>
+                            <div className='col-12'>
+                                <label htmlFor="" className='form-label '></label>
                                 <input
                                     type="file"
                                     required={true}
                                     typeof="application/pdf"
                                     className={"form-control"}
-                                    onChange={(e) => handleInput3(e)}
+                                    onChange={handleChange}
                                 />
-                                <span className="text-danger ">{errorMsg}</span>
+                                {upload.uploadProgress ? <div class="progress rounded" style={{ height: "10px" }}>
+                                    <div
+                                        class="progress-bar rounded"
+                                        role="progressbar"
+                                        style={{ width: `${upload.uploadProgress}%` }}
+                                    >
+                                        <span>{upload.uploadProgress}</span>
+                                    </div>
+                                </div> : ""}
                             </div>
                         </div>
                         <div className="row mt-4">
@@ -301,11 +279,11 @@ const Apply = ({ jobs }) => {
                             <div>
                                 <button
                                     className={
-                                        isResumeTrue
+                                        !selectedFile
                                             ? "disabled btn bgbtn text-end"
                                             : `btn bgbtn text-end  `
                                     }
-                                    onClick={handleNext2}
+                                    onClick={() => upload.handleUpload(selectedFile)}
                                 >
                                     Next
                                 </button>
@@ -314,21 +292,24 @@ const Apply = ({ jobs }) => {
                     </>
                 ) : (
                     ""
-                )}
-                {form == "form3" ? (
-                    <>
-                        {" "}
-                        <span className="mt-3 fs-5">Your Application have been submited.</span>
-                        <div className="row mt-3 gap-3 h-50 d-flex  justify-content-center  align-content-center ">
-                            <div className="w-50 d-flex justify-content-center  align-content-center  h-25">
-                                <Lottie animationData={success} width={100} > </Lottie>
+                )
+                }
+                {
+                    form == "form3" ? (
+                        <>
+                            {" "}
+                            <span className="mt-3 fs-5">Your Application have been submited.</span>
+                            <div className="row mt-3 gap-3 h-50 d-flex  justify-content-center  align-content-center ">
+                                <div className="w-50 d-flex justify-content-center  align-content-center  h-25">
+                                    <Lottie animationData={success} width={100} > </Lottie>
+                                </div>
                             </div>
-                        </div>
-                    </>
-                ) : (
-                    ""
-                )}
-            </div>
+                        </>
+                    ) : (
+                        ""
+                    )
+                }
+            </div >
         </>
     );
 };

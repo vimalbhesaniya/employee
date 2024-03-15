@@ -50,7 +50,7 @@ const EducationSchema = new mongoose.Schema({
 });
 
 const WorkExperienceSchema = new mongoose.Schema({
-    isFresher: { type: Boolean  , default: true },
+    isFresher: { type: Boolean, default: true },
     userType: {
         type: String,
         required: false
@@ -112,8 +112,8 @@ const UserSchema = new mongoose.Schema({
     secretKey: {
         type: String
     },
-    description : {
-        type : String
+    description: {
+        type: String
     },
     location: [AddressSchema],
     education: [EducationSchema],
@@ -125,7 +125,7 @@ const CompanySchema = new mongoose.Schema({
     Address: [AddressSchema],
     Industry: { type: String },
     Email: { type: String, required: false },
-    Password : {type :String},
+    Password: { type: String },
     Logo: { type: String, required: false },
     TagLine: { type: String, required: false },
     Websites: { type: [String] },
@@ -147,15 +147,15 @@ const JobSchema = new mongoose.Schema({
     Position: { type: String, required: false },
     JobPostedTime: { type: String, default: Date.now, required: false },
     Description: {
-         type: [String], required: false ,
+        type: [String], required: false,
     },
     Experience: { type: [String], required: false },
-    JobType: { type: String,enum : ["FullTime" , "PartTime" , "Remote"] },
+    JobType: { type: String, enum: ["FullTime", "PartTime", "Remote"] },
     Salary: { type: String, required: false },
-    Responsiblities : [String],
-    Overview : [String],
-    Qualificaion :[String],
-    Benifits:[String],
+    Responsiblities: [String],
+    Overview: [String],
+    Qualificaion: [String],
+    Benifits: [String],
     company: { type: mongoose.Schema.Types.ObjectId, ref: "companies", autopopulate: true }
 });
 
@@ -173,12 +173,12 @@ const ConnectionSchema = new mongoose.Schema({
 })
 
 const userFollowSchema = new mongoose.Schema({
-    userId : { type: mongoose.Schema.Types.ObjectId, ref: "users", autopopulate: false },
-    targetId : { type: [mongoose.Schema.Types.ObjectId], ref: "users", autopopulate: true },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "users", autopopulate: false },
+    targetId: { type: [mongoose.Schema.Types.ObjectId], ref: "users", autopopulate: true },
 })
 const CompanyConnectionsSchema = new mongoose.Schema({
-    userId : { type: mongoose.Schema.Types.ObjectId, ref: "users", autopopulate: false },
-    targetId : { type: [mongoose.Schema.Types.ObjectId], ref: "companies", autopopulate: true },
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "users", autopopulate: true },
+    targetId: { type: [mongoose.Schema.Types.ObjectId], ref: "companies", autopopulate: true },
 })
 
 const JobApplicationsSchema = new mongoose.Schema({
@@ -186,7 +186,12 @@ const JobApplicationsSchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: "users", autopopulate: true },
     jobid: { type: mongoose.Schema.Types.ObjectId, ref: "jobs", autopopulate: true },
     cv: {
-    }, 
+    },
+})
+
+const FeedBackSchema = new mongoose.Schema({
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "users", autopopulate: true },
+    feedback: { type: String }
 })
 
 UserSchema.plugin(require("mongoose-autopopulate"))
@@ -205,8 +210,8 @@ const JobPost = mongoose.model("jobs", JobSchema);
 const SavedJob = mongoose.model("savedjobs", SavedJobSchema);
 const Connection = mongoose.model("connections", ConnectionSchema);
 const JobApplications = mongoose.model("jobapplications", JobApplicationsSchema)
-const UserFollow = mongoose.model("userFollow" , userFollowSchema);
-const CompanyConnections = mongoose.model("companyConnections" , CompanyConnectionsSchema);
+const UserFollow = mongoose.model("userFollow", userFollowSchema);
+const CompanyConnections = mongoose.model("companyConnections", CompanyConnectionsSchema);
+const FeedBack = mongoose.model("feedbacks", FeedBackSchema);
 
-
-module.exports = { User, Company, JobPost, SavedJob, Connection, JobApplications  , UserFollow ,CompanyConnections};
+module.exports = { User, Company, JobPost, SavedJob, Connection, JobApplications, UserFollow, CompanyConnections, FeedBack };

@@ -8,28 +8,30 @@ function EditExperience() {
     const [userType, setUserType] = useState("");
     const [startDateWork, setStartDateWork] = useState("");
     const [endDateWork, setEndDateWork] = useState("");
-    const [responsibilities, setResponsibilities] = useState([]);
-    const [achievements, setAchievements] = useState([]);
+    const [responsibilitie, setResponsibilities] = useState([]);
+    const [achievement, setAchievements] = useState([]);
     const [input, setInput] = useState([]);
 
     const api = useAPI();
 
     const handleEnterResponsibilitesEvent = (e) => {
         if (e.key == "Enter") {
-            setResponsibilities([...responsibilities, input])
+            setResponsibilities([...responsibilitie, input])
             e.target.value = ""
         }
     }
 
     const handleEnterAchievementEvent = (e) => {
         if (e.key == "Enter") {
-            setAchievements([...achievements, input])
+            setAchievements([...achievement, input])
             e.target.value = "";
         }
     }
 
     const handleSubmit = useCallback(async () => {
         const id = Cookies.get("id");
+        const responsibilities = responsibilitie?.split(",");
+        const achievements = achievement.length > 0 && achievement?.split(",");
         const data = await api.patchREQUEST("updateDetails", "users", id, {
             experience: [
                 {
@@ -49,8 +51,8 @@ function EditExperience() {
         userType,
         startDateWork,
         endDateWork,
-        responsibilities,
-        achievements
+        responsibilitie,
+        achievement
     ]);
 
     return (
@@ -88,13 +90,13 @@ function EditExperience() {
             <div className="row mb-3">
                 <div className="col-md-12">
                     <label htmlFor="" className="form-label">Responsibilities :</label>
-                    <input type="text" placeholder="responsibilities-must be comma(,) separated" className="form-control" name="responsibilities" onChange={(e) => setInput(e.target.value)} onKeyUp={(e) => handleEnterResponsibilitesEvent(e)} />
+                    <input type="text" placeholder="responsibilitie-must be comma(,) separated" className="form-control" name="responsibilitie" onChange={(e) => setResponsibilities(e.target.value)} onKeyUp={(e) => handleEnterResponsibilitesEvent(e)} />
                 </div>
             </div>
             <div className="row mb-3">
                 <div className="col-md-12">
                     <label htmlFor="" className="form-label">Achievements :</label>
-                    <input type="text" placeholder="achievements-must be comma(,) separated" className="form-control" name="achievements" onChange={(e) => setInput(e.target.value)} onKeyUp={(e) => handleEnterAchievementEvent(e)} />
+                    <input type="text" placeholder="achievements-must be comma(,) separated" className="form-control" name="achievements" onChange={(e) => setAchievements(e.target.value)} onKeyUp={(e) => handleEnterAchievementEvent(e)} />
                 </div>
             </div>
 

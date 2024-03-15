@@ -13,6 +13,7 @@ import useAPI from "../../Hooks/USER/useAPI";
 import { useNavigate } from "react-router-dom";
 import GlobalModel from "../../Global/GlobalModel";
 import ViewJob from "./viewJob";
+import Cookies from "js-cookie";
 const Home = ({ setModell }) => {
     const [data, setData] = useState("");
     const [imgLoading, setImgLoading] = useState(true);
@@ -20,7 +21,9 @@ const Home = ({ setModell }) => {
     const item = localStorage.getItem("data");
     const api = useAPI();
     const [jobs, setJobs] = useState([]);
-    const navigat = useNavigate()
+    const [feedback, setFeedback] = useState();
+    const [email, setEmail] = useState("");
+    const navigate = useNavigate();
 
     const call = async () => {
         const data = await api.getREQUEST("fetchAll/jobs/10/0")
@@ -29,7 +32,22 @@ const Home = ({ setModell }) => {
     useEffect(() => {
         call()
     }, [])
-
+    // console.log(jobs);
+    // console.log(feedback , email);
+    const handleSubmit = async () => {
+        const userId = Cookies.get("id");
+        const response = await api.postREQUEST("feedback", JSON.stringify({ userId, feedback }))
+        if (response.success) {
+            console.log(response.message);
+        }
+        else {
+            console.log(response.message);
+        }
+    }
+    
+    const handleNavigateToJobs=()=>{
+        navigate("/jobs")
+    }
 
     return (
         <>
@@ -140,10 +158,10 @@ const Home = ({ setModell }) => {
                                 </p>
                             </div>
                             <div className={home.contentRight2}>
-                                <button onClick={() => navigat("/jobs")} className={home.button}>
+                                <button onClick={handleNavigateToJobs} className={`hand ${home.button}`}>
                                     See all jobs
                                     <div className={home.hoverEffect}>
-                                        <div ></div>
+                                        <div></div>
                                     </div>
                                 </button>
                             </div>
@@ -156,24 +174,25 @@ const Home = ({ setModell }) => {
                                             <div class="line1">
                                                 <div class="img-box">
                                                     <img src="https://assets.website-files.com/63337525695d8b8aebb4423f/63337525695d8b342eb4424d_Dribble%20Icon.svg" alt="" />
+                                                    {/* <img src={e.company.Logo} alt="" /> */}
                                                 </div>
                                                 <div class="mini-box">
-                                                    <div class="sub-h">Dribble</div>
-                                                    <div class="sub-p">October 25, 2022</div>
+                                                    <div class="sub-h">{e.company.Name}</div>
+                                                    <div class="sub-p">{e.JobPostedTime}</div>
                                                 </div>
                                             </div>
-                                            <h6>Front End Developer</h6>
+                                            <h6>{e.Title}</h6>
                                             <div class="mid-line">
-                                                <div class="job-c">Marketing</div>
-                                                <div class="job-h">Part Time</div>
+                                                <div class="job-c">{e.Position}</div>
+                                                <div class="job-h">{e.JobType}</div>
                                             </div>
                                             <div class="last-box">
-                                                <div class="loc-box">
-                                                    <img src="https://assets.website-files.com/63337525695d8ba70ab44222/63337525695d8b2585b442b4_Location%20Icon.svg" alt="" />San
-                                                    Antonio
+                                                <div className={`${home.locbox} `}>
+                                                    <img src="https://assets.website-files.com/63337525695d8ba70ab44222/63337525695d8b2585b442b4_Location%20Icon.svg" alt="" />
+                                                    {e.company.Address[0].city} , {e.company.Address[0].state}
                                                 </div>
-                                                <div class="d-box">
-                                                    <img src="https://assets.website-files.com/63337525695d8ba70ab44222/63337525695d8b73d8b44295_Salary%20Icon.svg" alt="" />$ 130k-160k
+                                                <div className={home.locbox}>
+                                                    <img src="https://assets.website-files.com/63337525695d8ba70ab44222/63337525695d8b73d8b44295_Salary%20Icon.svg" alt="" />{e.Salary}
                                                 </div>
                                             </div>
                                         </div>
@@ -196,18 +215,20 @@ const Home = ({ setModell }) => {
                                     className={home.feedbackMsgBox}
                                     cols="10"
                                     rows="5"
+                                    onChange={(e) => setFeedback(e.target.value)}
                                 ></textarea>
                             </div>
                             <div className={home.feedBackFrom}>
-                                <span className={home.lightText}>
+                                {/* <span className={home.lightText}>
                                     Enter your email address to get a response.
-                                </span>
-                                <input
+                                </span> */}
+                                {/* <input
                                     type="email"
                                     placeholder="Enter your email"
                                     className={home.emailTextBox}
-                                />
-                                <button className={home.submitButton}>submit</button>
+                                    onChange={(e)=>setEmail(e.target.value)}
+                                /> */}
+                                <button className={home.submitButton} onClick={() => handleSubmit()}>submit</button>
                             </div>
                         </div>
                         <div className={home.feedbackRight}>
